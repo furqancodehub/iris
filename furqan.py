@@ -1,6 +1,5 @@
 """
-IrisAI – Premium ML Classification Platform
-Luxury / Trillionaire-Tech UI
+IrisAI – Ultra-Luxury / Trillionaire ML Classification Platform
 Built with Streamlit and the classic Iris dataset.
 """
 
@@ -64,16 +63,18 @@ def check_password():
                 max-width:520px;
                 margin:100px auto;
                 padding:45px;
-                background:#11131B;
-                border:1px solid rgba(212,175,55,0.35);
+                background: rgba(17, 19, 27, 0.85);
+                border:1px solid rgba(212,175,55,0.6);
                 border-radius:24px;
                 text-align:center;
-                box-shadow:0 20px 70px rgba(0,0,0,0.65);
+                box-shadow:0 0 50px rgba(212,175,55,0.25), 0 20px 70px rgba(0,0,0,0.85);
+                backdrop-filter: blur(20px);
             ">
 
                 <div style="
-                    font-size:60px;
+                    font-size:65px;
                     margin-bottom:10px;
+                    filter: drop-shadow(0 0 15px rgba(212,175,55,0.6));
                 ">
                     🌸
                 </div>
@@ -81,6 +82,7 @@ def check_password():
                 <h1 style="
                     color:#F4D06F !important;
                     margin-bottom:5px;
+                    text-shadow: 0 0 15px rgba(244, 208, 111, 0.5);
                 ">
                     IrisAI
                 </h1>
@@ -88,8 +90,9 @@ def check_password():
                 <p style="
                     color:#B8C0CC !important;
                     font-size:15px;
+                    letter-spacing: 1px;
                 ">
-                    Premium Machine Learning Platform
+                    Ultra-Luxury Machine Learning Platform
                 </p>
 
             </div>
@@ -114,11 +117,12 @@ def check_password():
                 max-width:520px;
                 margin:100px auto 30px auto;
                 padding:40px;
-                background:#11131B;
-                border:1px solid rgba(212,175,55,0.35);
+                background: rgba(17, 19, 27, 0.85);
+                border:1px solid rgba(255,92,92,0.6);
                 border-radius:24px;
                 text-align:center;
-                box-shadow:0 20px 70px rgba(0,0,0,0.65);
+                box-shadow:0 0 50px rgba(255,92,92,0.25), 0 20px 70px rgba(0,0,0,0.85);
+                backdrop-filter: blur(20px);
             ">
 
                 <div style="font-size:55px;">
@@ -162,11 +166,17 @@ if not check_password():
 
 
 # ============================================================
-# FONT SELECTION
+# FONT & THEME SELECTION
 # ============================================================
 
 if "font_choice" not in st.session_state:
     st.session_state.font_choice = "Inter"
+
+if "theme_choice" not in st.session_state:
+    st.session_state.theme_choice = "Trillionaire Gold"
+
+if "animated_colors" not in st.session_state:
+    st.session_state.animated_colors = True
 
 font_options = {
     "Inter": "'Inter', sans-serif",
@@ -178,74 +188,150 @@ font_options = {
     "Space Grotesk": "'Space Grotesk', sans-serif",
 }
 
+theme_palettes = {
+    "Trillionaire Gold": {
+        "primary": "#D4AF37",
+        "primary_light": "#F4D06F",
+        "primary_bright": "#FFE9A3",
+        "accent": "#FFD700",
+        "glow": "rgba(212,175,55,0.4)",
+        "bg_radial_1": "rgba(212,175,55,0.12)",
+        "bg_radial_2": "rgba(180,140,40,0.08)",
+    },
+    "Cyberpunk Neon": {
+        "primary": "#00F0FF",
+        "primary_light": "#70F6FF",
+        "primary_bright": "#B3FCFF",
+        "accent": "#FF007F",
+        "glow": "rgba(0,240,255,0.4)",
+        "bg_radial_1": "rgba(0,240,255,0.12)",
+        "bg_radial_2": "rgba(255,0,127,0.08)",
+    },
+    "Imperial Emerald": {
+        "primary": "#00E676",
+        "primary_light": "#69F0AE",
+        "primary_bright": "#B9F6CA",
+        "accent": "#00B0FF",
+        "glow": "rgba(0,230,118,0.4)",
+        "bg_radial_1": "rgba(0,230,118,0.12)",
+        "bg_radial_2": "rgba(0,176,255,0.08)",
+    },
+    "Electric Sapphire": {
+        "primary": "#2979FF",
+        "primary_light": "#82B1FF",
+        "primary_bright": "#E3F2FD",
+        "accent": "#7C4DFF",
+        "glow": "rgba(41,121,255,0.4)",
+        "bg_radial_1": "rgba(41,121,255,0.12)",
+        "bg_radial_2": "rgba(124,77,255,0.08)",
+    },
+    "Royal Amethyst": {
+        "primary": "#D500F9",
+        "primary_light": "#E040FB",
+        "primary_bright": "#EA80FC",
+        "accent": "#651FFF",
+        "glow": "rgba(213,0,249,0.4)",
+        "bg_radial_1": "rgba(213,0,249,0.12)",
+        "bg_radial_2": "rgba(101,31,255,0.08)",
+    },
+    "Rose Gold Luxury": {
+        "primary": "#B76E79",
+        "primary_light": "#E8C5C8",
+        "primary_bright": "#F4E3E5",
+        "accent": "#FFB6C1",
+        "glow": "rgba(183,110,121,0.4)",
+        "bg_radial_1": "rgba(183,110,121,0.12)",
+        "bg_radial_2": "rgba(255,182,193,0.08)",
+    },
+}
+
 selected_font = st.session_state.font_choice
+selected_theme = st.session_state.theme_choice
+current_palette = theme_palettes[selected_theme]
 
 
 # ============================================================
-# PREMIUM CSS
+# ULTRA LUXURY DYNAMIC CSS ENGINE
 # ============================================================
 
-def load_css(font_name):
+def load_css(font_name, palette, is_animated):
 
     font_family = font_options[font_name]
+    p = palette
+
+    animation_css = ""
+    if is_animated:
+        animation_css = """
+        @keyframes hueShift {
+            0% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(45deg); }
+            100% { filter: hue-rotate(0deg); }
+        }
+        .live-chroma {
+            animation: hueShift 10s infinite alternate ease-in-out;
+        }
+        """
 
     st.markdown(
         f"""
         <style>
 
-        @import url('https://fonts.googleapis.com/css2?
-        family=Inter:wght@300;400;500;600;700;800&
-        family=Poppins:wght@400;500;600;700;800&
-        family=Montserrat:wght@400;500;600;700;800&
-        family=Roboto:wght@400;500;700&
-        family=Playfair+Display:wght@400;500;600;700&
-        family=Cormorant+Garamond:wght@400;500;600;700&
-        family=Space+Grotesk:wght@400;500;600;700&
-        display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+        {animation_css}
 
         :root {{
-            --bg: #07080C;
-            --bg2: #0B0D12;
-            --panel: #11141B;
-            --panel2: #151923;
-            --border: rgba(212,175,55,0.25);
-            --gold: #D4AF37;
-            --gold-light: #F4D06F;
-            --gold-bright: #FFE9A3;
+            --bg: #030407;
+            --bg2: #07090E;
+            --panel: #0D1017;
+            --panel2: #121621;
+            --border: {p["primary"]}44;
+            --gold: {p["primary"]};
+            --gold-light: {p["primary_light"]};
+            --gold-bright: {p["primary_bright"]};
+            --accent: {p["accent"]};
+            --glow: {p["glow"]};
             --text: #F8FAFC;
             --muted: #AAB2C0;
             --muted2: #7F8998;
-            --green: #43D17A;
-            --red: #FF5C5C;
-            --blue: #5EA7FF;
+            --green: #00E676;
+            --red: #FF5252;
+            --blue: #448AFF;
         }}
 
-        html,
-        body,
-        [class*="css"],
-        .stApp {{
+        html, body, [class*="css"], .stApp {{
             font-family: {font_family} !important;
         }}
 
         .stApp {{
             background:
-                radial-gradient(
-                    circle at 10% 0%,
-                    rgba(212,175,55,0.08),
-                    transparent 30%
-                ),
-                radial-gradient(
-                    circle at 90% 10%,
-                    rgba(80,110,180,0.07),
-                    transparent 30%
-                ),
+                radial-gradient(circle at 10% 0%, {p["bg_radial_1"]}, transparent 40%),
+                radial-gradient(circle at 90% 90%, {p["bg_radial_2"]}, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(15,18,28,0.5), transparent 80%),
                 var(--bg) !important;
-
+            background-attachment: fixed !important;
             color: var(--text) !important;
+        }}
+
+        /* Dynamic background particle mesh simulator */
+        .stApp::before {{
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(2px 2px at 20px 30px, var(--gold-light), rgba(0,0,0,0)),
+                        radial-gradient(2px 2px at 40px 70px, var(--accent), rgba(0,0,0,0)),
+                        radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 150px 150px;
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 0;
         }}
 
         .main {{
             background: transparent !important;
+            position: relative;
+            z-index: 1;
         }}
 
         .block-container {{
@@ -255,13 +341,12 @@ def load_css(font_name):
         }}
 
         /* ====================================================
-           GLOBAL TEXT VISIBILITY
+           GLOBAL TEXT VISIBILITY & GLOWS
            ==================================================== */
 
         h1, h2, h3, h4, h5, h6,
         p, span, label, li, strong, small,
-        .stMarkdown,
-        .stText,
+        .stMarkdown, .stText,
         [data-testid="stMarkdownContainer"] {{
             color: var(--text) !important;
         }}
@@ -274,6 +359,7 @@ def load_css(font_name):
 
         h2 {{
             font-weight: 750 !important;
+            color: var(--gold-light) !important;
         }}
 
         p {{
@@ -281,19 +367,13 @@ def load_css(font_name):
         }}
 
         /* ====================================================
-           SIDEBAR
+           SIDEBAR ULTRA LUXURY
            ==================================================== */
 
         [data-testid="stSidebar"] {{
-            background:
-                linear-gradient(
-                    180deg,
-                    #0D0F15 0%,
-                    #090A0E 100%
-                ) !important;
-
-            border-right:
-                1px solid rgba(212,175,55,0.18) !important;
+            background: linear-gradient(180deg, #090B10 0%, #040508 100%) !important;
+            border-right: 1px solid var(--border) !important;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5) !important;
         }}
 
         [data-testid="stSidebar"] * {{
@@ -301,54 +381,43 @@ def load_css(font_name):
         }}
 
         [data-testid="stSidebar"] hr {{
-            border-color: rgba(212,175,55,0.18) !important;
+            border-color: var(--border) !important;
         }}
 
         [data-testid="stSidebar"] .stRadio label {{
             color: #E9EDF3 !important;
             font-weight: 600 !important;
+            transition: all 0.2s ease;
+            padding: 4px 8px;
+            border-radius: 8px;
         }}
 
         [data-testid="stSidebar"] .stRadio label:hover {{
             color: var(--gold-light) !important;
+            background: rgba(255,255,255,0.03);
+            box-shadow: 0 0 12px var(--glow);
         }}
 
         /* ====================================================
-           PREMIUM CARDS
+           PREMIUM LUXURY CARDS
            ==================================================== */
 
         .luxury-card {{
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(255,255,255,0.055),
-                    rgba(255,255,255,0.018)
-                ) !important;
-
-            border:
-                1px solid rgba(212,175,55,0.20) !important;
-
+            background: linear-gradient(145deg, rgba(20, 24, 35, 0.7), rgba(10, 12, 18, 0.8)) !important;
+            border: 1px solid var(--border) !important;
             border-radius: 22px !important;
-
             padding: 26px !important;
-
-            box-shadow:
-                0 20px 60px rgba(0,0,0,0.38),
-                inset 0 1px 0 rgba(255,255,255,0.035) !important;
-
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08) !important;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             margin-bottom: 20px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }}
 
         .luxury-card:hover {{
-            border-color:
-                rgba(212,175,55,0.42) !important;
-
-            box-shadow:
-                0 25px 75px rgba(0,0,0,0.50),
-                0 0 30px rgba(212,175,55,0.05) !important;
+            border-color: var(--gold) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 25px 75px rgba(0,0,0,0.7), 0 0 35px var(--glow) !important;
         }}
 
         /* ====================================================
@@ -356,79 +425,65 @@ def load_css(font_name):
            ==================================================== */
 
         .metric-card {{
-            background:
-                linear-gradient(
-                    145deg,
-                    #141720,
-                    #0E1016
-                ) !important;
-
-            border:
-                1px solid rgba(212,175,55,0.22) !important;
-
+            background: linear-gradient(145deg, #121622, #0A0C12) !important;
+            border: 1px solid var(--border) !important;
             border-radius: 18px !important;
-
             padding: 24px 15px !important;
-
             text-align: center !important;
-
             min-height: 120px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }}
 
-            box-shadow:
-                0 15px 45px rgba(0,0,0,0.35);
+        .metric-card::before {{
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }}
+
+        .metric-card:hover {{
+            border-color: var(--gold-light) !important;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 25px var(--glow);
         }}
 
         .metric-card h3 {{
             color: var(--gold-light) !important;
-
-            font-size: 2.1rem !important;
-
+            font-size: 2.3rem !important;
             font-weight: 800 !important;
-
             margin: 0 !important;
+            text-shadow: 0 0 15px var(--glow);
         }}
 
         .metric-card p {{
             color: #AEB7C5 !important;
-
             font-size: 0.78rem !important;
-
             font-weight: 600 !important;
-
-            letter-spacing: 0.08em;
-
+            letter-spacing: 0.1em;
             text-transform: uppercase;
         }}
 
         /* ====================================================
-           INPUTS
+           INPUTS & SELECTORS
            ==================================================== */
 
-        .stTextInput input,
-        .stNumberInput input {{
-            background: #151922 !important;
-
+        .stTextInput input, .stNumberInput input {{
+            background: #0E121A !important;
             color: #FFFFFF !important;
-
-            caret-color: #F4D06F !important;
-
-            border:
-                1px solid rgba(212,175,55,0.22) !important;
-
+            caret-color: var(--gold-light) !important;
+            border: 1px solid var(--border) !important;
             border-radius: 12px !important;
+            transition: all 0.25s ease;
         }}
 
-        .stTextInput input:focus,
-        .stNumberInput input:focus {{
-            background: #191D27 !important;
-
+        .stTextInput input:focus, .stNumberInput input:focus {{
+            background: #131824 !important;
             color: #FFFFFF !important;
-
-            border:
-                1px solid #D4AF37 !important;
-
-            box-shadow:
-                0 0 0 3px rgba(212,175,55,0.12) !important;
+            border: 1px solid var(--gold) !important;
+            box-shadow: 0 0 20px var(--glow) !important;
         }}
 
         .stTextInput input::placeholder {{
@@ -436,29 +491,20 @@ def load_css(font_name):
         }}
 
         .stNumberInput button {{
-            background: #1C212C !important;
-
-            color: #F4D06F !important;
-
+            background: #181D2A !important;
+            color: var(--gold-light) !important;
             border: none !important;
         }}
 
         .stNumberInput button:hover {{
-            background: #282E3A !important;
+            background: #232A3C !important;
+            box-shadow: 0 0 10px var(--glow);
         }}
 
-        /* ====================================================
-           SELECT BOX
-           ==================================================== */
-
         .stSelectbox div[data-baseweb="select"] > div {{
-            background: #151922 !important;
-
+            background: #0E121A !important;
             color: #FFFFFF !important;
-
-            border:
-                1px solid rgba(212,175,55,0.22) !important;
-
+            border: 1px solid var(--border) !important;
             border-radius: 12px !important;
         }}
 
@@ -466,13 +512,9 @@ def load_css(font_name):
             color: #FFFFFF !important;
         }}
 
-        /* Dropdown popup */
-        div[data-baseweb="popover"] {{
-            background: #11141B !important;
-        }}
-
-        div[data-baseweb="menu"] {{
-            background: #11141B !important;
+        div[data-baseweb="popover"], div[data-baseweb="menu"] {{
+            background: #0D1017 !important;
+            border: 1px solid var(--border) !important;
         }}
 
         div[data-baseweb="menu"] * {{
@@ -480,104 +522,65 @@ def load_css(font_name):
         }}
 
         /* ====================================================
-           BUTTONS
+           BUTTONS & TOGGLES
            ==================================================== */
 
-        .stButton > button,
-        .stFormSubmitButton > button {{
-            background:
-                linear-gradient(
-                    135deg,
-                    #D4AF37,
-                    #F4D06F
-                ) !important;
-
-            color: #08090C !important;
-
+        .stButton > button, .stFormSubmitButton > button {{
+            background: linear-gradient(135deg, var(--gold), var(--gold-light)) !important;
+            color: #040507 !important;
             border: none !important;
-
             border-radius: 12px !important;
-
             font-weight: 800 !important;
-
-            min-height: 45px !important;
-
-            box-shadow:
-                0 8px 25px rgba(212,175,55,0.15) !important;
-
-            transition: all 0.2s ease !important;
+            min-height: 48px !important;
+            letter-spacing: 0.03em;
+            box-shadow: 0 8px 25px var(--glow) !important;
+            transition: all 0.3s ease !important;
         }}
 
-        .stButton > button:hover,
-        .stFormSubmitButton > button:hover {{
-            transform: translateY(-2px) !important;
-
-            box-shadow:
-                0 12px 35px rgba(212,175,55,0.28) !important;
+        .stButton > button:hover, .stFormSubmitButton > button:hover {{
+            transform: translateY(-2px) scale(1.01) !important;
+            box-shadow: 0 12px 35px var(--glow), 0 0 20px var(--gold-bright) !important;
         }}
 
         .stDownloadButton > button {{
-            background:
-                linear-gradient(
-                    135deg,
-                    #D4AF37,
-                    #F4D06F
-                ) !important;
-
-            color: #08090C !important;
-
+            background: linear-gradient(135deg, var(--gold), var(--gold-light)) !important;
+            color: #040507 !important;
             border: none !important;
-
             border-radius: 12px !important;
-
             font-weight: 800 !important;
         }}
 
         /* ====================================================
-           DATAFRAME
+           DATAFRAME & EXPANDERS
            ==================================================== */
 
         [data-testid="stDataFrame"] {{
-            border:
-                1px solid rgba(212,175,55,0.18) !important;
-
+            border: 1px solid var(--border) !important;
             border-radius: 14px !important;
-
             overflow: hidden !important;
-
-            background: #10131A !important;
+            background: #0B0E14 !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }}
 
         [data-testid="stDataFrame"] * {{
             color: #F5F7FA !important;
         }}
 
-        /* ====================================================
-           TABS / EXPANDERS
-           ==================================================== */
-
         [data-testid="stExpander"] {{
-            background: #11141B !important;
-
-            border:
-                1px solid rgba(212,175,55,0.18) !important;
-
+            background: #0D1017 !important;
+            border: 1px solid var(--border) !important;
             border-radius: 14px !important;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }}
 
         [data-testid="stExpander"] * {{
             color: #F5F7FA !important;
         }}
 
-        /* ====================================================
-           ALERTS
-           ==================================================== */
-
         [data-testid="stAlert"] {{
-            background: #151922 !important;
-
+            background: #121622 !important;
+            border: 1px solid var(--border) !important;
             border-radius: 12px !important;
-
             color: #FFFFFF !important;
         }}
 
@@ -591,68 +594,44 @@ def load_css(font_name):
 
         .feature-grid {{
             display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(250px, 1fr));
-
-            gap: 18px;
-
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
             margin: 25px 0;
         }}
 
         .feature-item {{
-            background:
-                linear-gradient(
-                    145deg,
-                    #151821,
-                    #0E1016
-                );
-
-            border:
-                1px solid rgba(255,255,255,0.07);
-
-            border-radius: 18px;
-
+            background: linear-gradient(145deg, #121622, #0A0C12);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
             padding: 25px;
-
             text-align: center;
-
-            transition: all 0.25s ease;
-
+            transition: all 0.3s ease;
             min-height: 190px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }}
 
         .feature-item:hover {{
-            transform: translateY(-5px);
-
-            border-color:
-                rgba(212,175,55,0.35);
-
-            box-shadow:
-                0 18px 50px rgba(0,0,0,0.4);
+            transform: translateY(-6px);
+            border-color: var(--gold);
+            box-shadow: 0 18px 50px rgba(0,0,0,0.6), 0 0 30px var(--glow);
         }}
 
         .feature-icon {{
-            font-size: 2.5rem;
-
+            font-size: 2.7rem;
             margin-bottom: 12px;
+            filter: drop-shadow(0 0 10px var(--glow));
         }}
 
         .feature-title {{
-            color: #F4D06F !important;
-
-            font-size: 1.05rem;
-
+            color: var(--gold-light) !important;
+            font-size: 1.1rem;
             font-weight: 750;
-
             margin-bottom: 8px;
         }}
 
         .feature-desc {{
             color: #AAB2C0 !important;
-
             font-size: 0.88rem;
-
             line-height: 1.65;
         }}
 
@@ -662,37 +641,24 @@ def load_css(font_name):
 
         .hero {{
             text-align: center;
-
-            padding: 35px 20px 45px;
-
+            padding: 40px 20px 50px;
             animation: fadeIn 0.7s ease;
         }}
 
         .hero h1 {{
-            background:
-                linear-gradient(
-                    135deg,
-                    #FFFFFF,
-                    #F4D06F,
-                    #D4AF37
-                );
-
+            background: linear-gradient(135deg, #FFFFFF, var(--gold-light), var(--gold));
             -webkit-background-clip: text;
-
             -webkit-text-fill-color: transparent;
-
-            font-size:
-                clamp(2.4rem, 6vw, 4.5rem) !important;
+            font-size: clamp(2.5rem, 6vw, 4.8rem) !important;
+            text-shadow: 0 0 30px var(--glow);
         }}
 
         .hero p {{
             max-width: 800px;
-
             margin: auto;
-
-            font-size: 1.05rem;
-
+            font-size: 1.1rem;
             color: #AAB2C0 !important;
+            letter-spacing: 0.02em;
         }}
 
         /* ====================================================
@@ -701,59 +667,24 @@ def load_css(font_name):
 
         .footer {{
             text-align: center;
-
             margin-top: 60px;
-
             padding: 25px;
-
-            border-top:
-                1px solid rgba(212,175,55,0.15);
-
+            border-top: 1px solid var(--border);
             color: #6F7887 !important;
-
             font-size: 0.8rem;
+            letter-spacing: 0.05em;
         }}
-
-        /* ====================================================
-           ANIMATION
-           ==================================================== */
 
         @keyframes fadeIn {{
-
-            from {{
-                opacity: 0;
-                transform: translateY(15px);
-            }}
-
-            to {{
-                opacity: 1;
-                transform: translateY(0);
-            }}
-
+            from {{ opacity: 0; transform: translateY(15px); }}
+            to {{ opacity: 1; transform: translateY(0); }}
         }}
 
-        /* ====================================================
-           MOBILE
-           ==================================================== */
-
         @media (max-width: 768px) {{
-
-            .block-container {{
-                padding: 1rem !important;
-            }}
-
-            .hero {{
-                padding: 20px 10px 30px;
-            }}
-
-            .metric-card h3 {{
-                font-size: 1.5rem !important;
-            }}
-
-            .feature-grid {{
-                grid-template-columns: 1fr;
-            }}
-
+            .block-container {{ padding: 1rem !important; }}
+            .hero {{ padding: 20px 10px 30px; }}
+            .metric-card h3 {{ font-size: 1.6rem !important; }}
+            .feature-grid {{ grid-template-columns: 1fr; }}
         }}
 
         </style>
@@ -762,7 +693,7 @@ def load_css(font_name):
     )
 
 
-load_css(selected_font)
+load_css(selected_font, current_palette, st.session_state.animated_colors)
 
 
 # ============================================================
@@ -992,31 +923,36 @@ species_means = compute_species_means()
 # ============================================================
 
 st.sidebar.markdown(
-    """
+    f"""
     <div style="
         text-align:center;
         padding:10px 0 20px;
     ">
 
-        <div style="
-            font-size:42px;
+        <div class="live-chroma" style="
+            font-size:48px;
+            filter: drop-shadow(0 0 15px var(--glow));
         ">
             🌸
         </div>
 
-        <h1 style="
-            color:#F4D06F !important;
-            font-size:1.9rem !important;
+        <h1 class="live-chroma" style="
+            color:var(--gold-light) !important;
+            font-size:2.1rem !important;
             margin:0;
+            text-shadow: 0 0 15px var(--glow);
         ">
             IrisAI
         </h1>
 
         <p style="
-            color:#7F8998 !important;
+            color:var(--muted2) !important;
             margin-top:4px;
+            letter-spacing:0.15em;
+            font-size:0.75rem;
+            font-weight:700;
         ">
-            PREMIUM ML PLATFORM
+            TRILLIONAIRE ML PLATFORM
         </p>
 
     </div>
@@ -1028,15 +964,41 @@ st.sidebar.markdown("---")
 
 
 # ============================================================
-# FONT CONTROL
+# DYNAMIC COLOR & FONT CONTROLS
 # ============================================================
 
 st.sidebar.markdown(
     """
     <p style="
-        color:#F4D06F !important;
+        color:var(--gold-light) !important;
         font-weight:700;
         letter-spacing:0.04em;
+    ">
+        👑 LUXURY PALETTE
+    </p>
+    """,
+    unsafe_allow_html=True
+)
+
+theme_selection = st.sidebar.selectbox(
+    "Choose Theme Palette",
+    list(theme_palettes.keys()),
+    index=list(theme_palettes.keys()).index(
+        st.session_state.theme_choice
+    )
+)
+
+if theme_selection != st.session_state.theme_choice:
+    st.session_state.theme_choice = theme_selection
+    st.rerun()
+
+st.sidebar.markdown(
+    """
+    <p style="
+        color:var(--gold-light) !important;
+        font-weight:700;
+        letter-spacing:0.04em;
+        margin-top:15px;
     ">
         ✦ INTERFACE FONT
     </p>
@@ -1053,36 +1015,42 @@ font_selection = st.sidebar.selectbox(
 )
 
 if font_selection != st.session_state.font_choice:
-
     st.session_state.font_choice = font_selection
-
     st.rerun()
+
+st.session_state.animated_colors = st.sidebar.toggle(
+    "✨ Live Color Shifts",
+    value=st.session_state.animated_colors
+)
 
 
 st.sidebar.markdown(
     f"""
     <div style="
-        background:#11141B;
-        border:1px solid rgba(212,175,55,0.18);
+        background:#0D1017;
+        border:1px solid var(--border);
         border-radius:12px;
         padding:12px;
         margin:10px 0 20px;
         text-align:center;
+        box-shadow: 0 0 15px var(--glow);
     ">
 
         <span style="
-            color:#7F8998 !important;
+            color:var(--muted2) !important;
             font-size:11px;
+            letter-spacing:1px;
         ">
-            ACTIVE FONT
+            ACTIVE CONFIG
         </span>
 
         <br>
 
         <strong style="
-            color:#F4D06F !important;
+            color:var(--gold-light) !important;
+            font-size:13px;
         ">
-            {font_selection}
+            {theme_selection} | {font_selection}
         </strong>
 
     </div>
@@ -1132,18 +1100,20 @@ st.sidebar.markdown(
     ">
 
         <span style="
-            color:#7F8998 !important;
+            color:var(--muted2) !important;
             font-size:11px;
             text-transform:uppercase;
+            letter-spacing:1px;
         ">
             Best Model
         </span>
 
         <div style="
-            color:#F4D06F !important;
+            color:var(--gold-light) !important;
             font-size:14px;
             font-weight:700;
             margin-top:5px;
+            text-shadow: 0 0 10px var(--glow);
         ">
             {best_model_name}
         </div>
@@ -1200,13 +1170,13 @@ if st.session_state.page == "🏠 Home":
         """
         <div class="hero">
 
-            <h1>
+            <h1 class="live-chroma">
                 🌸 IrisAI
             </h1>
 
             <p>
                 The Future of Flower Classification —
-                AI-Powered, Real-Time & Intelligent.
+                AI-Powered, Real-Time & Ultra-Intelligent.
             </p>
 
         </div>
@@ -1330,11 +1300,11 @@ if st.session_state.page == "🏠 Home":
             <div class="feature-item">
                 <div class="feature-icon">💎</div>
                 <div class="feature-title">
-                    Premium Experience
+                    Trillionaire Experience
                 </div>
                 <div class="feature-desc">
                     Designed with a high-end
-                    technology aesthetic.
+                    technology aesthetic and dynamic live colors.
                 </div>
             </div>
 
@@ -1355,13 +1325,15 @@ if st.session_state.page == "🏠 Home":
         ):
             navigate_to("🤖 AI Prediction")
 
+    with col2:
+
         if st.button(
             "📊 Dataset Explorer",
             use_container_width=True
         ):
             navigate_to("📊 Dataset Explorer")
 
-    with col2:
+    with col3:
 
         if st.button(
             "📈 Data Visualization",
@@ -1369,777 +1341,13 @@ if st.session_state.page == "🏠 Home":
         ):
             navigate_to("📈 Data Visualization")
 
-        if st.button(
-            "🧠 Model Performance",
-            use_container_width=True
-        ):
-            navigate_to("🧠 Model Performance")
 
-    with col3:
-
-        if st.button(
-            "🔬 Explainable AI",
-            use_container_width=True
-        ):
-            navigate_to("🔬 Explainable AI")
-
-        if st.button(
-            "📚 About Project",
-            use_container_width=True
-        ):
-            navigate_to("📚 About Project")
-
-
-# ============================================================
-# AI PREDICTION
-# ============================================================
-
-elif st.session_state.page == "🤖 AI Prediction":
-
-    luxury_back_button()
-
-    st.markdown(
-        """
-        <h1>🤖 Predict Iris Species</h1>
-
-        <p>
-            Enter the four measurements and let IrisAI
-            classify the flower.
-        </p>
-        """,
-        unsafe_allow_html=True
-    )
-
-    with st.form("prediction_form"):
-
-        col1, col2, col3, col4 = st.columns(4)
-
-        with col1:
-            sepal_len = st.number_input(
-                "📏 Sepal Length (cm)",
-                min_value=0.0,
-                max_value=10.0,
-                value=5.1,
-                step=0.1
-            )
-
-        with col2:
-            sepal_wid = st.number_input(
-                "📐 Sepal Width (cm)",
-                min_value=0.0,
-                max_value=10.0,
-                value=3.5,
-                step=0.1
-            )
-
-        with col3:
-            petal_len = st.number_input(
-                "📏 Petal Length (cm)",
-                min_value=0.0,
-                max_value=10.0,
-                value=1.4,
-                step=0.1
-            )
-
-        with col4:
-            petal_wid = st.number_input(
-                "📐 Petal Width (cm)",
-                min_value=0.0,
-                max_value=10.0,
-                value=0.2,
-                step=0.1
-            )
-
-        submitted = st.form_submit_button(
-            "🔮 Predict Species",
-            use_container_width=True
-        )
-
-    if submitted:
-
-        input_data = pd.DataFrame(
-            [[
-                sepal_len,
-                sepal_wid,
-                petal_len,
-                petal_wid
-            ]],
-            columns=feature_names
-        )
-
-        model = st.session_state.best_model
-
-        prediction = model.predict(
-            input_data
-        )[0]
-
-        probabilities = model.predict_proba(
-            input_data
-        )[0]
-
-        pred_species = target_names[
-            prediction
-        ]
-
-        confidence = np.max(
-            probabilities
-        )
-
-        timestamp = datetime.now().strftime(
-            "%Y-%m-%d %H:%M:%S"
-        )
-
-        record = {
-            "species": pred_species,
-            "confidence": confidence,
-            "inputs": [
-                sepal_len,
-                sepal_wid,
-                petal_len,
-                petal_wid
-            ],
-            "timestamp": timestamp
-        }
-
-        st.session_state.prediction_count += 1
-
-        st.session_state.last_prediction = record
-
-        st.session_state.history.append(record)
-
-        luxury_card(
-            f"""
-            <div style="text-align:center;">
-
-                <div style="
-                    font-size:50px;
-                ">
-                    🌸
-                </div>
-
-                <h2 style="
-                    color:#F4D06F !important;
-                ">
-                    {pred_species}
-                </h2>
-
-                <p style="
-                    color:#FFFFFF !important;
-                    font-size:1.1rem;
-                ">
-                    Confidence:
-                    <strong style="
-                        color:#F4D06F !important;
-                    ">
-                        {confidence:.1%}
-                    </strong>
-                </p>
-
-            </div>
-            """
-        )
-
-        prob_df = pd.DataFrame({
-            "Species": target_names,
-            "Probability": probabilities
-        }).sort_values(
-            "Probability"
-        )
-
-        fig = px.bar(
-            prob_df,
-            x="Probability",
-            y="Species",
-            orientation="h",
-            color="Species",
-            title="Prediction Probabilities"
-        )
-
-        fig.update_layout(
-            paper_bgcolor="#0B0D12",
-            plot_bgcolor="#0B0D12",
-            font=dict(
-                color="#FFFFFF"
-            ),
-            title_font=dict(
-                color="#F4D06F"
-            )
-        )
-
-        st.plotly_chart(
-            fig,
-            use_container_width=True
-        )
-
-    if st.session_state.last_prediction:
-
-        last = st.session_state.last_prediction
-
-        st.markdown(
-            "### 📋 Last Prediction"
-        )
-
-        st.info(
-            f"🌸 {last['species']}  •  "
-            f"Confidence: {last['confidence']:.2%}  •  "
-            f"{last['timestamp']}"
-        )
-
-    if st.session_state.history:
-
-        with st.expander(
-            "📜 Prediction History"
-        ):
-
-            history_df = pd.DataFrame(
-                st.session_state.history
-            )
-
-            st.dataframe(
-                history_df,
-                use_container_width=True
-            )
-
-            csv = history_df.to_csv(
-                index=False
-            ).encode()
-
-            st.download_button(
-                "📥 Download History",
-                csv,
-                "prediction_history.csv",
-                "text/csv",
-                use_container_width=True
-            )
-
-
-# ============================================================
-# DATASET EXPLORER
-# ============================================================
-
-elif st.session_state.page == "📊 Dataset Explorer":
-
-    luxury_back_button()
-
-    st.markdown(
-        "<h1>📊 Dataset Explorer</h1>",
-        unsafe_allow_html=True
-    )
-
-    c1, c2, c3 = st.columns(3)
-
-    c1.metric(
-        "Rows",
-        df.shape[0]
-    )
-
-    c2.metric(
-        "Columns",
-        df.shape[1]
-    )
-
-    c3.metric(
-        "Missing Values",
-        int(df.isnull().sum().sum())
-    )
-
-    search = st.text_input(
-        "🔍 Search species"
-    )
-
-    if search:
-
-        filtered = df[
-            df["species_name"].str.contains(
-                search,
-                case=False,
-                na=False
-            )
-        ]
-
-    else:
-
-        filtered = df
-
-    st.dataframe(
-        filtered,
-        use_container_width=True
-    )
-
-    st.markdown(
-        "## 📈 Descriptive Statistics"
-    )
-
-    st.dataframe(
-        df.describe(),
-        use_container_width=True
-    )
-
-    st.markdown(
-        "## 🌸 Class Distribution"
-    )
-
-    counts = (
-        df["species_name"]
-        .value_counts()
-        .reset_index()
-    )
-
-    counts.columns = [
-        "Species",
-        "Count"
-    ]
-
-    fig = px.bar(
-        counts,
-        x="Species",
-        y="Count",
-        color="Species",
-        title="Samples per Species"
-    )
-
-    fig.update_layout(
-        paper_bgcolor="#0B0D12",
-        plot_bgcolor="#0B0D12",
-        font=dict(color="#FFFFFF")
-    )
-
-    st.plotly_chart(
-        fig,
-        use_container_width=True
-    )
-
-
-# ============================================================
-# DATA VISUALIZATION
-# ============================================================
-
-elif st.session_state.page == "📈 Data Visualization":
-
-    luxury_back_button()
-
-    st.markdown(
-        "<h1>📈 Data Visualization</h1>",
-        unsafe_allow_html=True
-    )
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-
-        x_feature = st.selectbox(
-            "X-axis",
-            feature_names
-        )
-
-    with col2:
-
-        y_feature = st.selectbox(
-            "Y-axis",
-            feature_names,
-            index=2
-        )
-
-    scatter = px.scatter(
-        df,
-        x=x_feature,
-        y=y_feature,
-        color="species_name",
-        title=f"{x_feature} vs {y_feature}",
-        hover_data=feature_names
-    )
-
-    scatter.update_layout(
-        paper_bgcolor="#0B0D12",
-        plot_bgcolor="#0B0D12",
-        font=dict(color="#FFFFFF")
-    )
-
-    st.plotly_chart(
-        scatter,
-        use_container_width=True
-    )
-
-    st.markdown(
-        "## 📊 Feature Distribution"
-    )
-
-    selected_feature = st.selectbox(
-        "Select Feature",
-        feature_names,
-        key="distribution"
-    )
-
-    hist = px.histogram(
-        df,
-        x=selected_feature,
-        color="species_name",
-        marginal="box",
-        title=f"Distribution of {selected_feature}"
-    )
-
-    hist.update_layout(
-        paper_bgcolor="#0B0D12",
-        plot_bgcolor="#0B0D12",
-        font=dict(color="#FFFFFF")
-    )
-
-    st.plotly_chart(
-        hist,
-        use_container_width=True
-    )
-
-    st.markdown(
-        "## 🔥 Feature Correlation"
-    )
-
-    correlation = df[
-        feature_names
-    ].corr()
-
-    corr_fig = px.imshow(
-        correlation,
-        text_auto=True,
-        title="Feature Correlation Matrix"
-    )
-
-    corr_fig.update_layout(
-        paper_bgcolor="#0B0D12",
-        font=dict(color="#FFFFFF")
-    )
-
-    st.plotly_chart(
-        corr_fig,
-        use_container_width=True
-    )
-
-
-# ============================================================
-# MODEL PERFORMANCE
-# ============================================================
-
-elif st.session_state.page == "🧠 Model Performance":
-
-    luxury_back_button()
-
-    st.markdown(
-        "<h1>🧠 Model Performance</h1>",
-        unsafe_allow_html=True
-    )
-
-    best_accuracy = model_results[
-        best_model_name
-    ]["Accuracy"]
-
-    luxury_card(
-        f"""
-        <div style="text-align:center;">
-
-            <p style="
-                color:#9CA5B3 !important;
-                text-transform:uppercase;
-                letter-spacing:0.08em;
-            ">
-                Best Performing Model
-            </p>
-
-            <h2 style="
-                color:#F4D06F !important;
-            ">
-                🏆 {best_model_name}
-            </h2>
-
-            <h3 style="
-                color:#FFFFFF !important;
-            ">
-                Test Accuracy:
-                {best_accuracy:.2%}
-            </h3>
-
-        </div>
-        """
-    )
-
-    rows = []
-
-    for name, result in model_results.items():
-
-        rows.append({
-            "Model": name,
-            "Accuracy": result["Accuracy"],
-            "Precision": result["Precision"],
-            "Recall": result["Recall"],
-            "F1 Score": result["F1 Score"]
-        })
-
-    performance_df = pd.DataFrame(rows)
-
-    st.dataframe(
-        performance_df.style.format(
-            {
-                "Accuracy": "{:.2%}",
-                "Precision": "{:.2%}",
-                "Recall": "{:.2%}",
-                "F1 Score": "{:.2%}"
-            }
-        ),
-        use_container_width=True
-    )
-
-    fig = px.bar(
-        performance_df,
-        x="Model",
-        y=[
-            "Accuracy",
-            "Precision",
-            "Recall",
-            "F1 Score"
-        ],
-        barmode="group",
-        title="Model Comparison"
-    )
-
-    fig.update_layout(
-        paper_bgcolor="#0B0D12",
-        plot_bgcolor="#0B0D12",
-        font=dict(color="#FFFFFF")
-    )
-
-    st.plotly_chart(
-        fig,
-        use_container_width=True
-    )
-
-    st.markdown(
-        "## 🔲 Confusion Matrix"
-    )
-
-    selected_model = st.selectbox(
-        "Select Model",
-        list(model_results.keys())
-    )
-
-    cm = model_results[
-        selected_model
-    ]["Confusion Matrix"]
-
-    cm_fig = px.imshow(
-        cm,
-        text_auto=True,
-        x=target_names,
-        y=target_names,
-        labels={
-            "x": "Predicted",
-            "y": "Actual",
-            "color": "Count"
-        },
-        title=f"{selected_model} — Confusion Matrix"
-    )
-
-    cm_fig.update_layout(
-        paper_bgcolor="#0B0D12",
-        font=dict(color="#FFFFFF")
-    )
-
-    st.plotly_chart(
-        cm_fig,
-        use_container_width=True
-    )
-
-
-# ============================================================
-# EXPLAINABLE AI
-# ============================================================
-
-elif st.session_state.page == "🔬 Explainable AI":
-
-    luxury_back_button()
-
-    st.markdown(
-        "<h1>🔬 Explainable AI</h1>",
-        unsafe_allow_html=True
-    )
-
-    luxury_card(
-        """
-        <h2 style="
-            color:#F4D06F !important;
-        ">
-            🌸 How IrisAI Thinks
-        </h2>
-
-        <p>
-            IrisAI uses four numerical measurements
-            to classify an Iris flower.
-        </p>
-
-        <ul>
-            <li>Sepal Length</li>
-            <li>Sepal Width</li>
-            <li>Petal Length</li>
-            <li>Petal Width</li>
-        </ul>
-
-        <p>
-            These measurements are passed through the
-            selected machine-learning model to predict
-            one of the three Iris species.
-        </p>
-        """
-    )
-
-    st.markdown(
-        "## 🌿 Average Measurements"
-    )
-
-    st.dataframe(
-        species_means.style.format(
-            "{:.2f}"
-        ),
-        use_container_width=True
-    )
-
-    st.markdown(
-        "## 🌲 Random Forest Feature Importance"
-    )
-
-    rf = pipelines[
-        "Random Forest"
-    ].named_steps["clf"]
-
-    importance = pd.DataFrame({
-        "Feature": feature_names,
-        "Importance": rf.feature_importances_
-    }).sort_values(
-        "Importance"
-    )
-
-    importance_fig = px.bar(
-        importance,
-        x="Importance",
-        y="Feature",
-        orientation="h",
-        title="Feature Importance"
-    )
-
-    importance_fig.update_layout(
-        paper_bgcolor="#0B0D12",
-        plot_bgcolor="#0B0D12",
-        font=dict(color="#FFFFFF")
-    )
-
-    st.plotly_chart(
-        importance_fig,
-        use_container_width=True
-    )
-
-    st.info(
-        "Higher feature importance means the feature "
-        "contributed more strongly to the Random Forest's "
-        "decision-making process."
-    )
-
-
-# ============================================================
-# ABOUT
-# ============================================================
-
-elif st.session_state.page == "📚 About Project":
-
-    luxury_back_button()
-
-    st.markdown(
-        "<h1>📚 About IrisAI</h1>",
-        unsafe_allow_html=True
-    )
-
-    luxury_card(
-        f"""
-        <h2 style="
-            color:#F4D06F !important;
-        ">
-            🌸 IrisAI
-        </h2>
-
-        <p>
-            IrisAI is a premium Streamlit machine-learning
-            platform built around the classic Iris dataset.
-        </p>
-
-        <h3 style="
-            color:#F4D06F !important;
-        ">
-            📊 Dataset
-        </h3>
-
-        <ul>
-            <li>150 samples</li>
-            <li>4 numerical features</li>
-            <li>3 species/classes</li>
-            <li>No missing values</li>
-        </ul>
-
-        <h3 style="
-            color:#F4D06F !important;
-        ">
-            🤖 Machine Learning
-        </h3>
-
-        <ul>
-            <li>Logistic Regression</li>
-            <li>Decision Tree</li>
-            <li>Random Forest</li>
-            <li>K-Nearest Neighbors</li>
-            <li>Support Vector Machine</li>
-        </ul>
-
-        <h3 style="
-            color:#F4D06F !important;
-        ">
-            🛠️ Technologies
-        </h3>
-
-        <ul>
-            <li>Python</li>
-            <li>Streamlit</li>
-            <li>Pandas</li>
-            <li>NumPy</li>
-            <li>Scikit-learn</li>
-            <li>Plotly</li>
-        </ul>
-
-        <h3 style="
-            color:#F4D06F !important;
-        ">
-            🏆 Best Model
-        </h3>
-
-        <p style="
-            color:#FFFFFF !important;
-            font-size:1.05rem;
-        ">
-            {best_model_name}
-        </p>
-
-        <p style="
-            color:#F4D06F !important;
-        ">
-            Accuracy: {model_results[best_model_name]["Accuracy"]:.2%}
-        </p>
-        """
-    )
-
-    st.markdown(
-        """
-        <div class="footer">
-
-            IrisAI • Premium Machine Learning Platform
-
-            <br><br>
-
-            Python • Streamlit • Scikit-learn • Plotly
-
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+# Footer tag across platform
+st.markdown(
+    f"""
+    <div class="footer">
+        IrisAI Ultra-Luxury ML Platform &bull; Active Theme: <strong>{selected_theme}</strong> &bull; Powered by Streamlit & Scikit-Learn
+    </div>
+    """,
+    unsafe_allow_html=True
+)
