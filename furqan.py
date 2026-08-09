@@ -66,7 +66,7 @@ def load_css():
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap');
 
-    /* Global resets - FORCE visible text colors */
+    /* Global resets */
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
         background-color: #0A0A0F;
@@ -79,7 +79,7 @@ def load_css():
         color: #FFFFFF !important;
     }
 
-    /* Main container background */
+    /* Main container */
     .reportview-container, .main, .block-container {
         background: #0A0A0F;
     }
@@ -121,7 +121,7 @@ def load_css():
         color: #FFFFFF !important;
     }
 
-    /* Metric cards inside dashboard */
+    /* Metric cards */
     .metric-card {
         background: rgba(255, 255, 255, 0.06);
         border-radius: 14px;
@@ -173,41 +173,119 @@ def load_css():
         color: white !important;
     }
 
-    /* Input fields - FIXED for visibility */
-    .stTextInput > div > div > input,
-    .stNumberInput > div > div > input,
-    .stSelectbox > div > div {
-        background: rgba(255, 255, 255, 0.08) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    /* ===== FIXED INPUT BOX STYLES - Professional Dark Theme ===== */
+    
+    /* Number Input - FIXED */
+    .stNumberInput > div > div > input {
+        background: rgba(20, 25, 40, 0.9) !important;
+        border: 1px solid rgba(100, 150, 255, 0.2) !important;
         border-radius: 10px !important;
         color: #FFFFFF !important;
         font-size: 16px !important;
-        padding: 10px 14px !important;
+        padding: 12px 16px !important;
+        transition: all 0.3s ease !important;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.3) !important;
     }
-
-    /* Fix for empty input placeholder/box text */
-    .stTextInput > div > div > input::placeholder,
-    .stNumberInput > div > div > input::placeholder {
-        color: #AAAAAA !important;
-        opacity: 1 !important;
+    
+    .stNumberInput > div > div > input:hover {
+        border-color: rgba(0, 242, 254, 0.4) !important;
+        background: rgba(25, 30, 50, 0.95) !important;
     }
-
-    .stTextInput > div > div > input:focus,
+    
     .stNumberInput > div > div > input:focus {
         border-color: #00F2FE !important;
-        box-shadow: 0 0 0 2px rgba(0, 242, 254, 0.2) !important;
+        box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15), inset 0 2px 4px rgba(0,0,0,0.3) !important;
+        background: rgba(25, 30, 50, 0.95) !important;
     }
-
-    /* Input labels */
-    .stNumberInput label, .stTextInput label, .stSelectbox label {
+    
+    /* Number input stepper buttons (the + and -) */
+    .stNumberInput > div > div > div {
+        background: rgba(20, 25, 40, 0.9) !important;
+        border: 1px solid rgba(100, 150, 255, 0.2) !important;
         color: #FFFFFF !important;
-        font-weight: 500 !important;
     }
-
-    /* Select box */
+    
+    .stNumberInput > div > div > div button {
+        background: rgba(30, 40, 60, 0.8) !important;
+        color: #00F2FE !important;
+        border: none !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .stNumberInput > div > div > div button:hover {
+        background: rgba(0, 242, 254, 0.2) !important;
+        color: #FFFFFF !important;
+    }
+    
+    /* Text Input - FIXED */
+    .stTextInput > div > div > input {
+        background: rgba(20, 25, 40, 0.9) !important;
+        border: 1px solid rgba(100, 150, 255, 0.2) !important;
+        border-radius: 10px !important;
+        color: #FFFFFF !important;
+        font-size: 16px !important;
+        padding: 12px 16px !important;
+        transition: all 0.3s ease !important;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.3) !important;
+    }
+    
+    .stTextInput > div > div > input:hover {
+        border-color: rgba(0, 242, 254, 0.4) !important;
+        background: rgba(25, 30, 50, 0.95) !important;
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border-color: #00F2FE !important;
+        box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15), inset 0 2px 4px rgba(0,0,0,0.3) !important;
+        background: rgba(25, 30, 50, 0.95) !important;
+    }
+    
+    /* Placeholder text */
+    .stTextInput > div > div > input::placeholder {
+        color: rgba(255, 255, 255, 0.4) !important;
+        opacity: 1 !important;
+    }
+    
+    /* Select Box - FIXED */
     .stSelectbox > div > div {
-        background: rgba(255, 255, 255, 0.08) !important;
-        color: white !important;
+        background: rgba(20, 25, 40, 0.9) !important;
+        border: 1px solid rgba(100, 150, 255, 0.2) !important;
+        border-radius: 10px !important;
+        color: #FFFFFF !important;
+        padding: 4px 8px !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stSelectbox > div > div:hover {
+        border-color: rgba(0, 242, 254, 0.4) !important;
+        background: rgba(25, 30, 50, 0.95) !important;
+    }
+    
+    .stSelectbox > div > div > div {
+        color: #FFFFFF !important;
+    }
+    
+    /* Selectbox dropdown options */
+    .stSelectbox > div > div ul {
+        background: #1A1A2E !important;
+        border: 1px solid rgba(100, 150, 255, 0.2) !important;
+    }
+    
+    .stSelectbox > div > div ul li {
+        color: #FFFFFF !important;
+        background: transparent !important;
+    }
+    
+    .stSelectbox > div > div ul li:hover {
+        background: rgba(0, 242, 254, 0.15) !important;
+    }
+    
+    /* Input Labels */
+    .stNumberInput label, .stTextInput label, .stSelectbox label {
+        color: rgba(255, 255, 255, 0.8) !important;
+        font-weight: 500 !important;
+        font-size: 0.9rem !important;
+        margin-bottom: 0.3rem !important;
     }
 
     /* Headings */
@@ -217,13 +295,23 @@ def load_css():
         color: #FFFFFF !important;
     }
 
-    /* Dataframe */
+    /* Dataframe - Dark Theme */
     .stDataFrame, .stDataFrame * {
         color: #FFFFFF !important;
+        background: transparent !important;
     }
     .stDataFrame th {
         color: #FFFFFF !important;
         font-weight: 600 !important;
+        background: rgba(20, 25, 40, 0.8) !important;
+        border-bottom: 2px solid rgba(0, 242, 254, 0.3) !important;
+    }
+    .stDataFrame td {
+        background: rgba(15, 20, 35, 0.6) !important;
+        border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+    }
+    .stDataFrame tr:hover td {
+        background: rgba(0, 242, 254, 0.08) !important;
     }
 
     /* Metrics */
@@ -239,6 +327,12 @@ def load_css():
     .streamlit-expanderHeader {
         color: #FFFFFF !important;
         font-weight: 500 !important;
+        background: rgba(20, 25, 40, 0.5) !important;
+        border-radius: 10px !important;
+    }
+    .streamlit-expanderContent {
+        background: rgba(15, 20, 35, 0.4) !important;
+        border-radius: 0 0 10px 10px !important;
     }
 
     /* Pulse animation for status dot */
@@ -270,6 +364,9 @@ def load_css():
     /* Error messages */
     .stAlert {
         color: #FFFFFF !important;
+        background: rgba(255, 0, 0, 0.15) !important;
+        border: 1px solid rgba(255, 0, 0, 0.3) !important;
+        border-radius: 10px !important;
     }
 
     /* Radio buttons text */
@@ -281,9 +378,10 @@ def load_css():
     .stDownloadButton > button {
         color: #FFFFFF !important;
         width: 100% !important;
+        background: linear-gradient(135deg, #00c6ff, #0072ff) !important;
     }
 
-    /* Mobile responsiveness - Hamburger menu */
+    /* Mobile responsiveness */
     @media (max-width: 768px) {
         [data-testid="stSidebar"] {
             width: 100% !important;
@@ -310,11 +408,6 @@ def load_css():
             flex: 1 1 100% !important;
             margin-bottom: 1rem !important;
         }
-    }
-
-    /* Smooth scrolling */
-    html {
-        scroll-behavior: smooth;
     }
 
     /* Hero section animations */
@@ -373,6 +466,22 @@ def load_css():
         color: #BBBBBB !important;
         line-height: 1.6;
     }
+
+    /* Success message */
+    .stSuccess {
+        background: rgba(0, 230, 118, 0.1) !important;
+        border: 1px solid rgba(0, 230, 118, 0.3) !important;
+        border-radius: 10px !important;
+        color: #FFFFFF !important;
+    }
+
+    /* Info message */
+    .stInfo {
+        background: rgba(0, 242, 254, 0.1) !important;
+        border: 1px solid rgba(0, 242, 254, 0.3) !important;
+        border-radius: 10px !important;
+        color: #FFFFFF !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -387,8 +496,6 @@ if "last_prediction" not in st.session_state:
     st.session_state.last_prediction = None
 if "history" not in st.session_state:
     st.session_state.history = []
-if "mobile_menu_open" not in st.session_state:
-    st.session_state.mobile_menu_open = False
 if "page" not in st.session_state:
     st.session_state.page = "🏠 Home"
 
@@ -488,7 +595,7 @@ def compute_species_means():
 species_means = compute_species_means()
 
 # -------------------------------
-# Sidebar Navigation with Hamburger Menu
+# Sidebar Navigation
 # -------------------------------
 st.sidebar.markdown("""
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0;">
@@ -536,22 +643,18 @@ st.sidebar.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Extract page name without emoji for logic
-page_name = st.session_state.page.split(" ", 1)[-1] if " " in st.session_state.page else st.session_state.page
-
 # -------------------------------
-# Helper: render a glass card
+# Helper functions
 # -------------------------------
 def glass_card(content, key=None):
     st.markdown(f'<div class="card">{content}</div>', unsafe_allow_html=True)
 
-# Navigation function for buttons
 def navigate_to(page_name):
     st.session_state.page = page_name
     st.rerun()
 
 # -------------------------------
-# 1. HOME PAGE (New Powerful Homepage)
+# 1. HOME PAGE
 # -------------------------------
 if st.session_state.page == "🏠 Home":
     st.markdown("""
@@ -603,32 +706,32 @@ if st.session_state.page == "🏠 Home":
         <div class="feature-item">
             <div class="feature-icon">🧠</div>
             <div class="feature-title">5 Powerful Models</div>
-            <div class="feature-desc">Logistic Regression, Decision Tree, Random Forest, KNN, and SVM — all at your fingertips</div>
+            <div class="feature-desc">Logistic Regression, Decision Tree, Random Forest, KNN, and SVM</div>
         </div>
         <div class="feature-item">
             <div class="feature-icon">🎯</div>
             <div class="feature-title">98.5% Accuracy</div>
-            <div class="feature-desc">State-of-the-art performance on the Iris dataset with automatic best model selection</div>
+            <div class="feature-desc">State-of-the-art performance with automatic best model selection</div>
         </div>
         <div class="feature-item">
             <div class="feature-icon">🔬</div>
             <div class="feature-title">Explainable AI</div>
-            <div class="feature-desc">Understand why the model made its prediction with our XAI visualizations</div>
+            <div class="feature-desc">Understand why the model made its prediction</div>
         </div>
         <div class="feature-item">
             <div class="feature-icon">📊</div>
             <div class="feature-title">Interactive Visuals</div>
-            <div class="feature-desc">Beautiful, interactive charts and graphs to explore your data deeply</div>
+            <div class="feature-desc">Beautiful, interactive charts to explore your data</div>
         </div>
         <div class="feature-item">
             <div class="feature-icon">⚡</div>
             <div class="feature-title">Real-Time Predictions</div>
-            <div class="feature-desc">Instant classification with confidence scores and probability distributions</div>
+            <div class="feature-desc">Instant classification with confidence scores</div>
         </div>
         <div class="feature-item">
             <div class="feature-icon">📱</div>
             <div class="feature-title">Fully Responsive</div>
-            <div class="feature-desc">Works perfectly on desktop, tablet, and mobile devices</div>
+            <div class="feature-desc">Works perfectly on desktop, tablet, and mobile</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -645,31 +748,7 @@ if st.session_state.page == "🏠 Home":
         if st.button("🚀 Start Predicting Now", use_container_width=True):
             navigate_to("🤖 AI Prediction")
 
-    # About the dataset section
-    st.markdown("---")
-    st.markdown("""
-    <h2>📚 About the Iris Dataset</h2>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1rem 0;">
-        <div>
-            <p style="color: #FFFFFF !important;">The Iris flower dataset is a classic in machine learning and statistics. It contains measurements of <strong style="color: #FFFFFF !important;">150 samples</strong> from three species:</p>
-            <ul>
-                <li style="color: #FFFFFF !important;">🌸 <strong style="color: #FFFFFF !important;">Setosa</strong></li>
-                <li style="color: #FFFFFF !important;">🌺 <strong style="color: #FFFFFF !important;">Versicolor</strong></li>
-                <li style="color: #FFFFFF !important;">🌷 <strong style="color: #FFFFFF !important;">Virginica</strong></li>
-            </ul>
-            <p style="color: #FFFFFF !important;">Each sample has <strong style="color: #FFFFFF !important;">4 features</strong>: sepal length, sepal width, petal length, and petal width.</p>
-        </div>
-        <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.08);">
-            <p style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">🔑 Key Facts:</strong></p>
-            <p style="color: #FFFFFF !important;">• Created by <strong style="color: #FFFFFF !important;">Ronald Fisher</strong> in 1936</p>
-            <p style="color: #FFFFFF !important;">• Perfectly balanced classes (50 each)</p>
-            <p style="color: #FFFFFF !important;">• No missing values</p>
-            <p style="color: #FFFFFF !important;">• One of the most studied datasets in ML</p>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # Quick navigation cards
+    # Quick navigation
     st.markdown("""
     <h2 style="margin-top: 2rem;">🎯 Quick Navigation</h2>
     """, unsafe_allow_html=True)
@@ -678,11 +757,9 @@ if st.session_state.page == "🏠 Home":
     with nav_col1:
         if st.button("🤖 Go to Predictions", key="nav_predict", use_container_width=True):
             navigate_to("🤖 AI Prediction")
-    
     with nav_col2:
         if st.button("📊 Explore Data", key="nav_explore", use_container_width=True):
             navigate_to("📊 Dataset Explorer")
-    
     with nav_col3:
         if st.button("🧠 View Models", key="nav_models", use_container_width=True):
             navigate_to("🧠 Model Performance")
@@ -697,13 +774,13 @@ elif st.session_state.page == "🤖 AI Prediction":
     with st.form("prediction_form"):
         cols = st.columns(4)
         with cols[0]:
-            sepal_len = st.number_input("Sepal Length (cm)", min_value=0.0, max_value=10.0, value=5.1, step=0.1)
+            sepal_len = st.number_input("📏 Sepal Length (cm)", min_value=0.0, max_value=10.0, value=5.1, step=0.1)
         with cols[1]:
-            sepal_wid = st.number_input("Sepal Width (cm)", min_value=0.0, max_value=10.0, value=3.5, step=0.1)
+            sepal_wid = st.number_input("📐 Sepal Width (cm)", min_value=0.0, max_value=10.0, value=3.5, step=0.1)
         with cols[2]:
-            petal_len = st.number_input("Petal Length (cm)", min_value=0.0, max_value=10.0, value=1.4, step=0.1)
+            petal_len = st.number_input("📏 Petal Length (cm)", min_value=0.0, max_value=10.0, value=1.4, step=0.1)
         with cols[3]:
-            petal_wid = st.number_input("Petal Width (cm)", min_value=0.0, max_value=10.0, value=0.2, step=0.1)
+            petal_wid = st.number_input("📐 Petal Width (cm)", min_value=0.0, max_value=10.0, value=0.2, step=0.1)
 
         col_btn1, col_btn2, _ = st.columns([1, 1, 2])
         with col_btn1:
@@ -799,67 +876,4 @@ elif st.session_state.page == "📊 Dataset Explorer":
     st.plotly_chart(fig, use_container_width=True)
 
     csv_full = df.to_csv(index=False).encode()
-    st.download_button("📥 Download Full Dataset as CSV", csv_full, "iris_dataset.csv", "text/csv")
-
-# -------------------------------
-# 4. DATA VISUALIZATION
-# -------------------------------
-elif st.session_state.page == "📈 Data Visualization":
-    st.markdown("<h1 style='color: #FFFFFF !important;'>📈 Interactive Visualizations</h1>", unsafe_allow_html=True)
-    viz_type = st.selectbox("Choose visualization", [
-        "Feature Distributions",
-        "Scatter Plot",
-        "Box Plots",
-        "Correlation Heatmap",
-        "Pairwise Feature Analysis"
-    ])
-
-    if viz_type == "Feature Distributions":
-        feature = st.selectbox("Select feature", feature_names)
-        fig = px.histogram(df, x=feature, color="species_name", marginal="box",
-                           barmode="overlay", opacity=0.7)
-        fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                          font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-
-    elif viz_type == "Scatter Plot":
-        col1, col2 = st.columns(2)
-        x_feat = col1.selectbox("X axis", feature_names, index=0)
-        y_feat = col2.selectbox("Y axis", feature_names, index=2)
-        fig = px.scatter(df, x=x_feat, y=y_feat, color="species_name",
-                         size=df[feature_names[3]], hover_data=feature_names)
-        fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                          font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-
-    elif viz_type == "Box Plots":
-        feature = st.selectbox("Feature", feature_names)
-        fig = px.box(df, x="species_name", y=feature, color="species_name")
-        fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                          font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-
-    elif viz_type == "Correlation Heatmap":
-        corr = df[feature_names].corr()
-        fig = go.Figure(data=go.Heatmap(
-            z=corr.values,
-            x=corr.columns,
-            y=corr.index,
-            colorscale="Blues",
-            text=np.round(corr.values, 2),
-            texttemplate="%{text}",
-            textfont={"color": "white"}
-        ))
-        fig.update_layout(title="Feature Correlation Heatmap",
-                          paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                          font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-
-    elif viz_type == "Pairwise Feature Analysis":
-        fig = px.scatter_matrix(df, dimensions=feature_names, color="species_name",
-                                opacity=0.7)
-        fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                          font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-
-# -------------------------------
+    st
