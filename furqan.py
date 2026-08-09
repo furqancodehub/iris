@@ -533,19 +533,6 @@ def load_css():
         border-radius: 10px !important;
         color: #FFFFFF !important;
     }
-
-    /* Quick access floating buttons */
-    .quick-nav {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 1rem;
-        background: rgba(255,255,255,0.03);
-        border-radius: 16px;
-        border: 1px solid rgba(255,215,0,0.1);
-        margin: 1rem 0;
-    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -735,11 +722,8 @@ def navigate_to(page_name):
 
 def luxury_back_button():
     """Display a premium gold back button"""
-    # Create two columns for the back button and title
-    col_back, col_spacer = st.columns([1, 5])
-    with col_back:
-        if st.button("⬅️ Back", key="back_to_home_btn", use_container_width=True):
-            navigate_to("🏠 Home")
+    if st.button("⬅️ Back to Home", key="back_to_home_btn", use_container_width=False):
+        navigate_to("🏠 Home")
 
 # -------------------------------
 # 1. HOME PAGE
@@ -890,4 +874,17 @@ elif st.session_state.page == "🤖 AI Prediction":
 
     if predict_btn:
         try:
-            input_data = np.array([[sepal_len
+            input_data = np.array([[sepal_len, sepal_wid, petal_len, petal_wid]])
+            model = st.session_state.best_model
+            prediction = model.predict(input_data)[0]
+            probabilities = model.predict_proba(input_data)[0]
+            pred_species = target_names[prediction]
+            confidence = np.max(probabilities)
+
+            st.session_state.prediction_count += 1
+            st.session_state.last_prediction = {
+                "species": pred_species,
+                "confidence": confidence,
+                "inputs": [sepal_len, sepal_wid, petal_len, petal_wid],
+                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
