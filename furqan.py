@@ -759,8 +759,101 @@ if st.session_state.page == "🏠 Home":
             navigate_to("🤖 AI Prediction")
 
 # -------------------------------
-# 2. AI PREDICTION
+# 2. AI PREDICTION - FIXED VERSION
 # -------------------------------
+elif st.session_state.page == "🤖 AI Prediction":
+    luxury_back_button()
+    
+    st.markdown("<h1 style='color: #FFFFFF !important;'>🤖 Predict Iris Species</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #BBBBBB !important;'>Enter measurements and let the AI classify the flower</p>", unsafe_allow_html=True)
+
+    # Create form
+    with st.form(key="prediction_form"):
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            sepal_len = st.number_input("📏 Sepal Length (cm)", min_value=0.0, max_value=10.0, value=5.1, step=0.1)
+        with col2:
+            sepal_wid = st.number_input("📐 Sepal Width (cm)", min_value=0.0, max_value=10.0, value=3.5, step=0.1)
+        with col3:
+            petal_len = st.number_input("📏 Petal Length (cm)", min_value=0.0, max_value=10.0, value=1.4, step=0.1)
+        with col4:
+            petal_wid = st.number_input("📐 Petal Width (cm)", min_value=0.0, max_value=10.0, value=0.2, step=0.1)
+
+        # Submit button inside form
+        submitted = st.form_submit_button("🔮 Predict Species")
+
+    # Reset button outside form
+    col_btn1, col_btn2 = st.columns([1, 1])
+    with col_btn1:
+        if st.button("🔄 Reset Values"):
+            st.rerun()
+
+    # Process prediction
+    if submitted:
+        try:
+            # Create input array
+            input_data = np.array([[sepal_len, sepal_wid, petal_len, petal_wid]])
+            
+            # Get prediction
+            model = st.session_state.best_model
+            prediction = model.predict(input_data)[0]
+            probabilities = model.predict_proba(input_data)[0]
+            pred_species = target_names[prediction]
+            confidence = np.max(probabilities)
+
+            # Update session state
+            st.session_state.prediction_count += 1
+            st.session_state.last_prediction = {
+                "species": pred_species,
+                "confidence": confidence,
+                "inputs": [sepal_len, sepal_wid, petal_len, petal_wid],
+                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+            st.session_state.history.append(st.session_state.last_prediction)
+
+            # Display results
+            st.markdown("---")
+            glass_card(f"""
+            <div style="text-align: center;">
+                <h2 style="margin-bottom: 0.2rem; color: #FFFFFF !important;">🌸 {pred_species}</h2>
+                <p style="font-size: 1.1rem; color: #FFD700 !important;">Confidence: {confidence*100:.1f}%</p>
+            </div>
+            """)
+
+            # Show probability chart
+            prob_df = pd.DataFrame({
+                "Species": target_names,
+                "Probability": probabilities
+            }).sort_values("Probability", ascending=True)
+            
+            fig = px.bar(prob_df, x="Probability", y="Species", orientation="h",
+                         color="Species", color_discrete_sequence=px.colors.sequential.Blues_r,
+                         title="Prediction Probabilities")
+            fig.update_layout(
+                showlegend=False, 
+                paper_bgcolor="rgba(0,0,0,0)", 
+                plot_bgcolor="rgba(0,0,0,0)",
+                font_color="white"
+            )
+            st.plotly_chart(fig, use_container_width=True)
+
+        except Exception as e:
+            st.error(f"❌ Prediction failed: {str(e)}")
+
+    # Show last prediction if exists
+    if st.session_state.last_prediction is not None:
+        st.markdown("### 📋 Last Prediction")
+        last = st.session_state.last_prediction
+        st.info(f"🌸 **{last['species']}** (Confidence: {last['confidence']:.2%}) at {last['timestamp']}")
+
+    # Show history
+    if st.session_state.history:
+        with st.expander("📜 Prediction History (this session)"):
+            hist_df = pd.DataFrame(st.session_state.history)
+            st.dataframe(hist_df, use_container_width=True)
+            csv = hist_df.to_csv(index=False).encode()
+            st.download_button("📥 Download History as CSV", csv, "prediction_history.csv", "text/csv")
+
 # -------------------------------
 # 3. DATASET EXPLORER
 # -------------------------------
@@ -775,234 +868,4 @@ elif st.session_state.page == "📊 Dataset Explorer":
 
     search = st.text_input("🔍 Filter by species name (e.g., setosa)")
     if search:
-        filtered = df[df["species_name"].str.contains(search, case=False)]
-    else:
-        filtered = df
-
-    st.dataframe(filtered, use_container_width=True)
-
-    st.markdown("### 📈 Descriptive Statistics")
-    st.dataframe(df.describe(), use_container_width=True)
-
-    st.markdown("### 🌸 Class Distribution")
-    class_counts = df["species_name"].value_counts().reset_index()
-    class_counts.columns = ["Species", "Count"]
-    fig = px.bar(class_counts, x="Species", y="Count", color="Species",
-                 title="Number of samples per species")
-    fig.update_layout(showlegend=False, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                      font_color="white")
-    st.plotly_chart(fig, use_container_width=True)
-
-    csv_full = df.to_csv(index=False).encode()
-    st.download_button("📥 Download Full Dataset as CSV", csv_full, "iris_dataset.csv", "text/csv")
-
-# -------------------------------
-# 4. DATA VISUALIZATION
-# -------------------------------
-elif st.session_state.page == "📈 Data Visualization":
-    luxury_back_button()
-    st.markdown("<h1 style='color: #FFFFFF !important;'>📈 Interactive Visualizations</h1>", unsafe_allow_html=True)
-    viz_type = st.selectbox("Choose visualization", [
-        "Feature Distributions",
-        "Scatter Plot",
-        "Box Plots",
-        "Correlation Heatmap",
-        "Pairwise Feature Analysis"
-    ])
-
-    if viz_type == "Feature Distributions":
-        feature = st.selectbox("Select feature", feature_names)
-        fig = px.histogram(df, x=feature, color="species_name", marginal="box",
-                           barmode="overlay", opacity=0.7)
-        fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                          font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-
-    elif viz_type == "Scatter Plot":
-        col1, col2 = st.columns(2)
-        x_feat = col1.selectbox("X axis", feature_names, index=0)
-        y_feat = col2.selectbox("Y axis", feature_names, index=2)
-        fig = px.scatter(df, x=x_feat, y=y_feat, color="species_name",
-                         size=df[feature_names[3]], hover_data=feature_names)
-        fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                          font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-
-    elif viz_type == "Box Plots":
-        feature = st.selectbox("Feature", feature_names)
-        fig = px.box(df, x="species_name", y=feature, color="species_name")
-        fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                          font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-
-    elif viz_type == "Correlation Heatmap":
-        corr = df[feature_names].corr()
-        fig = go.Figure(data=go.Heatmap(
-            z=corr.values,
-            x=corr.columns,
-            y=corr.index,
-            colorscale="Blues",
-            text=np.round(corr.values, 2),
-            texttemplate="%{text}",
-            textfont={"color": "white"}
-        ))
-        fig.update_layout(title="Feature Correlation Heatmap",
-                          paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                          font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-
-    elif viz_type == "Pairwise Feature Analysis":
-        fig = px.scatter_matrix(df, dimensions=feature_names, color="species_name",
-                                opacity=0.7)
-        fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                          font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-
-# -------------------------------
-# 5. MODEL PERFORMANCE
-# -------------------------------
-elif st.session_state.page == "🧠 Model Performance":
-    luxury_back_button()
-    st.markdown("<h1 style='color: #FFFFFF !important;'>🧠 Model Performance Analysis</h1>", unsafe_allow_html=True)
-
-    metrics_df = pd.DataFrame(model_results).T.drop(columns=["Confusion Matrix"])
-    st.markdown("### 📊 Metrics Summary")
-    st.dataframe(metrics_df.style.format("{:.2%}").highlight_max(axis=0, color="rgba(255,215,0,0.2)"),
-                 use_container_width=True)
-
-    st.markdown("### 📈 Accuracy Comparison")
-    acc_series = metrics_df["Accuracy"]
-    fig = px.bar(x=acc_series.index, y=acc_series.values, color=acc_series.index,
-                 labels={"x": "Model", "y": "Accuracy"},
-                 title="Model Accuracy Comparison")
-    fig.update_layout(showlegend=False, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                      font_color="white")
-    st.plotly_chart(fig, use_container_width=True)
-
-    st.markdown(f"### 🔍 Confusion Matrix – {best_model_name}")
-    cm = model_results[best_model_name]["Confusion Matrix"]
-    fig_cm = px.imshow(cm, text_auto=True, labels=dict(x="Predicted", y="Actual"),
-                       x=target_names, y=target_names, color_continuous_scale="Blues")
-    fig_cm.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                         font_color="white")
-    st.plotly_chart(fig_cm, use_container_width=True)
-
-    glass_card(f"""
-    <h4 style="color: #FFFFFF !important;">🏆 Best Model: {best_model_name}</h4>
-    <p style="color: #FFFFFF !important;">Automatically selected based on highest test accuracy.</p>
-    <p style="color: #FFFFFF !important;">Accuracy: <strong style="color: #FFD700 !important;">{model_results[best_model_name]['Accuracy']:.2%}</strong></p>
-    <p style="color: #FFFFFF !important;">Precision: {model_results[best_model_name]['Precision']:.2%} |
-    Recall: {model_results[best_model_name]['Recall']:.2%} |
-    F1: {model_results[best_model_name]['F1 Score']:.2%}</p>
-    """)
-
-# -------------------------------
-# 6. EXPLAINABLE AI
-# -------------------------------
-elif st.session_state.page == "🔬 Explainable AI":
-    luxury_back_button()
-    st.markdown("<h1 style='color: #FFFFFF !important;'>🔬 Explainable AI</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #BBBBBB !important;'>Understand how the model reasons about your inputs.</p>", unsafe_allow_html=True)
-
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        s_len = st.number_input("Sepal Length (cm)", 0.0, 10.0, 5.1, 0.1, key="xai1")
-    with col2:
-        s_wid = st.number_input("Sepal Width (cm)", 0.0, 10.0, 3.5, 0.1, key="xai2")
-    with col3:
-        p_len = st.number_input("Petal Length (cm)", 0.0, 10.0, 1.4, 0.1, key="xai3")
-    with col4:
-        p_wid = st.number_input("Petal Width (cm)", 0.0, 10.0, 0.2, 0.1, key="xai4")
-
-    if st.button("🔍 Explain Prediction"):
-        input_vec = np.array([s_len, s_wid, p_len, p_wid]).reshape(1, -1)
-        model = st.session_state.best_model
-        pred = model.predict(input_vec)[0]
-        probs = model.predict_proba(input_vec)[0]
-        pred_name = target_names[pred]
-        conf = probs[pred]
-
-        st.markdown("---")
-        glass_card(f"""
-        <h3 style="color: #FFFFFF !important;">🌸 Predicted: {pred_name} (Confidence: {conf:.2%})</h3>
-        """)
-
-        categories = feature_names
-        fig_radar = go.Figure()
-        fig_radar.add_trace(go.Scatterpolar(
-            r=input_vec.flatten(),
-            theta=categories,
-            fill='toself',
-            name='Your Input',
-            line=dict(color='#FFD700', width=3)
-        ))
-        for sp in target_names:
-            means = species_means.loc[sp].values
-            fig_radar.add_trace(go.Scatterpolar(
-                r=means,
-                theta=categories,
-                fill='toself',
-                name=sp,
-                opacity=0.4
-            ))
-        fig_radar.update_layout(
-            polar=dict(radialaxis=dict(visible=True, range=[0, 8])),
-            showlegend=True,
-            title="Feature Profile Comparison (Input vs Species Averages)",
-            paper_bgcolor="rgba(0,0,0,0)",
-            font_color="white"
-        )
-        st.plotly_chart(fig_radar, use_container_width=True)
-
-        distances = {}
-        for sp in target_names:
-            means = species_means.loc[sp].values
-            dist = np.linalg.norm(input_vec.flatten() - means)
-            distances[sp] = dist
-        dist_df = pd.DataFrame.from_dict(distances, orient='index', columns=['Distance'])
-        dist_df['Similarity'] = 1 / (1 + dist_df['Distance'])
-        st.markdown("### 📏 Distance to Species Centroids (Euclidean)")
-        st.dataframe(dist_df.style.format("{:.3f}").highlight_min(subset=['Distance'], color="rgba(255,215,0,0.15)"))
-
-# -------------------------------
-# 7. ABOUT PROJECT
-# -------------------------------
-elif st.session_state.page == "📚 About Project":
-    luxury_back_button()
-    st.markdown("<h1 style='color: #FFFFFF !important;'>📚 About the Project</h1>", unsafe_allow_html=True)
-
-    about_text = """
-    <h3 style="color: #FFFFFF !important;">🌸 The Iris Dataset</h3>
-    <p style="color: #FFFFFF !important;">The Iris flower dataset is a classic in machine learning. It contains 150 samples from three species of Iris 
-    (Setosa, Versicolor, Virginica). Four features were measured from each sample: sepal length, sepal width, 
-    petal length, and petal width.</p>
-    
-    <h3 style="color: #FFFFFF !important;">🧠 What is Classification?</h3>
-    <p style="color: #FFFFFF !important;">Classification is a supervised learning task where the goal is to predict a categorical label 
-    (here, the species) based on input features. We train models on historical data and then use them to 
-    make predictions on new, unseen samples.</p>
-
-    <h3 style="color: #FFFFFF !important;">⚙️ ML Pipeline</h3>
-    <ol>
-        <li style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Data loading</strong> - directly from scikit-learn.</li>
-        <li style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Exploration and preprocessing</strong> - scaling applied where necessary.</li>
-        <li style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Train/test split</strong> (80/20, stratified).</li>
-        <li style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Model training</strong> - Logistic Regression, Decision Tree, Random Forest, KNN, SVM.</li>
-        <li style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Evaluation</strong> - accuracy, precision, recall, F1, confusion matrix.</li>
-        <li style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Best model selection</strong> - automatically picks the highest accuracy model for live predictions.</li>
-    </ol>
-
-    <h3 style="color: #FFFFFF !important;">🔮 Live Prediction</h3>
-    <p style="color: #FFFFFF !important;">When you enter flower measurements, the selected model outputs the most likely species along with 
-    confidence probabilities. An explainable AI module shows why that decision was made by comparing your input 
-    to the typical profile of each species.</p>
-    """
-    
-    glass_card(about_text)
-
-st.markdown("""
-<div class="footer">
-    <p style="color: #888888 !important;">🌸 IrisAI Platform · Premium ML Web App · Built with Streamlit and scikit-learn</p>
-</div>
-""", unsafe_allow_html=True)
-
+        filtered
