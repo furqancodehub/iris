@@ -1,7 +1,7 @@
 """
 IrisAI – Premium ML Classification Platform
-A luxury, billionaire-tech style machine learning web application
-built with Streamlit and the classic Iris dataset.
+Luxury / Trillionaire-Tech UI
+Built with Streamlit and the classic Iris dataset.
 """
 
 import streamlit as st
@@ -48,35 +48,108 @@ st.set_page_config(
 def check_password():
 
     def password_entered():
+
         if st.session_state["password"] == st.secrets["password"]:
             st.session_state["password_correct"] = True
             del st.session_state["password"]
+
         else:
             st.session_state["password_correct"] = False
 
     if "password_correct" not in st.session_state:
-        st.title("🔒 IrisAI - Login Required")
+
+        st.markdown(
+            """
+            <div style="
+                max-width:520px;
+                margin:100px auto;
+                padding:45px;
+                background:#11131B;
+                border:1px solid rgba(212,175,55,0.35);
+                border-radius:24px;
+                text-align:center;
+                box-shadow:0 20px 70px rgba(0,0,0,0.65);
+            ">
+
+                <div style="
+                    font-size:60px;
+                    margin-bottom:10px;
+                ">
+                    🌸
+                </div>
+
+                <h1 style="
+                    color:#F4D06F !important;
+                    margin-bottom:5px;
+                ">
+                    IrisAI
+                </h1>
+
+                <p style="
+                    color:#B8C0CC !important;
+                    font-size:15px;
+                ">
+                    Premium Machine Learning Platform
+                </p>
+
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
         st.text_input(
-            "Password daalein",
+            "🔐 Enter Access Password",
             type="password",
             on_change=password_entered,
-            key="password",
+            key="password"
         )
 
         return False
 
     elif not st.session_state["password_correct"]:
-        st.title("🔒 IrisAI - Login Required")
 
-        st.text_input(
-            "Password daalein",
-            type="password",
-            on_change=password_entered,
-            key="password",
+        st.markdown(
+            """
+            <div style="
+                max-width:520px;
+                margin:100px auto 30px auto;
+                padding:40px;
+                background:#11131B;
+                border:1px solid rgba(212,175,55,0.35);
+                border-radius:24px;
+                text-align:center;
+                box-shadow:0 20px 70px rgba(0,0,0,0.65);
+            ">
+
+                <div style="font-size:55px;">
+                    🔒
+                </div>
+
+                <h1 style="
+                    color:#F4D06F !important;
+                ">
+                    IrisAI
+                </h1>
+
+                <p style="
+                    color:#B8C0CC !important;
+                ">
+                    Authentication Required
+                </p>
+
+            </div>
+            """,
+            unsafe_allow_html=True
         )
 
-        st.error("😕 Password galat hai")
+        st.text_input(
+            "🔐 Enter Access Password",
+            type="password",
+            on_change=password_entered,
+            key="password"
+        )
+
+        st.error("❌ Incorrect password")
 
         return False
 
@@ -89,355 +162,607 @@ if not check_password():
 
 
 # ============================================================
-# CUSTOM CSS
+# FONT SELECTION
 # ============================================================
 
-def load_css():
+if "font_choice" not in st.session_state:
+    st.session_state.font_choice = "Inter"
+
+font_options = {
+    "Inter": "'Inter', sans-serif",
+    "Poppins": "'Poppins', sans-serif",
+    "Montserrat": "'Montserrat', sans-serif",
+    "Roboto": "'Roboto', sans-serif",
+    "Playfair Display": "'Playfair Display', serif",
+    "Cormorant Garamond": "'Cormorant Garamond', serif",
+    "Space Grotesk": "'Space Grotesk', sans-serif",
+}
+
+selected_font = st.session_state.font_choice
+
+
+# ============================================================
+# PREMIUM CSS
+# ============================================================
+
+def load_css(font_name):
+
+    font_family = font_options[font_name]
 
     st.markdown(
-        """
+        f"""
         <style>
 
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?
+        family=Inter:wght@300;400;500;600;700;800&
+        family=Poppins:wght@400;500;600;700;800&
+        family=Montserrat:wght@400;500;600;700;800&
+        family=Roboto:wght@400;500;700&
+        family=Playfair+Display:wght@400;500;600;700&
+        family=Cormorant+Garamond:wght@400;500;600;700&
+        family=Space+Grotesk:wght@400;500;600;700&
+        display=swap');
 
-        html, body, [class*="css"] {
-            font-family: 'Inter', sans-serif;
-            background-color: #0A0A0F;
-            color: #FFFFFF !important;
-        }
+        :root {{
+            --bg: #07080C;
+            --bg2: #0B0D12;
+            --panel: #11141B;
+            --panel2: #151923;
+            --border: rgba(212,175,55,0.25);
+            --gold: #D4AF37;
+            --gold-light: #F4D06F;
+            --gold-bright: #FFE9A3;
+            --text: #F8FAFC;
+            --muted: #AAB2C0;
+            --muted2: #7F8998;
+            --green: #43D17A;
+            --red: #FF5C5C;
+            --blue: #5EA7FF;
+        }}
 
+        html,
+        body,
+        [class*="css"],
+        .stApp {{
+            font-family: {font_family} !important;
+        }}
+
+        .stApp {{
+            background:
+                radial-gradient(
+                    circle at 10% 0%,
+                    rgba(212,175,55,0.08),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(80,110,180,0.07),
+                    transparent 30%
+                ),
+                var(--bg) !important;
+
+            color: var(--text) !important;
+        }}
+
+        .main {{
+            background: transparent !important;
+        }}
+
+        .block-container {{
+            max-width: 1500px !important;
+            padding-top: 2rem !important;
+            padding-bottom: 4rem !important;
+        }}
+
+        /* ====================================================
+           GLOBAL TEXT VISIBILITY
+           ==================================================== */
+
+        h1, h2, h3, h4, h5, h6,
+        p, span, label, li, strong, small,
         .stMarkdown,
-        .stMarkdown p,
-        .stMarkdown li,
-        .stMarkdown span,
         .stText,
-        p,
-        li,
-        span,
-        label,
-        div {
-            color: #FFFFFF !important;
-        }
+        [data-testid="stMarkdownContainer"] {{
+            color: var(--text) !important;
+        }}
 
-        .main,
-        .block-container {
-            background: #0A0A0F;
-        }
+        h1 {{
+            font-size: clamp(2rem, 4vw, 3.4rem) !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.03em;
+        }}
 
-        [data-testid="stSidebar"] {
-            background: #12121A;
-            border-right: 1px solid rgba(255,215,0,0.08);
-        }
+        h2 {{
+            font-weight: 750 !important;
+        }}
 
-        [data-testid="stSidebar"] * {
-            color: #FFFFFF !important;
-        }
+        p {{
+            color: var(--muted) !important;
+        }}
 
-        [data-testid="stSidebar"] .stRadio label,
-        [data-testid="stSidebar"] .stRadio span {
-            color: #FFFFFF !important;
-            font-weight: 500 !important;
-        }
+        /* ====================================================
+           SIDEBAR
+           ==================================================== */
 
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1.8rem;
-            margin-bottom: 1.2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-            color: #FFFFFF !important;
-            transition: transform 0.2s ease;
-        }
+        [data-testid="stSidebar"] {{
+            background:
+                linear-gradient(
+                    180deg,
+                    #0D0F15 0%,
+                    #090A0E 100%
+                ) !important;
 
-        .card:hover {
-            transform: translateY(-4px);
-            background: rgba(255, 255, 255, 0.08);
-        }
+            border-right:
+                1px solid rgba(212,175,55,0.18) !important;
+        }}
 
-        .card p,
-        .card h3,
-        .card h4,
-        .card li,
-        .card strong {
-            color: #FFFFFF !important;
-        }
+        [data-testid="stSidebar"] * {{
+            color: var(--text) !important;
+        }}
 
-        .metric-card {
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
-            padding: 1.4rem 1rem;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            transition: all 0.2s ease;
-        }
+        [data-testid="stSidebar"] hr {{
+            border-color: rgba(212,175,55,0.18) !important;
+        }}
 
-        .metric-card:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 215, 0, 0.3);
-            transform: translateY(-4px);
-        }
+        [data-testid="stSidebar"] .stRadio label {{
+            color: #E9EDF3 !important;
+            font-weight: 600 !important;
+        }}
 
-        .metric-card h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin: 0;
-            background: linear-gradient(135deg, #FFD700, #F4A460);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        [data-testid="stSidebar"] .stRadio label:hover {{
+            color: var(--gold-light) !important;
+        }}
 
-        .metric-card p {
-            margin: 0.3rem 0 0 0;
-            font-size: 0.85rem;
-            color: #BBBBBB !important;
+        /* ====================================================
+           PREMIUM CARDS
+           ==================================================== */
+
+        .luxury-card {{
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.055),
+                    rgba(255,255,255,0.018)
+                ) !important;
+
+            border:
+                1px solid rgba(212,175,55,0.20) !important;
+
+            border-radius: 22px !important;
+
+            padding: 26px !important;
+
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.38),
+                inset 0 1px 0 rgba(255,255,255,0.035) !important;
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            margin-bottom: 20px;
+        }}
+
+        .luxury-card:hover {{
+            border-color:
+                rgba(212,175,55,0.42) !important;
+
+            box-shadow:
+                0 25px 75px rgba(0,0,0,0.50),
+                0 0 30px rgba(212,175,55,0.05) !important;
+        }}
+
+        /* ====================================================
+           METRIC CARDS
+           ==================================================== */
+
+        .metric-card {{
+            background:
+                linear-gradient(
+                    145deg,
+                    #141720,
+                    #0E1016
+                ) !important;
+
+            border:
+                1px solid rgba(212,175,55,0.22) !important;
+
+            border-radius: 18px !important;
+
+            padding: 24px 15px !important;
+
+            text-align: center !important;
+
+            min-height: 120px;
+
+            box-shadow:
+                0 15px 45px rgba(0,0,0,0.35);
+        }}
+
+        .metric-card h3 {{
+            color: var(--gold-light) !important;
+
+            font-size: 2.1rem !important;
+
+            font-weight: 800 !important;
+
+            margin: 0 !important;
+        }}
+
+        .metric-card p {{
+            color: #AEB7C5 !important;
+
+            font-size: 0.78rem !important;
+
+            font-weight: 600 !important;
+
+            letter-spacing: 0.08em;
+
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
+        }}
 
-        .stNumberInput > div > div > input {
-            background: rgba(20, 25, 40, 0.9) !important;
-            border: 1px solid rgba(255, 215, 0, 0.2) !important;
-            border-radius: 10px !important;
+        /* ====================================================
+           INPUTS
+           ==================================================== */
+
+        .stTextInput input,
+        .stNumberInput input {{
+            background: #151922 !important;
+
             color: #FFFFFF !important;
-            font-size: 16px !important;
-            padding: 12px 16px !important;
-        }
 
-        .stNumberInput > div > div > input:hover {
-            border-color: rgba(255, 215, 0, 0.4) !important;
-            background: rgba(25, 30, 50, 0.95) !important;
-        }
+            caret-color: #F4D06F !important;
 
-        .stNumberInput > div > div > input:focus {
-            border-color: #FFD700 !important;
-            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15) !important;
-            background: rgba(25, 30, 50, 0.95) !important;
-        }
+            border:
+                1px solid rgba(212,175,55,0.22) !important;
 
-        .stNumberInput > div > div > div button {
-            background: rgba(30, 40, 60, 0.8) !important;
-            color: #FFD700 !important;
+            border-radius: 12px !important;
+        }}
+
+        .stTextInput input:focus,
+        .stNumberInput input:focus {{
+            background: #191D27 !important;
+
+            color: #FFFFFF !important;
+
+            border:
+                1px solid #D4AF37 !important;
+
+            box-shadow:
+                0 0 0 3px rgba(212,175,55,0.12) !important;
+        }}
+
+        .stTextInput input::placeholder {{
+            color: #727C8B !important;
+        }}
+
+        .stNumberInput button {{
+            background: #1C212C !important;
+
+            color: #F4D06F !important;
+
             border: none !important;
-        }
+        }}
 
-        .stNumberInput > div > div > div button:hover {
-            background: rgba(255, 215, 0, 0.2) !important;
+        .stNumberInput button:hover {{
+            background: #282E3A !important;
+        }}
+
+        /* ====================================================
+           SELECT BOX
+           ==================================================== */
+
+        .stSelectbox div[data-baseweb="select"] > div {{
+            background: #151922 !important;
+
             color: #FFFFFF !important;
-        }
 
-        .stTextInput > div > div > input {
-            background: rgba(20, 25, 40, 0.9) !important;
-            border: 1px solid rgba(255, 215, 0, 0.2) !important;
-            border-radius: 10px !important;
+            border:
+                1px solid rgba(212,175,55,0.22) !important;
+
+            border-radius: 12px !important;
+        }}
+
+        .stSelectbox div[data-baseweb="select"] span {{
             color: #FFFFFF !important;
-            font-size: 16px !important;
-            padding: 12px 16px !important;
-        }
+        }}
 
-        .stTextInput > div > div > input:hover {
-            border-color: rgba(255, 215, 0, 0.4) !important;
-            background: rgba(25, 30, 50, 0.95) !important;
-        }
+        /* Dropdown popup */
+        div[data-baseweb="popover"] {{
+            background: #11141B !important;
+        }}
 
-        .stTextInput > div > div > input:focus {
-            border-color: #FFD700 !important;
-            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15) !important;
-        }
+        div[data-baseweb="menu"] {{
+            background: #11141B !important;
+        }}
 
-        .stTextInput > div > div > input::placeholder {
-            color: rgba(255, 255, 255, 0.4) !important;
-            opacity: 1 !important;
-        }
-
-        .stSelectbox > div > div {
-            background: rgba(20, 25, 40, 0.9) !important;
-            border: 1px solid rgba(255, 215, 0, 0.2) !important;
-            border-radius: 10px !important;
+        div[data-baseweb="menu"] * {{
             color: #FFFFFF !important;
-        }
+        }}
 
-        .stSelectbox > div > div:hover {
-            border-color: rgba(255, 215, 0, 0.4) !important;
-            background: rgba(25, 30, 50, 0.95) !important;
-        }
+        /* ====================================================
+           BUTTONS
+           ==================================================== */
 
-        .stSelectbox > div > div > div {
+        .stButton > button,
+        .stFormSubmitButton > button {{
+            background:
+                linear-gradient(
+                    135deg,
+                    #D4AF37,
+                    #F4D06F
+                ) !important;
+
+            color: #08090C !important;
+
+            border: none !important;
+
+            border-radius: 12px !important;
+
+            font-weight: 800 !important;
+
+            min-height: 45px !important;
+
+            box-shadow:
+                0 8px 25px rgba(212,175,55,0.15) !important;
+
+            transition: all 0.2s ease !important;
+        }}
+
+        .stButton > button:hover,
+        .stFormSubmitButton > button:hover {{
+            transform: translateY(-2px) !important;
+
+            box-shadow:
+                0 12px 35px rgba(212,175,55,0.28) !important;
+        }}
+
+        .stDownloadButton > button {{
+            background:
+                linear-gradient(
+                    135deg,
+                    #D4AF37,
+                    #F4D06F
+                ) !important;
+
+            color: #08090C !important;
+
+            border: none !important;
+
+            border-radius: 12px !important;
+
+            font-weight: 800 !important;
+        }}
+
+        /* ====================================================
+           DATAFRAME
+           ==================================================== */
+
+        [data-testid="stDataFrame"] {{
+            border:
+                1px solid rgba(212,175,55,0.18) !important;
+
+            border-radius: 14px !important;
+
+            overflow: hidden !important;
+
+            background: #10131A !important;
+        }}
+
+        [data-testid="stDataFrame"] * {{
+            color: #F5F7FA !important;
+        }}
+
+        /* ====================================================
+           TABS / EXPANDERS
+           ==================================================== */
+
+        [data-testid="stExpander"] {{
+            background: #11141B !important;
+
+            border:
+                1px solid rgba(212,175,55,0.18) !important;
+
+            border-radius: 14px !important;
+        }}
+
+        [data-testid="stExpander"] * {{
+            color: #F5F7FA !important;
+        }}
+
+        /* ====================================================
+           ALERTS
+           ==================================================== */
+
+        [data-testid="stAlert"] {{
+            background: #151922 !important;
+
+            border-radius: 12px !important;
+
             color: #FFFFFF !important;
-        }
+        }}
 
-        .stNumberInput label,
-        .stTextInput label,
-        .stSelectbox label {
-            color: rgba(255, 255, 255, 0.8) !important;
-            font-weight: 500 !important;
-            font-size: 0.9rem !important;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
+        [data-testid="stAlert"] * {{
             color: #FFFFFF !important;
-        }
+        }}
 
-        [data-testid="stMetricValue"] {
-            color: #FFD700 !important;
-            font-weight: 700 !important;
-        }
+        /* ====================================================
+           FEATURE CARDS
+           ==================================================== */
 
-        [data-testid="stMetricLabel"] {
-            color: #BBBBBB !important;
-        }
+        .feature-grid {{
+            display: grid;
 
-        .footer {
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+
+            gap: 18px;
+
+            margin: 25px 0;
+        }}
+
+        .feature-item {{
+            background:
+                linear-gradient(
+                    145deg,
+                    #151821,
+                    #0E1016
+                );
+
+            border:
+                1px solid rgba(255,255,255,0.07);
+
+            border-radius: 18px;
+
+            padding: 25px;
+
             text-align: center;
-            color: #888888 !important;
-            padding: 2rem 0 1rem 0;
+
+            transition: all 0.25s ease;
+
+            min-height: 190px;
+        }}
+
+        .feature-item:hover {{
+            transform: translateY(-5px);
+
+            border-color:
+                rgba(212,175,55,0.35);
+
+            box-shadow:
+                0 18px 50px rgba(0,0,0,0.4);
+        }}
+
+        .feature-icon {{
+            font-size: 2.5rem;
+
+            margin-bottom: 12px;
+        }}
+
+        .feature-title {{
+            color: #F4D06F !important;
+
+            font-size: 1.05rem;
+
+            font-weight: 750;
+
+            margin-bottom: 8px;
+        }}
+
+        .feature-desc {{
+            color: #AAB2C0 !important;
+
+            font-size: 0.88rem;
+
+            line-height: 1.65;
+        }}
+
+        /* ====================================================
+           HERO
+           ==================================================== */
+
+        .hero {{
+            text-align: center;
+
+            padding: 35px 20px 45px;
+
+            animation: fadeIn 0.7s ease;
+        }}
+
+        .hero h1 {{
+            background:
+                linear-gradient(
+                    135deg,
+                    #FFFFFF,
+                    #F4D06F,
+                    #D4AF37
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+            font-size:
+                clamp(2.4rem, 6vw, 4.5rem) !important;
+        }}
+
+        .hero p {{
+            max-width: 800px;
+
+            margin: auto;
+
+            font-size: 1.05rem;
+
+            color: #AAB2C0 !important;
+        }}
+
+        /* ====================================================
+           FOOTER
+           ==================================================== */
+
+        .footer {{
+            text-align: center;
+
+            margin-top: 60px;
+
+            padding: 25px;
+
+            border-top:
+                1px solid rgba(212,175,55,0.15);
+
+            color: #6F7887 !important;
+
             font-size: 0.8rem;
-            border-top: 1px solid rgba(255,215,0,0.05);
-            margin-top: 3rem;
-        }
+        }}
 
-        .stAlert {
-            color: #FFFFFF !important;
-            border-radius: 10px !important;
-        }
+        /* ====================================================
+           ANIMATION
+           ==================================================== */
 
-        .stRadio div[role="radiogroup"] label {
-            color: #FFFFFF !important;
-        }
+        @keyframes fadeIn {{
 
-        .stDownloadButton > button {
-            width: 100% !important;
-            background: linear-gradient(135deg, #FFD700, #F4A460) !important;
-            color: #0A0A0F !important;
-            font-weight: 700 !important;
-            border: none !important;
-            padding: 0.6rem 2rem !important;
-            border-radius: 10px !important;
-        }
-
-        .stButton > button {
-            background: linear-gradient(135deg, #FFD700, #F4A460) !important;
-            border: none !important;
-            color: #0A0A0F !important;
-            font-weight: 700 !important;
-            padding: 0.6rem 2rem !important;
-            border-radius: 10px !important;
-            width: 100%;
-        }
-
-        .stButton > button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4);
-            color: #0A0A0F !important;
-        }
-
-        @keyframes fadeInUp {
-            from {
+            from {{
                 opacity: 0;
-                transform: translateY(30px);
-            }
+                transform: translateY(15px);
+            }}
 
-            to {
+            to {{
                 opacity: 1;
                 transform: translateY(0);
-            }
-        }
+            }}
 
-        .hero-section {
-            animation: fadeInUp 0.8s ease-out;
-        }
+        }}
 
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
+        /* ====================================================
+           MOBILE
+           ==================================================== */
 
-        .feature-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
-            text-align: center;
-        }
+        @media (max-width: 768px) {{
 
-        .feature-item:hover {
-            transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 215, 0, 0.3);
-        }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #FFFFFF !important;
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-desc {
-            font-size: 0.9rem;
-            color: #BBBBBB !important;
-            line-height: 1.6;
-        }
-
-        @media (max-width: 768px) {
-
-            .block-container {
+            .block-container {{
                 padding: 1rem !important;
-            }
+            }}
 
-            .card {
-                padding: 1rem !important;
-            }
+            .hero {{
+                padding: 20px 10px 30px;
+            }}
 
-            .metric-card h3 {
+            .metric-card h3 {{
                 font-size: 1.5rem !important;
-            }
-        }
+            }}
+
+            .feature-grid {{
+                grid-template-columns: 1fr;
+            }}
+
+        }}
 
         </style>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
 
 
-load_css()
-
-
-# ============================================================
-# SESSION STATE
-# ============================================================
-
-if "prediction_count" not in st.session_state:
-    st.session_state.prediction_count = 0
-
-if "last_prediction" not in st.session_state:
-    st.session_state.last_prediction = None
-
-if "history" not in st.session_state:
-    st.session_state.history = []
-
-if "page" not in st.session_state:
-    st.session_state.page = "🏠 Home"
+load_css(selected_font)
 
 
 # ============================================================
@@ -450,7 +775,7 @@ def load_iris_data():
     iris = load_iris()
 
     df = pd.DataFrame(
-        data=iris.data,
+        iris.data,
         columns=iris.feature_names
     )
 
@@ -460,7 +785,11 @@ def load_iris_data():
         lambda x: iris.target_names[x]
     )
 
-    return df, iris.target_names, iris.feature_names
+    return (
+        df,
+        iris.target_names,
+        iris.feature_names
+    )
 
 
 df, target_names, feature_names = load_iris_data()
@@ -556,43 +885,37 @@ def train_models():
 
         y_pred = pipe.predict(X_test)
 
-        acc = accuracy_score(
-            y_test,
-            y_pred
-        )
-
-        prec = precision_score(
-            y_test,
-            y_pred,
-            average="weighted",
-            zero_division=0
-        )
-
-        rec = recall_score(
-            y_test,
-            y_pred,
-            average="weighted",
-            zero_division=0
-        )
-
-        f1 = f1_score(
-            y_test,
-            y_pred,
-            average="weighted",
-            zero_division=0
-        )
-
-        cm = confusion_matrix(
-            y_test,
-            y_pred
-        )
-
         results[name] = {
-            "Accuracy": acc,
-            "Precision": prec,
-            "Recall": rec,
-            "F1 Score": f1,
-            "Confusion Matrix": cm,
+            "Accuracy": accuracy_score(
+                y_test,
+                y_pred
+            ),
+
+            "Precision": precision_score(
+                y_test,
+                y_pred,
+                average="weighted",
+                zero_division=0
+            ),
+
+            "Recall": recall_score(
+                y_test,
+                y_pred,
+                average="weighted",
+                zero_division=0
+            ),
+
+            "F1 Score": f1_score(
+                y_test,
+                y_pred,
+                average="weighted",
+                zero_division=0
+            ),
+
+            "Confusion Matrix": confusion_matrix(
+                y_test,
+                y_pred
+            )
         }
 
         trained_pipelines[name] = pipe
@@ -612,7 +935,7 @@ def train_models():
         best_model_name,
         best_pipeline,
         X_test,
-        y_test,
+        y_test
     )
 
 
@@ -622,13 +945,31 @@ def train_models():
     best_model_name,
     best_pipeline,
     X_test,
-    y_test,
+    y_test
 ) = train_models()
 
 
+# ============================================================
+# SESSION STATE
+# ============================================================
+
 if "best_model" not in st.session_state:
     st.session_state.best_model = best_pipeline
+
+if "best_model_name" not in st.session_state:
     st.session_state.best_model_name = best_model_name
+
+if "prediction_count" not in st.session_state:
+    st.session_state.prediction_count = 0
+
+if "last_prediction" not in st.session_state:
+    st.session_state.last_prediction = None
+
+if "history" not in st.session_state:
+    st.session_state.history = []
+
+if "page" not in st.session_state:
+    st.session_state.page = "🏠 Home"
 
 
 # ============================================================
@@ -637,7 +978,10 @@ if "best_model" not in st.session_state:
 
 @st.cache_data
 def compute_species_means():
-    return df.groupby("species_name")[feature_names].mean()
+
+    return df.groupby(
+        "species_name"
+    )[feature_names].mean()
 
 
 species_means = compute_species_means()
@@ -649,17 +993,107 @@ species_means = compute_species_means()
 
 st.sidebar.markdown(
     """
-    <div style="text-align:center;">
-        <h1>🌸 IrisAI</h1>
-        <p style="color:#BBBBBB !important;">
-            Premium ML Platform
+    <div style="
+        text-align:center;
+        padding:10px 0 20px;
+    ">
+
+        <div style="
+            font-size:42px;
+        ">
+            🌸
+        </div>
+
+        <h1 style="
+            color:#F4D06F !important;
+            font-size:1.9rem !important;
+            margin:0;
+        ">
+            IrisAI
+        </h1>
+
+        <p style="
+            color:#7F8998 !important;
+            margin-top:4px;
+        ">
+            PREMIUM ML PLATFORM
         </p>
+
     </div>
     """,
     unsafe_allow_html=True
 )
 
 st.sidebar.markdown("---")
+
+
+# ============================================================
+# FONT CONTROL
+# ============================================================
+
+st.sidebar.markdown(
+    """
+    <p style="
+        color:#F4D06F !important;
+        font-weight:700;
+        letter-spacing:0.04em;
+    ">
+        ✦ INTERFACE FONT
+    </p>
+    """,
+    unsafe_allow_html=True
+)
+
+font_selection = st.sidebar.selectbox(
+    "Choose your font",
+    list(font_options.keys()),
+    index=list(font_options.keys()).index(
+        st.session_state.font_choice
+    )
+)
+
+if font_selection != st.session_state.font_choice:
+
+    st.session_state.font_choice = font_selection
+
+    st.rerun()
+
+
+st.sidebar.markdown(
+    f"""
+    <div style="
+        background:#11141B;
+        border:1px solid rgba(212,175,55,0.18);
+        border-radius:12px;
+        padding:12px;
+        margin:10px 0 20px;
+        text-align:center;
+    ">
+
+        <span style="
+            color:#7F8998 !important;
+            font-size:11px;
+        ">
+            ACTIVE FONT
+        </span>
+
+        <br>
+
+        <strong style="
+            color:#F4D06F !important;
+        ">
+            {font_selection}
+        </strong>
+
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# ============================================================
+# NAVIGATION
+# ============================================================
 
 nav_options = [
     "🏠 Home",
@@ -684,19 +1118,36 @@ selected_page = st.sidebar.radio(
 if selected_page != st.session_state.page:
 
     st.session_state.page = selected_page
+
     st.rerun()
+
 
 st.sidebar.markdown("---")
 
 st.sidebar.markdown(
     f"""
-    <div style="text-align:center;">
-        <p style="color:#BBBBBB !important;">
+    <div style="
+        text-align:center;
+        padding:10px;
+    ">
+
+        <span style="
+            color:#7F8998 !important;
+            font-size:11px;
+            text-transform:uppercase;
+        ">
             Best Model
-        </p>
-        <h3 style="color:#FFD700 !important;">
+        </span>
+
+        <div style="
+            color:#F4D06F !important;
+            font-size:14px;
+            font-weight:700;
+            margin-top:5px;
+        ">
             {best_model_name}
-        </h3>
+        </div>
+
     </div>
     """,
     unsafe_allow_html=True
@@ -704,17 +1155,23 @@ st.sidebar.markdown(
 
 
 # ============================================================
-# HELPER FUNCTIONS
+# HELPERS
 # ============================================================
 
-def glass_card(content, key=None):
+def luxury_card(content):
+
     st.markdown(
-        f'<div class="card">{content}</div>',
+        f"""
+        <div class="luxury-card">
+            {content}
+        </div>
+        """,
         unsafe_allow_html=True
     )
 
 
 def navigate_to(page_name):
+
     st.session_state.page = page_name
     st.rerun()
 
@@ -722,34 +1179,34 @@ def navigate_to(page_name):
 def luxury_back_button():
 
     if st.button(
-        "⬅️ Back to Home",
-        key="back_to_home_btn",
+        "← Back to Home",
+        key="back_home",
         use_container_width=False
     ):
         navigate_to("🏠 Home")
 
 
 # ============================================================
-# PAGE 1 — HOME
+# HOME
 # ============================================================
 
 if st.session_state.page == "🏠 Home":
 
+    current_accuracy = model_results[
+        best_model_name
+    ]["Accuracy"]
+
     st.markdown(
         """
-        <div class="hero-section"
-             style="text-align:center; padding:2rem 0;">
+        <div class="hero">
 
-            <h1 style="font-size:3.5rem;">
-                🌸 Welcome to IrisAI
+            <h1>
+                🌸 IrisAI
             </h1>
 
-            <p style="
-                color:#BBBBBB !important;
-                font-size:1.2rem;
-            ">
+            <p>
                 The Future of Flower Classification —
-                AI-Powered, Real-Time, and Astonishingly Accurate
+                AI-Powered, Real-Time & Intelligent.
             </p>
 
         </div>
@@ -757,13 +1214,10 @@ if st.session_state.page == "🏠 Home":
         unsafe_allow_html=True
     )
 
-    current_accuracy = model_results[
-        best_model_name
-    ]["Accuracy"]
-
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
+
         st.markdown(
             """
             <div class="metric-card">
@@ -775,17 +1229,19 @@ if st.session_state.page == "🏠 Home":
         )
 
     with col2:
+
         st.markdown(
             f"""
             <div class="metric-card">
                 <h3>{current_accuracy:.1%}</h3>
-                <p>Best Model Accuracy</p>
+                <p>Best Accuracy</p>
             </div>
             """,
             unsafe_allow_html=True
         )
 
     with col3:
+
         st.markdown(
             """
             <div class="metric-card">
@@ -797,22 +1253,23 @@ if st.session_state.page == "🏠 Home":
         )
 
     with col4:
+
         st.markdown(
             f"""
             <div class="metric-card">
                 <h3>{st.session_state.prediction_count}</h3>
-                <p>Predictions Made</p>
+                <p>Predictions</p>
             </div>
             """,
             unsafe_allow_html=True
         )
 
     st.markdown(
-        """
-        <h2 style="margin-top:2rem;">
-            🚀 Why IrisAI?
-        </h2>
+        "## 🚀 Why IrisAI?"
+    )
 
+    st.markdown(
+        """
         <div class="feature-grid">
 
             <div class="feature-item">
@@ -822,18 +1279,18 @@ if st.session_state.page == "🏠 Home":
                 </div>
                 <div class="feature-desc">
                     Logistic Regression, Decision Tree,
-                    Random Forest, KNN, and SVM
+                    Random Forest, KNN and SVM.
                 </div>
             </div>
 
             <div class="feature-item">
                 <div class="feature-icon">🎯</div>
                 <div class="feature-title">
-                    High Accuracy
+                    Automatic Model Selection
                 </div>
                 <div class="feature-desc">
-                    Automatic best-model selection
-                    based on test accuracy
+                    The highest-performing model
+                    is selected automatically.
                 </div>
             </div>
 
@@ -843,41 +1300,41 @@ if st.session_state.page == "🏠 Home":
                     Explainable AI
                 </div>
                 <div class="feature-desc">
-                    Understand the model's predictions
-                    and important features
+                    Explore feature importance and
+                    model behaviour.
                 </div>
             </div>
 
             <div class="feature-item">
                 <div class="feature-icon">📊</div>
                 <div class="feature-title">
-                    Interactive Visuals
+                    Interactive Analytics
                 </div>
                 <div class="feature-desc">
-                    Beautiful interactive charts
-                    for exploring the Iris dataset
+                    Explore the dataset through
+                    interactive visualizations.
                 </div>
             </div>
 
             <div class="feature-item">
                 <div class="feature-icon">⚡</div>
                 <div class="feature-title">
-                    Real-Time Predictions
+                    Instant Predictions
                 </div>
                 <div class="feature-desc">
-                    Instant flower classification
-                    with probability scores
+                    Enter flower measurements and
+                    receive an instant prediction.
                 </div>
             </div>
 
             <div class="feature-item">
-                <div class="feature-icon">📱</div>
+                <div class="feature-icon">💎</div>
                 <div class="feature-title">
-                    Responsive Interface
+                    Premium Experience
                 </div>
                 <div class="feature-desc">
-                    Designed for desktop,
-                    tablet, and mobile
+                    Designed with a high-end
+                    technology aesthetic.
                 </div>
             </div>
 
@@ -886,101 +1343,55 @@ if st.session_state.page == "🏠 Home":
         unsafe_allow_html=True
     )
 
-    st.markdown(
-        """
-        <h2 style="margin-top:2rem;">
-            🎯 Quick Access
-        </h2>
-        """,
-        unsafe_allow_html=True
-    )
+    st.markdown("## 🎯 Quick Access")
 
-    col_nav1, col_nav2, col_nav3 = st.columns(3)
+    col1, col2, col3 = st.columns(3)
 
-    with col_nav1:
+    with col1:
 
         if st.button(
             "🤖 AI Prediction",
-            key="nav_predict",
             use_container_width=True
         ):
             navigate_to("🤖 AI Prediction")
 
         if st.button(
             "📊 Dataset Explorer",
-            key="nav_explore",
             use_container_width=True
         ):
             navigate_to("📊 Dataset Explorer")
 
-    with col_nav2:
+    with col2:
 
         if st.button(
             "📈 Data Visualization",
-            key="nav_viz",
             use_container_width=True
         ):
             navigate_to("📈 Data Visualization")
 
         if st.button(
             "🧠 Model Performance",
-            key="nav_models",
             use_container_width=True
         ):
             navigate_to("🧠 Model Performance")
 
-    with col_nav3:
+    with col3:
 
         if st.button(
             "🔬 Explainable AI",
-            key="nav_xai",
             use_container_width=True
         ):
             navigate_to("🔬 Explainable AI")
 
         if st.button(
             "📚 About Project",
-            key="nav_about",
             use_container_width=True
         ):
             navigate_to("📚 About Project")
 
-    col1, col2, col3 = st.columns([1, 2, 1])
-
-    with col2:
-
-        st.markdown(
-            """
-            <div style="
-                text-align:center;
-                padding:2rem 0;
-            ">
-
-                <h3>
-                    Ready to classify your first flower?
-                </h3>
-
-                <p style="
-                    color:#BBBBBB !important;
-                ">
-                    Click below to start making predictions
-                    with our AI
-                </p>
-
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        if st.button(
-            "🚀 Start Predicting Now",
-            use_container_width=True
-        ):
-            navigate_to("🤖 AI Prediction")
-
 
 # ============================================================
-# PAGE 2 — AI PREDICTION
+# AI PREDICTION
 # ============================================================
 
 elif st.session_state.page == "🤖 AI Prediction":
@@ -989,18 +1400,17 @@ elif st.session_state.page == "🤖 AI Prediction":
 
     st.markdown(
         """
-        <h1>
-            🤖 Predict Iris Species
-        </h1>
+        <h1>🤖 Predict Iris Species</h1>
 
-        <p style="color:#BBBBBB !important;">
-            Enter measurements and let the AI classify the flower.
+        <p>
+            Enter the four measurements and let IrisAI
+            classify the flower.
         </p>
         """,
         unsafe_allow_html=True
     )
 
-    with st.form(key="prediction_form"):
+    with st.form("prediction_form"):
 
         col1, col2, col3, col4 = st.columns(4)
 
@@ -1041,160 +1451,170 @@ elif st.session_state.page == "🤖 AI Prediction":
             )
 
         submitted = st.form_submit_button(
-            "🔮 Predict Species"
+            "🔮 Predict Species",
+            use_container_width=True
         )
 
     if submitted:
 
-        try:
+        input_data = pd.DataFrame(
+            [[
+                sepal_len,
+                sepal_wid,
+                petal_len,
+                petal_wid
+            ]],
+            columns=feature_names
+        )
 
-            input_data = pd.DataFrame(
-                [[
-                    sepal_len,
-                    sepal_wid,
-                    petal_len,
-                    petal_wid
-                ]],
-                columns=feature_names
-            )
+        model = st.session_state.best_model
 
-            model = st.session_state.best_model
+        prediction = model.predict(
+            input_data
+        )[0]
 
-            prediction = model.predict(
-                input_data
-            )[0]
+        probabilities = model.predict_proba(
+            input_data
+        )[0]
 
-            probabilities = model.predict_proba(
-                input_data
-            )[0]
+        pred_species = target_names[
+            prediction
+        ]
 
-            pred_species = target_names[prediction]
+        confidence = np.max(
+            probabilities
+        )
 
-            confidence = np.max(probabilities)
+        timestamp = datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
 
-            timestamp = datetime.now().strftime(
-                "%Y-%m-%d %H:%M:%S"
-            )
+        record = {
+            "species": pred_species,
+            "confidence": confidence,
+            "inputs": [
+                sepal_len,
+                sepal_wid,
+                petal_len,
+                petal_wid
+            ],
+            "timestamp": timestamp
+        }
 
-            prediction_record = {
-                "species": pred_species,
-                "confidence": confidence,
-                "inputs": [
-                    sepal_len,
-                    sepal_wid,
-                    petal_len,
-                    petal_wid
-                ],
-                "timestamp": timestamp
-            }
+        st.session_state.prediction_count += 1
 
-            st.session_state.prediction_count += 1
+        st.session_state.last_prediction = record
 
-            st.session_state.last_prediction = (
-                prediction_record
-            )
+        st.session_state.history.append(record)
 
-            st.session_state.history.append(
-                prediction_record
-            )
+        luxury_card(
+            f"""
+            <div style="text-align:center;">
 
-            glass_card(
-                f"""
-                <div style="text-align:center;">
-
-                    <h2>
-                        🌸 {pred_species}
-                    </h2>
-
-                    <p style="
-                        font-size:1.1rem;
-                        color:#FFD700 !important;
-                    ">
-                        Confidence:
-                        {confidence * 100:.1f}%
-                    </p>
-
+                <div style="
+                    font-size:50px;
+                ">
+                    🌸
                 </div>
-                """
+
+                <h2 style="
+                    color:#F4D06F !important;
+                ">
+                    {pred_species}
+                </h2>
+
+                <p style="
+                    color:#FFFFFF !important;
+                    font-size:1.1rem;
+                ">
+                    Confidence:
+                    <strong style="
+                        color:#F4D06F !important;
+                    ">
+                        {confidence:.1%}
+                    </strong>
+                </p>
+
+            </div>
+            """
+        )
+
+        prob_df = pd.DataFrame({
+            "Species": target_names,
+            "Probability": probabilities
+        }).sort_values(
+            "Probability"
+        )
+
+        fig = px.bar(
+            prob_df,
+            x="Probability",
+            y="Species",
+            orientation="h",
+            color="Species",
+            title="Prediction Probabilities"
+        )
+
+        fig.update_layout(
+            paper_bgcolor="#0B0D12",
+            plot_bgcolor="#0B0D12",
+            font=dict(
+                color="#FFFFFF"
+            ),
+            title_font=dict(
+                color="#F4D06F"
             )
+        )
 
-            prob_df = pd.DataFrame({
-                "Species": target_names,
-                "Probability": probabilities
-            }).sort_values(
-                "Probability",
-                ascending=True
-            )
+        st.plotly_chart(
+            fig,
+            use_container_width=True
+        )
 
-            fig = px.bar(
-                prob_df,
-                x="Probability",
-                y="Species",
-                orientation="h",
-                color="Species",
-                color_discrete_sequence=px.colors.sequential.Blues_r,
-                title="Prediction Probabilities"
-            )
-
-            fig.update_layout(
-                showlegend=False,
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0,0)",
-                font_color="white"
-            )
-
-            st.plotly_chart(
-                fig,
-                use_container_width=True
-            )
-
-        except Exception as e:
-
-            st.error(
-                f"❌ Prediction failed: {str(e)}"
-            )
-
-    if st.session_state.last_prediction is not None:
-
-        st.markdown("### 📋 Last Prediction")
+    if st.session_state.last_prediction:
 
         last = st.session_state.last_prediction
 
+        st.markdown(
+            "### 📋 Last Prediction"
+        )
+
         st.info(
-            f"🌸 **{last['species']}** "
-            f"(Confidence: {last['confidence']:.2%}) "
-            f"at {last['timestamp']}"
+            f"🌸 {last['species']}  •  "
+            f"Confidence: {last['confidence']:.2%}  •  "
+            f"{last['timestamp']}"
         )
 
     if st.session_state.history:
 
         with st.expander(
-            "📜 Prediction History (this session)"
+            "📜 Prediction History"
         ):
 
-            hist_df = pd.DataFrame(
+            history_df = pd.DataFrame(
                 st.session_state.history
             )
 
             st.dataframe(
-                hist_df,
+                history_df,
                 use_container_width=True
             )
 
-            csv = hist_df.to_csv(
+            csv = history_df.to_csv(
                 index=False
             ).encode()
 
             st.download_button(
-                "📥 Download History as CSV",
+                "📥 Download History",
                 csv,
                 "prediction_history.csv",
-                "text/csv"
+                "text/csv",
+                use_container_width=True
             )
 
 
 # ============================================================
-# PAGE 3 — DATASET EXPLORER
+# DATASET EXPLORER
 # ============================================================
 
 elif st.session_state.page == "📊 Dataset Explorer":
@@ -1206,25 +1626,25 @@ elif st.session_state.page == "📊 Dataset Explorer":
         unsafe_allow_html=True
     )
 
-    col_info1, col_info2, col_info3 = st.columns(3)
+    c1, c2, c3 = st.columns(3)
 
-    col_info1.metric(
+    c1.metric(
         "Rows",
         df.shape[0]
     )
 
-    col_info2.metric(
+    c2.metric(
         "Columns",
         df.shape[1]
     )
 
-    col_info3.metric(
+    c3.metric(
         "Missing Values",
         int(df.isnull().sum().sum())
     )
 
     search = st.text_input(
-        "🔍 Filter by species name (e.g., setosa)"
+        "🔍 Search species"
     )
 
     if search:
@@ -1247,7 +1667,7 @@ elif st.session_state.page == "📊 Dataset Explorer":
     )
 
     st.markdown(
-        "### 📈 Descriptive Statistics"
+        "## 📈 Descriptive Statistics"
     )
 
     st.dataframe(
@@ -1256,33 +1676,32 @@ elif st.session_state.page == "📊 Dataset Explorer":
     )
 
     st.markdown(
-        "### 🌸 Class Distribution"
+        "## 🌸 Class Distribution"
     )
 
-    class_counts = (
+    counts = (
         df["species_name"]
         .value_counts()
         .reset_index()
     )
 
-    class_counts.columns = [
+    counts.columns = [
         "Species",
         "Count"
     ]
 
     fig = px.bar(
-        class_counts,
+        counts,
         x="Species",
         y="Count",
         color="Species",
-        title="Number of Samples per Species"
+        title="Samples per Species"
     )
 
     fig.update_layout(
-        showlegend=False,
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        font_color="white"
+        paper_bgcolor="#0B0D12",
+        plot_bgcolor="#0B0D12",
+        font=dict(color="#FFFFFF")
     )
 
     st.plotly_chart(
@@ -1292,7 +1711,7 @@ elif st.session_state.page == "📊 Dataset Explorer":
 
 
 # ============================================================
-# PAGE 4 — DATA VISUALIZATION
+# DATA VISUALIZATION
 # ============================================================
 
 elif st.session_state.page == "📈 Data Visualization":
@@ -1304,47 +1723,54 @@ elif st.session_state.page == "📈 Data Visualization":
         unsafe_allow_html=True
     )
 
-    selected_x = st.selectbox(
-        "X-axis Feature",
-        feature_names,
-        index=0
-    )
+    col1, col2 = st.columns(2)
 
-    selected_y = st.selectbox(
-        "Y-axis Feature",
-        feature_names,
-        index=2
-    )
+    with col1:
 
-    fig = px.scatter(
+        x_feature = st.selectbox(
+            "X-axis",
+            feature_names
+        )
+
+    with col2:
+
+        y_feature = st.selectbox(
+            "Y-axis",
+            feature_names,
+            index=2
+        )
+
+    scatter = px.scatter(
         df,
-        x=selected_x,
-        y=selected_y,
+        x=x_feature,
+        y=y_feature,
         color="species_name",
-        title=f"{selected_x} vs {selected_y}",
+        title=f"{x_feature} vs {y_feature}",
         hover_data=feature_names
     )
 
-    fig.update_layout(
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        font_color="white"
+    scatter.update_layout(
+        paper_bgcolor="#0B0D12",
+        plot_bgcolor="#0B0D12",
+        font=dict(color="#FFFFFF")
     )
 
     st.plotly_chart(
-        fig,
+        scatter,
         use_container_width=True
     )
 
-    st.markdown("### 📊 Feature Distributions")
+    st.markdown(
+        "## 📊 Feature Distribution"
+    )
 
     selected_feature = st.selectbox(
         "Select Feature",
         feature_names,
-        key="distribution_feature"
+        key="distribution"
     )
 
-    hist_fig = px.histogram(
+    hist = px.histogram(
         df,
         x=selected_feature,
         color="species_name",
@@ -1352,18 +1778,20 @@ elif st.session_state.page == "📈 Data Visualization":
         title=f"Distribution of {selected_feature}"
     )
 
-    hist_fig.update_layout(
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        font_color="white"
+    hist.update_layout(
+        paper_bgcolor="#0B0D12",
+        plot_bgcolor="#0B0D12",
+        font=dict(color="#FFFFFF")
     )
 
     st.plotly_chart(
-        hist_fig,
+        hist,
         use_container_width=True
     )
 
-    st.markdown("### 🔥 Feature Correlation")
+    st.markdown(
+        "## 🔥 Feature Correlation"
+    )
 
     correlation = df[
         feature_names
@@ -1376,8 +1804,8 @@ elif st.session_state.page == "📈 Data Visualization":
     )
 
     corr_fig.update_layout(
-        paper_bgcolor="rgba(0,0,0,0)",
-        font_color="white"
+        paper_bgcolor="#0B0D12",
+        font=dict(color="#FFFFFF")
     )
 
     st.plotly_chart(
@@ -1387,7 +1815,7 @@ elif st.session_state.page == "📈 Data Visualization":
 
 
 # ============================================================
-# PAGE 5 — MODEL PERFORMANCE
+# MODEL PERFORMANCE
 # ============================================================
 
 elif st.session_state.page == "🧠 Model Performance":
@@ -1399,40 +1827,52 @@ elif st.session_state.page == "🧠 Model Performance":
         unsafe_allow_html=True
     )
 
-    st.markdown(
+    best_accuracy = model_results[
+        best_model_name
+    ]["Accuracy"]
+
+    luxury_card(
         f"""
-        <div class="card">
+        <div style="text-align:center;">
 
-            <h3>🏆 Best Model</h3>
-
-            <h2 style="color:#FFD700 !important;">
-                {best_model_name}
-            </h2>
-
-            <p>
-                Selected using the highest test-set accuracy.
+            <p style="
+                color:#9CA5B3 !important;
+                text-transform:uppercase;
+                letter-spacing:0.08em;
+            ">
+                Best Performing Model
             </p>
 
+            <h2 style="
+                color:#F4D06F !important;
+            ">
+                🏆 {best_model_name}
+            </h2>
+
+            <h3 style="
+                color:#FFFFFF !important;
+            ">
+                Test Accuracy:
+                {best_accuracy:.2%}
+            </h3>
+
         </div>
-        """,
-        unsafe_allow_html=True
+        """
     )
 
-    performance_rows = []
+    rows = []
 
     for name, result in model_results.items():
 
-        performance_rows.append({
+        rows.append({
             "Model": name,
             "Accuracy": result["Accuracy"],
             "Precision": result["Precision"],
             "Recall": result["Recall"],
-            "F1 Score": result["F1 Score"],
+            "F1 Score": result["F1 Score"]
         })
 
-    performance_df = pd.DataFrame(
-        performance_rows
-    )
+    performance_df = pd.DataFrame(rows)
 
     st.dataframe(
         performance_df.style.format(
@@ -1440,13 +1880,13 @@ elif st.session_state.page == "🧠 Model Performance":
                 "Accuracy": "{:.2%}",
                 "Precision": "{:.2%}",
                 "Recall": "{:.2%}",
-                "F1 Score": "{:.2%}",
+                "F1 Score": "{:.2%}"
             }
         ),
         use_container_width=True
     )
 
-    metric_fig = px.bar(
+    fig = px.bar(
         performance_df,
         x="Model",
         y=[
@@ -1456,21 +1896,23 @@ elif st.session_state.page == "🧠 Model Performance":
             "F1 Score"
         ],
         barmode="group",
-        title="Model Performance Comparison"
+        title="Model Comparison"
     )
 
-    metric_fig.update_layout(
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        font_color="white"
+    fig.update_layout(
+        paper_bgcolor="#0B0D12",
+        plot_bgcolor="#0B0D12",
+        font=dict(color="#FFFFFF")
     )
 
     st.plotly_chart(
-        metric_fig,
+        fig,
         use_container_width=True
     )
 
-    st.markdown("### 🔲 Confusion Matrix")
+    st.markdown(
+        "## 🔲 Confusion Matrix"
+    )
 
     selected_model = st.selectbox(
         "Select Model",
@@ -1495,8 +1937,8 @@ elif st.session_state.page == "🧠 Model Performance":
     )
 
     cm_fig.update_layout(
-        paper_bgcolor="rgba(0,0,0,0)",
-        font_color="white"
+        paper_bgcolor="#0B0D12",
+        font=dict(color="#FFFFFF")
     )
 
     st.plotly_chart(
@@ -1506,7 +1948,7 @@ elif st.session_state.page == "🧠 Model Performance":
 
 
 # ============================================================
-# PAGE 6 — EXPLAINABLE AI
+# EXPLAINABLE AI
 # ============================================================
 
 elif st.session_state.page == "🔬 Explainable AI":
@@ -1518,73 +1960,72 @@ elif st.session_state.page == "🔬 Explainable AI":
         unsafe_allow_html=True
     )
 
-    st.markdown(
+    luxury_card(
         """
-        <div class="card">
+        <h2 style="
+            color:#F4D06F !important;
+        ">
+            🌸 How IrisAI Thinks
+        </h2>
 
-            <h3>🌸 How does IrisAI classify flowers?</h3>
+        <p>
+            IrisAI uses four numerical measurements
+            to classify an Iris flower.
+        </p>
 
-            <p>
-                IrisAI uses four measurements:
-            </p>
+        <ul>
+            <li>Sepal Length</li>
+            <li>Sepal Width</li>
+            <li>Petal Length</li>
+            <li>Petal Width</li>
+        </ul>
 
-            <ul>
-                <li>Sepal Length</li>
-                <li>Sepal Width</li>
-                <li>Petal Length</li>
-                <li>Petal Width</li>
-            </ul>
-
-            <p>
-                These measurements are provided to the selected
-                machine-learning model, which predicts one of
-                three Iris species.
-            </p>
-
-        </div>
-        """,
-        unsafe_allow_html=True
+        <p>
+            These measurements are passed through the
+            selected machine-learning model to predict
+            one of the three Iris species.
+        </p>
+        """
     )
 
     st.markdown(
-        "### 🌿 Average Measurements by Species"
+        "## 🌿 Average Measurements"
     )
 
     st.dataframe(
-        species_means.style.format("{:.2f}"),
+        species_means.style.format(
+            "{:.2f}"
+        ),
         use_container_width=True
     )
 
     st.markdown(
-        "### 🌸 Feature Importance — Random Forest"
+        "## 🌲 Random Forest Feature Importance"
     )
 
-    rf_pipeline = pipelines[
+    rf = pipelines[
         "Random Forest"
-    ]
+    ].named_steps["clf"]
 
-    rf_model = rf_pipeline.named_steps["clf"]
-
-    importance_df = pd.DataFrame({
+    importance = pd.DataFrame({
         "Feature": feature_names,
-        "Importance": rf_model.feature_importances_
+        "Importance": rf.feature_importances_
     }).sort_values(
-        "Importance",
-        ascending=True
+        "Importance"
     )
 
     importance_fig = px.bar(
-        importance_df,
+        importance,
         x="Importance",
         y="Feature",
         orientation="h",
-        title="Random Forest Feature Importance"
+        title="Feature Importance"
     )
 
     importance_fig.update_layout(
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        font_color="white"
+        paper_bgcolor="#0B0D12",
+        plot_bgcolor="#0B0D12",
+        font=dict(color="#FFFFFF")
     )
 
     st.plotly_chart(
@@ -1593,13 +2034,14 @@ elif st.session_state.page == "🔬 Explainable AI":
     )
 
     st.info(
-        "Feature importance shows how useful each feature "
-        "was for the Random Forest model when making decisions."
+        "Higher feature importance means the feature "
+        "contributed more strongly to the Random Forest's "
+        "decision-making process."
     )
 
 
 # ============================================================
-# PAGE 7 — ABOUT PROJECT
+# ABOUT
 # ============================================================
 
 elif st.session_state.page == "📚 About Project":
@@ -1611,26 +2053,37 @@ elif st.session_state.page == "📚 About Project":
         unsafe_allow_html=True
     )
 
-    glass_card(
-        """
-        <h2>🌸 IrisAI</h2>
+    luxury_card(
+        f"""
+        <h2 style="
+            color:#F4D06F !important;
+        ">
+            🌸 IrisAI
+        </h2>
 
         <p>
-            IrisAI is a Streamlit-based machine-learning
-            classification platform built around the classic
-            Iris dataset.
+            IrisAI is a premium Streamlit machine-learning
+            platform built around the classic Iris dataset.
         </p>
 
-        <h3>📊 Dataset</h3>
+        <h3 style="
+            color:#F4D06F !important;
+        ">
+            📊 Dataset
+        </h3>
 
         <ul>
-            <li>150 total samples</li>
+            <li>150 samples</li>
             <li>4 numerical features</li>
-            <li>3 Iris species</li>
+            <li>3 species/classes</li>
             <li>No missing values</li>
         </ul>
 
-        <h3>🤖 Machine Learning Models</h3>
+        <h3 style="
+            color:#F4D06F !important;
+        ">
+            🤖 Machine Learning
+        </h3>
 
         <ul>
             <li>Logistic Regression</li>
@@ -1640,7 +2093,11 @@ elif st.session_state.page == "📚 About Project":
             <li>Support Vector Machine</li>
         </ul>
 
-        <h3>🛠️ Technologies</h3>
+        <h3 style="
+            color:#F4D06F !important;
+        ">
+            🛠️ Technologies
+        </h3>
 
         <ul>
             <li>Python</li>
@@ -1650,25 +2107,38 @@ elif st.session_state.page == "📚 About Project":
             <li>Scikit-learn</li>
             <li>Plotly</li>
         </ul>
+
+        <h3 style="
+            color:#F4D06F !important;
+        ">
+            🏆 Best Model
+        </h3>
+
+        <p style="
+            color:#FFFFFF !important;
+            font-size:1.05rem;
+        ">
+            {best_model_name}
+        </p>
+
+        <p style="
+            color:#F4D06F !important;
+        ">
+            Accuracy: {model_results[best_model_name]["Accuracy"]:.2%}
+        </p>
         """
-    )
-
-    st.markdown(
-        "### 🏆 Current Best Model"
-    )
-
-    st.success(
-        f"{best_model_name} — "
-        f"{model_results[best_model_name]['Accuracy']:.2%} "
-        f"test accuracy"
     )
 
     st.markdown(
         """
         <div class="footer">
+
             IrisAI • Premium Machine Learning Platform
-            <br>
-            Built with Python + Streamlit + Scikit-learn
+
+            <br><br>
+
+            Python • Streamlit • Scikit-learn • Plotly
+
         </div>
         """,
         unsafe_allow_html=True
