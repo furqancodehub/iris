@@ -814,4 +814,4 @@ elif st.session_state.page == "📊 Dataset Explorer":
     class_counts = df["species_name"].value_counts().reset_index()
     class_counts.columns = ["Species", "Count"]
     fig = px.bar(class_counts, x="Species", y="Count", color="Species", title="Number of samples per species")
-    fig.update_layout(showlegend=False, paper_bgcolor="rgba(0,0,0,0
+    fig.update_layout(showlegend=False, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="white
