@@ -27,7 +27,7 @@ from sklearn.metrics import (
     confusion_matrix,
 )
 
-# PASSWORD WALA HISSA - Yahan se shuru
+# PASSWORD WALA HISSA
 def check_password():
     def password_entered():
         if st.session_state["password"] == st.secrets["password"]:
@@ -87,7 +87,7 @@ def load_css():
     /* Sidebar */
     [data-testid="stSidebar"] {
         background: #12121A;
-        border-right: 1px solid rgba(255,255,255,0.08);
+        border-right: 1px solid rgba(255,215,0,0.08);
     }
     [data-testid="stSidebar"] * {
         color: #FFFFFF !important;
@@ -133,7 +133,7 @@ def load_css():
     }
     .metric-card:hover {
         background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 215, 0, 0.3);
         transform: translateY(-4px);
     }
     .metric-card h3 {
@@ -141,7 +141,7 @@ def load_css():
         font-size: 2.2rem;
         font-weight: 700;
         margin: 0;
-        background: linear-gradient(135deg, #00F2FE, #4FACFE);
+        background: linear-gradient(135deg, #FFD700, #F4A460);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -156,12 +156,14 @@ def load_css():
 
     /* ===== LUXURY BILLIONAIRE BACK BUTTON ===== */
     .back-button-container {
-        margin: 1.5rem 0 2rem 0;
+        margin: 1rem 0 2rem 0;
         display: flex;
         justify-content: flex-start;
+        gap: 1rem;
+        flex-wrap: wrap;
     }
     
-    .back-button {
+    .back-button, .nav-button {
         display: inline-flex;
         align-items: center;
         gap: 10px;
@@ -181,7 +183,7 @@ def load_css():
         letter-spacing: 0.5px;
     }
     
-    .back-button:hover {
+    .back-button:hover, .nav-button:hover {
         transform: translateY(-3px) scale(1.02);
         box-shadow: 0 8px 40px rgba(255, 215, 0, 0.5);
         background: linear-gradient(135deg, #FFE44D, #F4A460, #FFE44D);
@@ -189,7 +191,7 @@ def load_css():
         animation: goldShine 2s ease-in-out infinite;
     }
     
-    .back-button:active {
+    .back-button:active, .nav-button:active {
         transform: scale(0.95);
     }
     
@@ -199,8 +201,7 @@ def load_css():
         100% { background-position: 0% 50%; }
     }
     
-    /* Luxury gold icon */
-    .back-icon {
+    .back-icon, .nav-icon {
         font-size: 1.3rem;
         filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
     }
@@ -208,7 +209,7 @@ def load_css():
     /* ===== FIXED INPUT BOX STYLES ===== */
     .stNumberInput > div > div > input {
         background: rgba(20, 25, 40, 0.9) !important;
-        border: 1px solid rgba(100, 150, 255, 0.2) !important;
+        border: 1px solid rgba(255, 215, 0, 0.2) !important;
         border-radius: 10px !important;
         color: #FFFFFF !important;
         font-size: 16px !important;
@@ -242,7 +243,7 @@ def load_css():
     
     .stTextInput > div > div > input {
         background: rgba(20, 25, 40, 0.9) !important;
-        border: 1px solid rgba(100, 150, 255, 0.2) !important;
+        border: 1px solid rgba(255, 215, 0, 0.2) !important;
         border-radius: 10px !important;
         color: #FFFFFF !important;
         font-size: 16px !important;
@@ -269,7 +270,7 @@ def load_css():
     
     .stSelectbox > div > div {
         background: rgba(20, 25, 40, 0.9) !important;
-        border: 1px solid rgba(100, 150, 255, 0.2) !important;
+        border: 1px solid rgba(255, 215, 0, 0.2) !important;
         border-radius: 10px !important;
         color: #FFFFFF !important;
         padding: 4px 8px !important;
@@ -287,7 +288,7 @@ def load_css():
     
     .stSelectbox > div > div ul {
         background: #1A1A2E !important;
-        border: 1px solid rgba(100, 150, 255, 0.2) !important;
+        border: 1px solid rgba(255, 215, 0, 0.2) !important;
     }
     
     .stSelectbox > div > div ul li {
@@ -353,7 +354,7 @@ def load_css():
         border-radius: 0 0 10px 10px !important;
     }
 
-    /* Pulse animation for status dot */
+    /* Pulse animation */
     @keyframes pulse {
         0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
         70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
@@ -375,7 +376,7 @@ def load_css():
         color: #888888 !important;
         padding: 2rem 0 1rem 0;
         font-size: 0.8rem;
-        border-top: 1px solid rgba(255,255,255,0.05);
+        border-top: 1px solid rgba(255,215,0,0.05);
         margin-top: 3rem;
     }
 
@@ -394,11 +395,18 @@ def load_css():
 
     /* Download button */
     .stDownloadButton > button {
-        color: #FFFFFF !important;
         width: 100% !important;
         background: linear-gradient(135deg, #FFD700, #F4A460) !important;
         color: #0A0A0F !important;
         font-weight: 700 !important;
+        border: none !important;
+        padding: 0.6rem 2rem !important;
+        border-radius: 10px !important;
+        transition: all 0.3s ease !important;
+    }
+    .stDownloadButton > button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4) !important;
     }
 
     /* Main action buttons */
@@ -449,7 +457,7 @@ def load_css():
             margin-bottom: 1rem !important;
         }
         
-        .back-button {
+        .back-button, .nav-button {
             padding: 10px 20px !important;
             font-size: 0.9rem !important;
         }
@@ -524,6 +532,19 @@ def load_css():
         border: 1px solid rgba(255, 215, 0, 0.3) !important;
         border-radius: 10px !important;
         color: #FFFFFF !important;
+    }
+
+    /* Quick access floating buttons */
+    .quick-nav {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 1rem;
+        background: rgba(255,255,255,0.03);
+        border-radius: 16px;
+        border: 1px solid rgba(255,215,0,0.1);
+        margin: 1rem 0;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -664,17 +685,33 @@ nav_options = [
     "📚 About Project",
 ]
 
-# Radio buttons with custom styling
+# Radio buttons
 selected_page = st.sidebar.radio(
     "📌 NAVIGATION",
     nav_options,
     index=nav_options.index(st.session_state.page) if st.session_state.page in nav_options else 0
 )
 
-# Update session state when sidebar selection changes
 if selected_page != st.session_state.page:
     st.session_state.page = selected_page
     st.rerun()
+
+st.sidebar.markdown("---")
+
+# Sidebar stats
+st.sidebar.markdown("""
+<div style="padding: 0.5rem 0;">
+    <p style="color: #888888 !important; font-size: 0.7rem; text-align: center;">
+        🚀 Predictions Made: <strong style="color: #FFD700;">{}</strong><br>
+        📊 Best Model: <strong style="color: #FFD700;">{}</strong><br>
+        🎯 Accuracy: <strong style="color: #FFD700;">{:.1%}</strong>
+    </p>
+</div>
+""".format(
+    st.session_state.prediction_count,
+    st.session_state.best_model_name,
+    model_results[best_model_name]["Accuracy"]
+), unsafe_allow_html=True)
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("""
@@ -697,10 +734,43 @@ def navigate_to(page_name):
     st.rerun()
 
 # -------------------------------
-# LUXURY BACK BUTTON COMPONENT
+# POWERFUL NAVIGATION BUTTONS
 # -------------------------------
+def render_navigation_bar():
+    """Render a powerful navigation bar with quick access buttons"""
+    st.markdown("""
+    <div style="
+        background: rgba(255,255,255,0.03);
+        border-radius: 16px;
+        padding: 1rem;
+        border: 1px solid rgba(255,215,0,0.1);
+        margin: 1rem 0 2rem 0;
+    ">
+        <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;">
+            <button class="nav-button" style="flex: 1; min-width: 120px;" onclick="window.location.href='#'">
+                <span class="nav-icon">🏠</span> Home
+            </button>
+            <button class="nav-button" style="flex: 1; min-width: 120px;" onclick="window.location.href='#'">
+                <span class="nav-icon">🤖</span> Predict
+            </button>
+            <button class="nav-button" style="flex: 1; min-width: 120px;" onclick="window.location.href='#'">
+                <span class="nav-icon">📊</span> Explore
+            </button>
+            <button class="nav-button" style="flex: 1; min-width: 120px;" onclick="window.location.href='#'">
+                <span class="nav-icon">📈</span> Visualize
+            </button>
+            <button class="nav-button" style="flex: 1; min-width: 120px;" onclick="window.location.href='#'">
+                <span class="nav-icon">🧠</span> Models
+            </button>
+            <button class="nav-button" style="flex: 1; min-width: 120px;" onclick="window.location.href='#'">
+                <span class="nav-icon">🔬</span> XAI
+            </button>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
 def luxury_back_button():
-    """Display a premium gold back button"""
+    """Display a premium gold back button with quick navigation"""
     st.markdown("""
     <div class="back-button-container">
         <button class="back-button" onclick="window.location.reload()">
@@ -711,7 +781,7 @@ def luxury_back_button():
     </div>
     """, unsafe_allow_html=True)
     
-    # Actual Streamlit button (hidden but functional)
+    # Actual Streamlit button
     if st.button("⬅️ Back to Home", key="back_to_home_btn", use_container_width=False):
         navigate_to("🏠 Home")
 
@@ -798,94 +868,28 @@ if st.session_state.page == "🏠 Home":
     </div>
     """, unsafe_allow_html=True)
 
-    # Call to action
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.markdown("""
-        <div style="text-align: center; padding: 2rem 0;">
-            <h3 style="color: #FFFFFF !important;">Ready to classify your first flower?</h3>
-            <p style="color: #BBBBBB !important; margin-bottom: 1rem;">Click below to start making predictions with our AI</p>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("🚀 Start Predicting Now", use_container_width=True):
-            navigate_to("🤖 AI Prediction")
-
-    # Quick navigation
+    # Quick Navigation Grid
     st.markdown("""
-    <h2 style="margin-top: 2rem;">🎯 Quick Navigation</h2>
+    <h2 style="margin-top: 2rem;">🎯 Quick Access</h2>
     """, unsafe_allow_html=True)
     
     nav_col1, nav_col2, nav_col3 = st.columns(3)
     with nav_col1:
-        if st.button("🤖 Go to Predictions", key="nav_predict", use_container_width=True):
+        if st.button("🤖 AI Prediction", key="nav_predict", use_container_width=True):
             navigate_to("🤖 AI Prediction")
-    with nav_col2:
-        if st.button("📊 Explore Data", key="nav_explore", use_container_width=True):
+        if st.button("📊 Dataset Explorer", key="nav_explore", use_container_width=True):
             navigate_to("📊 Dataset Explorer")
-    with nav_col3:
-        if st.button("🧠 View Models", key="nav_models", use_container_width=True):
+    with nav_col2:
+        if st.button("📈 Data Visualization", key="nav_viz", use_container_width=True):
+            navigate_to("📈 Data Visualization")
+        if st.button("🧠 Model Performance", key="nav_models", use_container_width=True):
             navigate_to("🧠 Model Performance")
+    with nav_col3:
+        if st.button("🔬 Explainable AI", key="nav_xai", use_container_width=True):
+            navigate_to("🔬 Explainable AI")
+        if st.button("📚 About Project", key="nav_about", use_container_width=True):
+            navigate_to("📚 About Project")
 
-# -------------------------------
-# 2. AI PREDICTION
-# -------------------------------
-elif st.session_state.page == "🤖 AI Prediction":
-    # Luxury Back Button
-    luxury_back_button()
-    
-    st.markdown("<h1 style='color: #FFFFFF !important;'>🤖 Predict Iris Species</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #BBBBBB !important;'>Enter measurements and let the AI classify the flower</p>", unsafe_allow_html=True)
-
-    with st.form("prediction_form"):
-        cols = st.columns(4)
-        with cols[0]:
-            sepal_len = st.number_input("📏 Sepal Length (cm)", min_value=0.0, max_value=10.0, value=5.1, step=0.1)
-        with cols[1]:
-            sepal_wid = st.number_input("📐 Sepal Width (cm)", min_value=0.0, max_value=10.0, value=3.5, step=0.1)
-        with cols[2]:
-            petal_len = st.number_input("📏 Petal Length (cm)", min_value=0.0, max_value=10.0, value=1.4, step=0.1)
-        with cols[3]:
-            petal_wid = st.number_input("📐 Petal Width (cm)", min_value=0.0, max_value=10.0, value=0.2, step=0.1)
-
-        col_btn1, col_btn2, _ = st.columns([1, 1, 2])
-        with col_btn1:
-            predict_btn = st.form_submit_button("🔮 Predict Species")
-        with col_btn2:
-            reset_btn = st.form_submit_button("🔄 Reset Inputs")
-
-    if reset_btn:
-        st.session_state.prediction_inputs = None
-        st.rerun()
-
-    if predict_btn:
-        try:
-            input_data = np.array([[sepal_len, sepal_wid, petal_len, petal_wid]])
-            model = st.session_state.best_model
-            prediction = model.predict(input_data)[0]
-            probabilities = model.predict_proba(input_data)[0]
-            pred_species = target_names[prediction]
-            confidence = np.max(probabilities)
-
-            st.session_state.prediction_count += 1
-            st.session_state.last_prediction = {
-                "species": pred_species,
-                "confidence": confidence,
-                "inputs": [sepal_len, sepal_wid, petal_len, petal_wid],
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            }
-            st.session_state.history.append(st.session_state.last_prediction)
-
-            st.markdown("---")
-            glass_card(f"""
-            <div style="text-align: center;">
-                <h2 style="margin-bottom: 0.2rem; color: #FFFFFF !important;">🌸 {pred_species}</h2>
-                <p style="font-size: 1.1rem; color: #FFD700 !important;">Confidence: {confidence*100:.1f}%</p>
-            </div>
-            """)
-
-            prob_df = pd.DataFrame({
-                "Species": target_names,
-                "Probability": probabilities
-            }).sort_values("Probability", ascending=True)
-            fig = px.bar(prob_df, x="Probability", y="Species", orientation="h",
-                         color="Species", color_discrete_sequence=px.col
+    # Call to action
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col
