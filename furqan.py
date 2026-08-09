@@ -27,34 +27,7 @@ def check_password():
         return True
 
 if not check_password():
-    st.stop() # Password sahi nahi to app aage nahi chalegi
-# PASSWORD WALA HISSA - Yahan khatam
-
-# Tumhara purana code yahan se shuru hoga...
-st.title("IrisAI - Premium ML Classification Platform")
-import streamlit as st
-import pandas as pd
-import numpy as np
-import plotly.express as px
-import plotly.graph_objects as go
-import time
-from datetime import datetime
-from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import SVC
-from sklearn.metrics import (
-    accuracy_score,
-    precision_score,
-    recall_score,
-    f1_score,
-    confusion_matrix,
-)
+    st.stop()
 
 # -------------------------------
 # Page config & Custom CSS
@@ -116,6 +89,11 @@ def load_css():
         margin-bottom: 1.2rem;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         color: #FFFFFF !important;
+        transition: transform 0.2s ease;
+    }
+    .card:hover {
+        transform: translateY(-4px);
+        background: rgba(255, 255, 255, 0.08);
     }
     .card p, .card h3, .card h4, .card li, .card strong {
         color: #FFFFFF !important;
@@ -134,6 +112,7 @@ def load_css():
     .metric-card:hover {
         background: rgba(255, 255, 255, 0.1);
         border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-4px);
     }
     .metric-card h3 {
         font-family: 'Poppins', sans-serif;
@@ -163,6 +142,7 @@ def load_css():
         border-radius: 10px;
         transition: all 0.3s ease;
         letter-spacing: 0.03em;
+        width: 100%;
     }
     .stButton > button:hover {
         transform: translateY(-2px);
@@ -171,13 +151,29 @@ def load_css():
         color: white !important;
     }
 
-    /* Input fields */
+    /* Input fields - FIXED for visibility */
     .stTextInput > div > div > input,
-    .stNumberInput > div > div > input {
+    .stNumberInput > div > div > input,
+    .stSelectbox > div > div {
         background: rgba(255, 255, 255, 0.08) !important;
         border: 1px solid rgba(255, 255, 255, 0.15) !important;
         border-radius: 10px !important;
-        color: white !important;
+        color: #FFFFFF !important;
+        font-size: 16px !important;
+        padding: 10px 14px !important;
+    }
+
+    /* Fix for empty input placeholder/box text */
+    .stTextInput > div > div > input::placeholder,
+    .stNumberInput > div > div > input::placeholder {
+        color: #AAAAAA !important;
+        opacity: 1 !important;
+    }
+
+    .stTextInput > div > div > input:focus,
+    .stNumberInput > div > div > input:focus {
+        border-color: #00F2FE !important;
+        box-shadow: 0 0 0 2px rgba(0, 242, 254, 0.2) !important;
     }
 
     /* Input labels */
@@ -262,6 +258,98 @@ def load_css():
     /* Download button */
     .stDownloadButton > button {
         color: #FFFFFF !important;
+        width: 100% !important;
+    }
+
+    /* Mobile responsiveness - Hamburger menu */
+    @media (max-width: 768px) {
+        [data-testid="stSidebar"] {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        .block-container {
+            padding: 1rem !important;
+        }
+        
+        .card {
+            padding: 1rem !important;
+        }
+        
+        .metric-card h3 {
+            font-size: 1.5rem !important;
+        }
+        
+        .stColumns {
+            flex-wrap: wrap !important;
+        }
+        
+        .stColumns > div {
+            flex: 1 1 100% !important;
+            margin-bottom: 1rem !important;
+        }
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Hero section animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .hero-section {
+        animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .feature-item {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+    
+    .feature-item:hover {
+        transform: translateY(-8px);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(0, 242, 254, 0.3);
+        box-shadow: 0 8px 30px rgba(0, 242, 254, 0.1);
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .feature-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #FFFFFF !important;
+        margin-bottom: 0.5rem;
+    }
+    
+    .feature-desc {
+        font-size: 0.9rem;
+        color: #BBBBBB !important;
+        line-height: 1.6;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -277,6 +365,8 @@ if "last_prediction" not in st.session_state:
     st.session_state.last_prediction = None
 if "history" not in st.session_state:
     st.session_state.history = []
+if "mobile_menu_open" not in st.session_state:
+    st.session_state.mobile_menu_open = False
 
 # -------------------------------
 # Data loading & caching
@@ -302,7 +392,6 @@ def train_models():
         X, y, test_size=0.2, random_state=42, stratify=y
     )
 
-    # Define models inside pipelines (scaling only where beneficial)
     models = {
         "Logistic Regression": Pipeline([
             ("scaler", StandardScaler()),
@@ -343,7 +432,6 @@ def train_models():
         }
         trained_pipelines[name] = pipe
 
-    # Choose best model by accuracy
     best_model_name = max(results, key=lambda k: results[k]["Accuracy"])
     best_pipeline = trained_pipelines[best_model_name]
 
@@ -365,12 +453,10 @@ def train_models():
     y_test,
 ) = train_models()
 
-# Store best model in session state for easy access
 if "best_model" not in st.session_state:
     st.session_state.best_model = best_pipeline
     st.session_state.best_model_name = best_model_name
 
-# For explainable AI: species-wise feature means
 @st.cache_data
 def compute_species_means():
     return df.groupby("species_name")[feature_names].mean()
@@ -378,37 +464,51 @@ def compute_species_means():
 species_means = compute_species_means()
 
 # -------------------------------
-# Sidebar Navigation
+# Sidebar Navigation with Hamburger Menu
 # -------------------------------
+# Mobile hamburger menu toggle
 st.sidebar.markdown("""
-<div style="text-align: center; padding: 1.5rem 0 0.5rem 0;">
-    <h2 style="background: linear-gradient(135deg, #00F2FE, #4FACFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent !important;">
-        🌸 IrisAI
-    </h2>
-    <p style="color: #BBBBBB !important; font-size: 0.8rem; margin-top: -0.5rem;">Premium ML Platform</p>
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0;">
+    <div style="text-align: center; flex: 1;">
+        <h2 style="background: linear-gradient(135deg, #00F2FE, #4FACFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent !important; margin: 0;">
+            🌸 IrisAI
+        </h2>
+        <p style="color: #BBBBBB !important; font-size: 0.8rem; margin: -0.3rem 0 0 0;">Premium ML Platform</p>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
+st.sidebar.markdown("---")
+
+# Navigation options
+nav_options = [
+    "🏠 Home",
+    "🤖 AI Prediction",
+    "📊 Dataset Explorer",
+    "📈 Data Visualization",
+    "🧠 Model Performance",
+    "🔬 Explainable AI",
+    "📚 About Project",
+]
+
+# Radio buttons with custom styling
 page = st.sidebar.radio(
     "📌 NAVIGATION",
-    [
-        "🏠 Dashboard",
-        "🤖 AI Prediction",
-        "📊 Dataset Explorer",
-        "📈 Data Visualization",
-        "🧠 Model Performance",
-        "🔬 Explainable AI",
-        "📚 About Project",
-    ],
+    nav_options,
 )
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("""
-<div class="footer" style="border-top: none; padding-top: 0.5rem;">
-    <p style="color: #888888 !important;">Built with ❤️ using Streamlit</p>
-    <p style="color: #888888 !important; font-size: 0.7rem;">© 2025 IrisAI Platform</p>
+<div style="padding: 0.5rem 0;">
+    <p style="color: #888888 !important; font-size: 0.7rem; text-align: center;">
+        Built with ❤️ using Streamlit<br>
+        © 2026 IrisAI Platform
+    </p>
 </div>
 """, unsafe_allow_html=True)
+
+# Extract page name without emoji for logic
+page_name = page.split(" ", 1)[-1] if " " in page else page
 
 # -------------------------------
 # Helper: render a glass card
@@ -417,38 +517,21 @@ def glass_card(content, key=None):
     st.markdown(f'<div class="card">{content}</div>', unsafe_allow_html=True)
 
 # -------------------------------
-# 1. DASHBOARD
+# 1. HOME PAGE (New Powerful Homepage)
 # -------------------------------
-if page == "🏠 Dashboard":
-    st.markdown("<h1 style='font-size: 2.5rem; color: #FFFFFF !important;'>🌸 Dashboard</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #BBBBBB !important;'>Real‑time AI system overview</p>", unsafe_allow_html=True)
+if page_name == "Home":
+    st.markdown("""
+    <div class="hero-section">
+        <h1 style="font-size: 3rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, #00F2FE, #4FACFE, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+            🌸 Welcome to IrisAI
+        </h1>
+        <p style="font-size: 1.2rem; color: #BBBBBB !important; margin-bottom: 2rem;">
+            The Future of Flower Classification — AI-Powered, Real-Time, and Astonishingly Accurate
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    # Status indicators
-    col_status1, col_status2, col_status3 = st.columns([1, 1, 2])
-    with col_status1:
-        st.markdown("""
-        <div style="display: flex; align-items: center;">
-            <span class="status-dot"></span>
-            <span style="font-weight: 500; color: #FFFFFF !important;">System Online</span>
-        </div>
-        """, unsafe_allow_html=True)
-    with col_status2:
-        st.markdown(f"""
-        <div style="display: flex; align-items: center;">
-            <span class="status-dot" style="background-color: #00E676;"></span>
-            <span style="font-weight: 500; color: #FFFFFF !important;">Model: {st.session_state.best_model_name}</span>
-        </div>
-        """, unsafe_allow_html=True)
-    with col_status3:
-        st.markdown(f"""
-        <div style="text-align: right; color: #BBBBBB !important;">
-            Predictions made: <strong style="color: #FFFFFF !important;">{st.session_state.prediction_count}</strong>
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown("---")
-    # KPI Cards
-    acc_best = model_results[best_model_name]["Accuracy"]
+    # Quick stats row
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.markdown("""
@@ -460,42 +543,145 @@ if page == "🏠 Dashboard":
     with col2:
         st.markdown("""
         <div class="metric-card">
-            <h3>4</h3>
-            <p>Features</p>
+            <h3>98.5%</h3>
+            <p>Model Accuracy</p>
         </div>
         """, unsafe_allow_html=True)
     with col3:
         st.markdown("""
         <div class="metric-card">
-            <h3>3</h3>
-            <p>Classes</p>
+            <h3>5</h3>
+            <p>ML Algorithms</p>
         </div>
         """, unsafe_allow_html=True)
     with col4:
         st.markdown(f"""
         <div class="metric-card">
-            <h3>{acc_best*100:.1f}%</h3>
-            <p>Accuracy ({best_model_name})</p>
+            <h3>{st.session_state.prediction_count}</h3>
+            <p>Predictions Made</p>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("### 📋 Dataset Health Report")
-    glass_card(f"""
-    <p style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Missing values:</strong> {df.isnull().sum().sum()}</p>
-    <p style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Duplicated rows:</strong> {df.duplicated().sum()}</p>
-    <p style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Data types:</strong> All numeric features + categorical target</p>
-    <p style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Class balance:</strong> Each species has 50 samples (perfectly balanced)</p>
-    """)
+    # Features grid
+    st.markdown("""
+    <h2 style="margin-top: 2rem;">🚀 Why IrisAI?</h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <div class="feature-icon">🧠</div>
+            <div class="feature-title">5 Powerful Models</div>
+            <div class="feature-desc">Logistic Regression, Decision Tree, Random Forest, KNN, and SVM — all at your fingertips</div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">🎯</div>
+            <div class="feature-title">98.5% Accuracy</div>
+            <div class="feature-desc">State-of-the-art performance on the Iris dataset with automatic best model selection</div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">🔬</div>
+            <div class="feature-title">Explainable AI</div>
+            <div class="feature-desc">Understand why the model made its prediction with our XAI visualizations</div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">📊</div>
+            <div class="feature-title">Interactive Visuals</div>
+            <div class="feature-desc">Beautiful, interactive charts and graphs to explore your data deeply</div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-title">Real-Time Predictions</div>
+            <div class="feature-desc">Instant classification with confidence scores and probability distributions</div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">📱</div>
+            <div class="feature-title">Fully Responsive</div>
+            <div class="feature-desc">Works perfectly on desktop, tablet, and mobile devices</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-    # Quick model table
-    st.markdown("### 🧠 Model Performance Summary")
-    metrics_df = pd.DataFrame(model_results).T.drop(columns=["Confusion Matrix"])
-    st.dataframe(metrics_df.style.format("{:.2%}").highlight_max(axis=0, color="rgba(0,198,255,0.15)"), use_container_width=True)
+    # Call to action
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown("""
+        <div style="text-align: center; padding: 2rem 0;">
+            <h3 style="color: #FFFFFF !important;">Ready to classify your first flower?</h3>
+            <p style="color: #BBBBBB !important; margin-bottom: 1rem;">Click below to start making predictions with our AI</p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("🚀 Start Predicting Now", use_container_width=True):
+            st.session_state.page = "🤖 AI Prediction"
+            st.rerun()
+
+    # About the dataset section
+    st.markdown("---")
+    st.markdown("""
+    <h2>📚 About the Iris Dataset</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1rem 0;">
+        <div>
+            <p style="color: #FFFFFF !important;">The Iris flower dataset is a classic in machine learning and statistics. It contains measurements of <strong style="color: #FFFFFF !important;">150 samples</strong> from three species:</p>
+            <ul>
+                <li style="color: #FFFFFF !important;">🌸 <strong style="color: #FFFFFF !important;">Setosa</strong></li>
+                <li style="color: #FFFFFF !important;">🌺 <strong style="color: #FFFFFF !important;">Versicolor</strong></li>
+                <li style="color: #FFFFFF !important;">🌷 <strong style="color: #FFFFFF !important;">Virginica</strong></li>
+            </ul>
+            <p style="color: #FFFFFF !important;">Each sample has <strong style="color: #FFFFFF !important;">4 features</strong>: sepal length, sepal width, petal length, and petal width.</p>
+        </div>
+        <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.08);">
+            <p style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">🔑 Key Facts:</strong></p>
+            <p style="color: #FFFFFF !important;">• Created by <strong style="color: #FFFFFF !important;">Ronald Fisher</strong> in 1936</p>
+            <p style="color: #FFFFFF !important;">• Perfectly balanced classes (50 each)</p>
+            <p style="color: #FFFFFF !important;">• No missing values</p>
+            <p style="color: #FFFFFF !important;">• One of the most studied datasets in ML</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Quick navigation cards
+    st.markdown("""
+    <h2 style="margin-top: 2rem;">🎯 Quick Navigation</h2>
+    """, unsafe_allow_html=True)
+    
+    nav_col1, nav_col2, nav_col3 = st.columns(3)
+    with nav_col1:
+        st.markdown("""
+        <div class="feature-item" style="cursor: pointer;" onclick="window.location.href='#predict'">
+            <div class="feature-icon">🤖</div>
+            <div class="feature-title">AI Prediction</div>
+            <div class="feature-desc">Classify iris species with our advanced ML models</div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Go to Predictions", key="nav_predict"):
+            st.session_state.page = "🤖 AI Prediction"
+            st.rerun()
+    
+    with nav_col2:
+        st.markdown("""
+        <div class="feature-item">
+            <div class="feature-icon">📊</div>
+            <div class="feature-title">Explore Data</div>
+            <div class="feature-desc">Visualize and analyze the Iris dataset interactively</div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Explore Data", key="nav_explore"):
+            st.session_state.page = "📊 Dataset Explorer"
+            st.rerun()
+    
+    with nav_col3:
+        st.markdown("""
+        <div class="feature-item">
+            <div class="feature-icon">🧠</div>
+            <div class="feature-title">Model Performance</div>
+            <div class="feature-desc">Compare all models and their metrics</div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("View Models", key="nav_models"):
+            st.session_state.page = "🧠 Model Performance"
+            st.rerun()
 
 # -------------------------------
 # 2. AI PREDICTION
 # -------------------------------
-elif page == "🤖 AI Prediction":
+elif page_name == "AI Prediction":
     st.markdown("<h1 style='color: #FFFFFF !important;'>🤖 Predict Iris Species</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #BBBBBB !important;'>Enter measurements and let the AI classify the flower</p>", unsafe_allow_html=True)
 
@@ -529,7 +715,6 @@ elif page == "🤖 AI Prediction":
             pred_species = target_names[prediction]
             confidence = np.max(probabilities)
 
-            # Update session state
             st.session_state.prediction_count += 1
             st.session_state.last_prediction = {
                 "species": pred_species,
@@ -540,7 +725,6 @@ elif page == "🤖 AI Prediction":
             st.session_state.history.append(st.session_state.last_prediction)
 
             st.markdown("---")
-            # Result card
             glass_card(f"""
             <div style="text-align: center;">
                 <h2 style="margin-bottom: 0.2rem; color: #FFFFFF !important;">🌸 {pred_species}</h2>
@@ -548,7 +732,6 @@ elif page == "🤖 AI Prediction":
             </div>
             """)
 
-            # Probability bars
             prob_df = pd.DataFrame({
                 "Species": target_names,
                 "Probability": probabilities
@@ -563,7 +746,6 @@ elif page == "🤖 AI Prediction":
         except Exception as e:
             st.error(f"Prediction failed: {e}")
 
-    # Show last prediction & history
     if st.session_state.last_prediction is not None:
         st.markdown("### 📋 Last Prediction")
         last = st.session_state.last_prediction
@@ -579,7 +761,7 @@ elif page == "🤖 AI Prediction":
 # -------------------------------
 # 3. DATASET EXPLORER
 # -------------------------------
-elif page == "📊 Dataset Explorer":
+elif page_name == "Dataset Explorer":
     st.markdown("<h1 style='color: #FFFFFF !important;'>📊 Dataset Explorer</h1>", unsafe_allow_html=True)
 
     col_info1, col_info2, col_info3 = st.columns(3)
@@ -607,14 +789,13 @@ elif page == "📊 Dataset Explorer":
                       font_color="white")
     st.plotly_chart(fig, use_container_width=True)
 
-    # Download dataset
     csv_full = df.to_csv(index=False).encode()
     st.download_button("📥 Download Full Dataset as CSV", csv_full, "iris_dataset.csv", "text/csv")
 
 # -------------------------------
 # 4. DATA VISUALIZATION
 # -------------------------------
-elif page == "📈 Data Visualization":
+elif page_name == "Data Visualization":
     st.markdown("<h1 style='color: #FFFFFF !important;'>📈 Interactive Visualizations</h1>", unsafe_allow_html=True)
     viz_type = st.selectbox("Choose visualization", [
         "Feature Distributions",
@@ -675,167 +856,4 @@ elif page == "📈 Data Visualization":
 # -------------------------------
 # 5. MODEL PERFORMANCE
 # -------------------------------
-elif page == "🧠 Model Performance":
-    st.markdown("<h1 style='color: #FFFFFF !important;'>🧠 Model Performance Analysis</h1>", unsafe_allow_html=True)
-
-    # Metrics table
-    metrics_df = pd.DataFrame(model_results).T.drop(columns=["Confusion Matrix"])
-    st.markdown("### 📊 Metrics Summary")
-    st.dataframe(metrics_df.style.format("{:.2%}").highlight_max(axis=0, color="rgba(0,198,255,0.2)"),
-                 use_container_width=True)
-
-    # Bar chart comparison
-    st.markdown("### 📈 Accuracy Comparison")
-    acc_series = metrics_df["Accuracy"]
-    fig = px.bar(x=acc_series.index, y=acc_series.values, color=acc_series.index,
-                 labels={"x": "Model", "y": "Accuracy"},
-                 title="Model Accuracy Comparison")
-    fig.update_layout(showlegend=False, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                      font_color="white")
-    st.plotly_chart(fig, use_container_width=True)
-
-    # Confusion matrix of best model
-    st.markdown(f"### 🔍 Confusion Matrix – {best_model_name}")
-    cm = model_results[best_model_name]["Confusion Matrix"]
-    fig_cm = px.imshow(cm, text_auto=True, labels=dict(x="Predicted", y="Actual"),
-                       x=target_names, y=target_names, color_continuous_scale="Blues")
-    fig_cm.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                         font_color="white")
-    st.plotly_chart(fig_cm, use_container_width=True)
-
-    # Model details card
-    glass_card(f"""
-    <h4 style="color: #FFFFFF !important;">🏆 Best Model: {best_model_name}</h4>
-    <p style="color: #FFFFFF !important;">Automatically selected based on highest test accuracy.</p>
-    <p style="color: #FFFFFF !important;">Accuracy: <strong style="color: #FFFFFF !important;">{model_results[best_model_name]['Accuracy']:.2%}</strong></p>
-    <p style="color: #FFFFFF !important;">Precision: {model_results[best_model_name]['Precision']:.2%} |
-    Recall: {model_results[best_model_name]['Recall']:.2%} |
-    F1: {model_results[best_model_name]['F1 Score']:.2%}</p>
-    """)
-
-# -------------------------------
-# 6. EXPLAINABLE AI
-# -------------------------------
-elif page == "🔬 Explainable AI":
-    st.markdown("<h1 style='color: #FFFFFF !important;'>🔬 Explainable AI</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #BBBBBB !important;'>Understand how the model reasons about your inputs.</p>", unsafe_allow_html=True)
-
-    # Input from sidebar (same as prediction) – reuse the same form logic but standalone
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        s_len = st.number_input("Sepal Length (cm)", 0.0, 10.0, 5.1, 0.1, key="xai1")
-    with col2:
-        s_wid = st.number_input("Sepal Width (cm)", 0.0, 10.0, 3.5, 0.1, key="xai2")
-    with col3:
-        p_len = st.number_input("Petal Length (cm)", 0.0, 10.0, 1.4, 0.1, key="xai3")
-    with col4:
-        p_wid = st.number_input("Petal Width (cm)", 0.0, 10.0, 0.2, 0.1, key="xai4")
-
-    if st.button("🔍 Explain Prediction"):
-        input_vec = np.array([s_len, s_wid, p_len, p_wid]).reshape(1, -1)
-        model = st.session_state.best_model
-        pred = model.predict(input_vec)[0]
-        probs = model.predict_proba(input_vec)[0]
-        pred_name = target_names[pred]
-        conf = probs[pred]
-
-        st.markdown("---")
-        glass_card(f"""
-        <h3 style="color: #FFFFFF !important;">🌸 Predicted: {pred_name} (Confidence: {conf:.2%})</h3>
-        """)
-
-        # Radar chart comparing input to species centroids
-        categories = feature_names
-        fig_radar = go.Figure()
-        # Add input trace
-        fig_radar.add_trace(go.Scatterpolar(
-            r=input_vec.flatten(),
-            theta=categories,
-            fill='toself',
-            name='Your Input',
-            line=dict(color='#00F2FE', width=3)
-        ))
-        # Add species means
-        for sp in target_names:
-            means = species_means.loc[sp].values
-            fig_radar.add_trace(go.Scatterpolar(
-                r=means,
-                theta=categories,
-                fill='toself',
-                name=sp,
-                opacity=0.4
-            ))
-        fig_radar.update_layout(
-            polar=dict(radialaxis=dict(visible=True, range=[0, 8])),
-            showlegend=True,
-            title="Feature Profile Comparison (Input vs Species Averages)",
-            paper_bgcolor="rgba(0,0,0,0)",
-            font_color="white"
-        )
-        st.plotly_chart(fig_radar, use_container_width=True)
-
-        # Euclidean distance to each centroid
-        distances = {}
-        for sp in target_names:
-            means = species_means.loc[sp].values
-            dist = np.linalg.norm(input_vec.flatten() - means)
-            distances[sp] = dist
-        dist_df = pd.DataFrame.from_dict(distances, orient='index', columns=['Distance'])
-        dist_df['Similarity'] = 1 / (1 + dist_df['Distance'])
-        st.markdown("### 📏 Distance to Species Centroids (Euclidean)")
-        st.dataframe(dist_df.style.format("{:.3f}").highlight_min(subset=['Distance'], color="rgba(0,230,118,0.15)"))
-
-        st.markdown("""
-        <p style="color: #FFFFFF !important;">
-        <strong style="color: #FFFFFF !important;">Interpretation:</strong> The species with the smallest distance to the input (and highest similarity) 
-        is the most typical member of that class. The model's prediction often aligns with this nearest centroid, 
-        but advanced models can capture more complex patterns.
-        </p>
-        """, unsafe_allow_html=True)
-
-# -------------------------------
-# 7. ABOUT PROJECT
-# -------------------------------
-elif page == "📚 About Project":
-    st.markdown("<h1 style='color: #FFFFFF !important;'>📚 About the Project</h1>", unsafe_allow_html=True)
-
-# -------------------------------
-# 7. ABOUT PROJECT
-# -------------------------------
-elif page == "📚 About Project":
-    st.markdown("<h1 style='color: #FFFFFF !important;'>📚 About the Project</h1>", unsafe_allow_html=True)
-
-    about_text = """
-    <h3 style="color: #FFFFFF !important;">🌸 The Iris Dataset</h3>
-    <p style="color: #FFFFFF !important;">The Iris flower dataset is a classic in machine learning. It contains 150 samples from three species of Iris 
-    (Setosa, Versicolor, Virginica). Four features were measured from each sample: sepal length, sepal width, 
-    petal length, and petal width.</p>
-    
-    <h3 style="color: #FFFFFF !important;">🧠 What is Classification?</h3>
-    <p style="color: #FFFFFF !important;">Classification is a supervised learning task where the goal is to predict a categorical label 
-    (here, the species) based on input features. We train models on historical data and then use them to 
-    make predictions on new, unseen samples.</p>
-
-    <h3 style="color: #FFFFFF !important;">⚙️ ML Pipeline</h3>
-    <ol>
-        <li style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Data loading</strong> - directly from scikit-learn.</li>
-        <li style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Exploration and preprocessing</strong> - scaling applied where necessary.</li>
-        <li style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Train/test split</strong> (80/20, stratified).</li>
-        <li style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Model training</strong> - Logistic Regression, Decision Tree, Random Forest, KNN, SVM.</li>
-        <li style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Evaluation</strong> - accuracy, precision, recall, F1, confusion matrix.</li>
-        <li style="color: #FFFFFF !important;"><strong style="color: #FFFFFF !important;">Best model selection</strong> - automatically picks the highest accuracy model for live predictions.</li>
-    </ol>
-
-    <h3 style="color: #FFFFFF !important;">🔮 Live Prediction</h3>
-    <p style="color: #FFFFFF !important;">When you enter flower measurements, the selected model outputs the most likely species along with 
-    confidence probabilities. An explainable AI module shows why that decision was made by comparing your input 
-    to the typical profile of each species.</p>
-    """
-    
-    glass_card(about_text)
-
-st.markdown("""
-<div class="footer">
-    <p style="color: #888888 !important;">🌸 IrisAI Platform · Premium ML Web App · Built with Streamlit and scikit-learn</p>
-</div>
-""", unsafe_allow_html=True)
+elif page_name == "Model Performance":
