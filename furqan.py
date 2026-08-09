@@ -569,7 +569,7 @@ def compute_species_means():
 species_means = compute_species_means()
 
 # -------------------------------
-# Sidebar Navigation
+# SIDEBAR NAVIGATION
 # -------------------------------
 st.sidebar.markdown("""
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0;">
@@ -641,13 +641,14 @@ def navigate_to(page_name):
     st.rerun()
 
 def luxury_back_button():
-    """Display a premium gold back button"""
     if st.button("⬅️ Back to Home", key="back_to_home_btn", use_container_width=False):
         navigate_to("🏠 Home")
 
 # -------------------------------
-# 1. HOME PAGE
+# PAGE ROUTING - FIXED
 # -------------------------------
+
+# 1. HOME PAGE
 if st.session_state.page == "🏠 Home":
     st.markdown("""
     <div class="hero-section">
@@ -730,22 +731,28 @@ if st.session_state.page == "🏠 Home":
     <h2 style="margin-top: 2rem;">🎯 Quick Access</h2>
     """, unsafe_allow_html=True)
     
-    nav_col1, nav_col2, nav_col3 = st.columns(3)
-    with nav_col1:
+    col_nav1, col_nav2, col_nav3 = st.columns(3)
+    with col_nav1:
         if st.button("🤖 AI Prediction", key="nav_predict", use_container_width=True):
-            navigate_to("🤖 AI Prediction")
+            st.session_state.page = "🤖 AI Prediction"
+            st.rerun()
         if st.button("📊 Dataset Explorer", key="nav_explore", use_container_width=True):
-            navigate_to("📊 Dataset Explorer")
-    with nav_col2:
+            st.session_state.page = "📊 Dataset Explorer"
+            st.rerun()
+    with col_nav2:
         if st.button("📈 Data Visualization", key="nav_viz", use_container_width=True):
-            navigate_to("📈 Data Visualization")
+            st.session_state.page = "📈 Data Visualization"
+            st.rerun()
         if st.button("🧠 Model Performance", key="nav_models", use_container_width=True):
-            navigate_to("🧠 Model Performance")
-    with nav_col3:
+            st.session_state.page = "🧠 Model Performance"
+            st.rerun()
+    with col_nav3:
         if st.button("🔬 Explainable AI", key="nav_xai", use_container_width=True):
-            navigate_to("🔬 Explainable AI")
+            st.session_state.page = "🔬 Explainable AI"
+            st.rerun()
         if st.button("📚 About Project", key="nav_about", use_container_width=True):
-            navigate_to("📚 About Project")
+            st.session_state.page = "📚 About Project"
+            st.rerun()
 
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
@@ -756,18 +763,16 @@ if st.session_state.page == "🏠 Home":
         </div>
         """, unsafe_allow_html=True)
         if st.button("🚀 Start Predicting Now", use_container_width=True):
-            navigate_to("🤖 AI Prediction")
+            st.session_state.page = "🤖 AI Prediction"
+            st.rerun()
 
-# -------------------------------
-# 2. AI PREDICTION - FIXED VERSION
-# -------------------------------
+# 2. AI PREDICTION
 elif st.session_state.page == "🤖 AI Prediction":
     luxury_back_button()
     
     st.markdown("<h1 style='color: #FFFFFF !important;'>🤖 Predict Iris Species</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #BBBBBB !important;'>Enter measurements and let the AI classify the flower</p>", unsafe_allow_html=True)
 
-    # Create form
     with st.form(key="prediction_form"):
         col1, col2, col3, col4 = st.columns(4)
         with col1:
@@ -779,29 +784,17 @@ elif st.session_state.page == "🤖 AI Prediction":
         with col4:
             petal_wid = st.number_input("📐 Petal Width (cm)", min_value=0.0, max_value=10.0, value=0.2, step=0.1)
 
-        # Submit button inside form
         submitted = st.form_submit_button("🔮 Predict Species")
 
-    # Reset button outside form
-    col_btn1, col_btn2 = st.columns([1, 1])
-    with col_btn1:
-        if st.button("🔄 Reset Values"):
-            st.rerun()
-
-    # Process prediction
     if submitted:
         try:
-            # Create input array
             input_data = np.array([[sepal_len, sepal_wid, petal_len, petal_wid]])
-            
-            # Get prediction
             model = st.session_state.best_model
             prediction = model.predict(input_data)[0]
             probabilities = model.predict_proba(input_data)[0]
             pred_species = target_names[prediction]
             confidence = np.max(probabilities)
 
-            # Update session state
             st.session_state.prediction_count += 1
             st.session_state.last_prediction = {
                 "species": pred_species,
@@ -811,7 +804,6 @@ elif st.session_state.page == "🤖 AI Prediction":
             }
             st.session_state.history.append(st.session_state.last_prediction)
 
-            # Display results
             st.markdown("---")
             glass_card(f"""
             <div style="text-align: center;">
@@ -820,7 +812,6 @@ elif st.session_state.page == "🤖 AI Prediction":
             </div>
             """)
 
-            # Show probability chart
             prob_df = pd.DataFrame({
                 "Species": target_names,
                 "Probability": probabilities
@@ -840,13 +831,11 @@ elif st.session_state.page == "🤖 AI Prediction":
         except Exception as e:
             st.error(f"❌ Prediction failed: {str(e)}")
 
-    # Show last prediction if exists
     if st.session_state.last_prediction is not None:
         st.markdown("### 📋 Last Prediction")
         last = st.session_state.last_prediction
         st.info(f"🌸 **{last['species']}** (Confidence: {last['confidence']:.2%}) at {last['timestamp']}")
 
-    # Show history
     if st.session_state.history:
         with st.expander("📜 Prediction History (this session)"):
             hist_df = pd.DataFrame(st.session_state.history)
@@ -854,9 +843,7 @@ elif st.session_state.page == "🤖 AI Prediction":
             csv = hist_df.to_csv(index=False).encode()
             st.download_button("📥 Download History as CSV", csv, "prediction_history.csv", "text/csv")
 
-# -------------------------------
 # 3. DATASET EXPLORER
-# -------------------------------
 elif st.session_state.page == "📊 Dataset Explorer":
     luxury_back_button()
     st.markdown("<h1 style='color: #FFFFFF !important;'>📊 Dataset Explorer</h1>", unsafe_allow_html=True)
@@ -868,4 +855,13 @@ elif st.session_state.page == "📊 Dataset Explorer":
 
     search = st.text_input("🔍 Filter by species name (e.g., setosa)")
     if search:
-        filtered
+        filtered = df[df["species_name"].str.contains(search, case=False)]
+    else:
+        filtered = df
+
+    st.dataframe(filtered, use_container_width=True)
+
+    st.markdown("### 📈 Descriptive Statistics")
+    st.dataframe(df.describe(), use_container_width=True)
+
+    st.markdown("###
