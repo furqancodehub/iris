@@ -66,25 +66,21 @@ def load_css():
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap');
 
-    /* Global resets */
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
         background-color: #0A0A0F;
         color: #FFFFFF !important;
     }
 
-    /* Force all text to be visible */
     .stMarkdown, .stMarkdown p, .stMarkdown li, .stMarkdown span,
     .stText, p, li, span, label, div {
         color: #FFFFFF !important;
     }
 
-    /* Main container */
     .reportview-container, .main, .block-container {
         background: #0A0A0F;
     }
 
-    /* Sidebar */
     [data-testid="stSidebar"] {
         background: #12121A;
         border-right: 1px solid rgba(255,215,0,0.08);
@@ -93,14 +89,12 @@ def load_css():
         color: #FFFFFF !important;
     }
 
-    /* Radio buttons in sidebar */
     [data-testid="stSidebar"] .stRadio label,
     [data-testid="stSidebar"] .stRadio span {
         color: #FFFFFF !important;
         font-weight: 500 !important;
     }
 
-    /* Cards – glassmorphism */
     .card {
         background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(20px);
@@ -121,7 +115,6 @@ def load_css():
         color: #FFFFFF !important;
     }
 
-    /* Metric cards */
     .metric-card {
         background: rgba(255, 255, 255, 0.06);
         border-radius: 14px;
@@ -154,59 +147,6 @@ def load_css():
         letter-spacing: 0.05em;
     }
 
-    /* ===== LUXURY BILLIONAIRE BACK BUTTON ===== */
-    .back-button-container {
-        margin: 1rem 0 2rem 0;
-        display: flex;
-        justify-content: flex-start;
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-    
-    .back-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 28px;
-        background: linear-gradient(135deg, #FFD700, #F4A460, #FFD700);
-        background-size: 200% 200%;
-        animation: goldShine 3s ease-in-out infinite;
-        color: #0A0A0F !important;
-        font-weight: 700;
-        font-size: 1rem;
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        box-shadow: 0 4px 25px rgba(255, 215, 0, 0.3);
-        letter-spacing: 0.5px;
-    }
-    
-    .back-button:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 8px 40px rgba(255, 215, 0, 0.5);
-        background: linear-gradient(135deg, #FFE44D, #F4A460, #FFE44D);
-        background-size: 200% 200%;
-        animation: goldShine 2s ease-in-out infinite;
-    }
-    
-    .back-button:active {
-        transform: scale(0.95);
-    }
-    
-    @keyframes goldShine {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    
-    .back-icon {
-        font-size: 1.3rem;
-        filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
-    }
-
-    /* ===== FIXED INPUT BOX STYLES ===== */
     .stNumberInput > div > div > input {
         background: rgba(20, 25, 40, 0.9) !important;
         border: 1px solid rgba(255, 215, 0, 0.2) !important;
@@ -307,14 +247,12 @@ def load_css():
         margin-bottom: 0.3rem !important;
     }
 
-    /* Headings */
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Poppins', sans-serif;
         font-weight: 600;
         color: #FFFFFF !important;
     }
 
-    /* Dataframe - Dark Theme */
     .stDataFrame, .stDataFrame * {
         color: #FFFFFF !important;
         background: transparent !important;
@@ -333,7 +271,6 @@ def load_css():
         background: rgba(255, 215, 0, 0.08) !important;
     }
 
-    /* Metrics */
     [data-testid="stMetricValue"] {
         color: #FFD700 !important;
         font-weight: 700 !important;
@@ -342,7 +279,6 @@ def load_css():
         color: #BBBBBB !important;
     }
 
-    /* Expander */
     .streamlit-expanderHeader {
         color: #FFFFFF !important;
         font-weight: 500 !important;
@@ -354,7 +290,6 @@ def load_css():
         border-radius: 0 0 10px 10px !important;
     }
 
-    /* Pulse animation */
     @keyframes pulse {
         0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
         70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
@@ -370,7 +305,6 @@ def load_css():
         margin-right: 8px;
     }
 
-    /* Footer */
     .footer {
         text-align: center;
         color: #888888 !important;
@@ -380,7 +314,6 @@ def load_css():
         margin-top: 3rem;
     }
 
-    /* Error messages */
     .stAlert {
         color: #FFFFFF !important;
         background: rgba(255, 0, 0, 0.15) !important;
@@ -388,12 +321,10 @@ def load_css():
         border-radius: 10px !important;
     }
 
-    /* Radio buttons text */
     .stRadio div[role="radiogroup"] label {
         color: #FFFFFF !important;
     }
 
-    /* Download button */
     .stDownloadButton > button {
         width: 100% !important;
         background: linear-gradient(135deg, #FFD700, #F4A460) !important;
@@ -409,7 +340,6 @@ def load_css():
         box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4) !important;
     }
 
-    /* Main action buttons */
     .stButton > button {
         background: linear-gradient(135deg, #FFD700, #F4A460) !important;
         border: none;
@@ -429,7 +359,6 @@ def load_css():
         color: #0A0A0F !important;
     }
 
-    /* Mobile responsiveness */
     @media (max-width: 768px) {
         [data-testid="stSidebar"] {
             width: 100% !important;
@@ -456,14 +385,8 @@ def load_css():
             flex: 1 1 100% !important;
             margin-bottom: 1rem !important;
         }
-        
-        .back-button {
-            padding: 10px 20px !important;
-            font-size: 0.9rem !important;
-        }
     }
 
-    /* Hero section animations */
     @keyframes fadeInUp {
         from {
             opacity: 0;
@@ -661,7 +584,6 @@ st.sidebar.markdown("""
 
 st.sidebar.markdown("---")
 
-# Navigation options
 nav_options = [
     "🏠 Home",
     "🤖 AI Prediction",
@@ -672,7 +594,6 @@ nav_options = [
     "📚 About Project",
 ]
 
-# Radio buttons
 selected_page = st.sidebar.radio(
     "📌 NAVIGATION",
     nav_options,
@@ -685,7 +606,6 @@ if selected_page != st.session_state.page:
 
 st.sidebar.markdown("---")
 
-# Sidebar stats
 st.sidebar.markdown("""
 <div style="padding: 0.5rem 0;">
     <p style="color: #888888 !important; font-size: 0.7rem; text-align: center;">
@@ -740,7 +660,6 @@ if st.session_state.page == "🏠 Home":
     </div>
     """, unsafe_allow_html=True)
 
-    # Quick stats row
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.markdown("""
@@ -771,7 +690,6 @@ if st.session_state.page == "🏠 Home":
         </div>
         """, unsafe_allow_html=True)
 
-    # Features grid
     st.markdown("""
     <h2 style="margin-top: 2rem;">🚀 Why IrisAI?</h2>
     <div class="feature-grid">
@@ -808,7 +726,6 @@ if st.session_state.page == "🏠 Home":
     </div>
     """, unsafe_allow_html=True)
 
-    # Quick Navigation Grid
     st.markdown("""
     <h2 style="margin-top: 2rem;">🎯 Quick Access</h2>
     """, unsafe_allow_html=True)
@@ -830,7 +747,6 @@ if st.session_state.page == "🏠 Home":
         if st.button("📚 About Project", key="nav_about", use_container_width=True):
             navigate_to("📚 About Project")
 
-    # Call to action
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         st.markdown("""
@@ -888,3 +804,64 @@ elif st.session_state.page == "🤖 AI Prediction":
                 "inputs": [sepal_len, sepal_wid, petal_len, petal_wid],
                 "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
+            st.session_state.history.append(st.session_state.last_prediction)
+
+            st.markdown("---")
+            glass_card(f"""
+            <div style="text-align: center;">
+                <h2 style="margin-bottom: 0.2rem; color: #FFFFFF !important;">🌸 {pred_species}</h2>
+                <p style="font-size: 1.1rem; color: #FFD700 !important;">Confidence: {confidence*100:.1f}%</p>
+            </div>
+            """)
+
+            prob_df = pd.DataFrame({
+                "Species": target_names,
+                "Probability": probabilities
+            }).sort_values("Probability", ascending=True)
+            fig = px.bar(prob_df, x="Probability", y="Species", orientation="h",
+                         color="Species", color_discrete_sequence=px.colors.sequential.Blues_r,
+                         title="Prediction Probabilities")
+            fig.update_layout(showlegend=False, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+                              font_color="white")
+            st.plotly_chart(fig, use_container_width=True)
+
+        except Exception as e:
+            st.error(f"Prediction failed: {e}")
+
+    if st.session_state.last_prediction is not None:
+        st.markdown("### 📋 Last Prediction")
+        last = st.session_state.last_prediction
+        st.markdown(f"**{last['species']}** (Confidence: {last['confidence']:.2%}) at {last['timestamp']}")
+
+    if st.session_state.history:
+        with st.expander("📜 Prediction History (this session)"):
+            hist_df = pd.DataFrame(st.session_state.history)
+            st.dataframe(hist_df, use_container_width=True)
+            csv = hist_df.to_csv(index=False).encode()
+            st.download_button("📥 Download History as CSV", csv, "prediction_history.csv", "text/csv")
+
+# -------------------------------
+# 3. DATASET EXPLORER
+# -------------------------------
+elif st.session_state.page == "📊 Dataset Explorer":
+    luxury_back_button()
+    st.markdown("<h1 style='color: #FFFFFF !important;'>📊 Dataset Explorer</h1>", unsafe_allow_html=True)
+
+    col_info1, col_info2, col_info3 = st.columns(3)
+    col_info1.metric("Rows", df.shape[0])
+    col_info2.metric("Columns", df.shape[1])
+    col_info3.metric("Missing Values", df.isnull().sum().sum())
+
+    search = st.text_input("🔍 Filter by species name (e.g., setosa)")
+    if search:
+        filtered = df[df["species_name"].str.contains(search, case=False)]
+    else:
+        filtered = df
+
+    st.dataframe(filtered, use_container_width=True)
+
+    st.markdown("### 📈 Descriptive Statistics")
+    st.dataframe(df.describe(), use_container_width=True)
+
+    st.markdown("### 🌸 Class Distribution")
+    class
