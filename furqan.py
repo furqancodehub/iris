@@ -154,28 +154,58 @@ def load_css():
         letter-spacing: 0.05em;
     }
 
-    /* Buttons */
-    .stButton > button {
-        background: linear-gradient(135deg, #00c6ff, #0072ff);
-        border: none;
-        color: white !important;
-        font-weight: 600;
-        padding: 0.6rem 2rem;
-        border-radius: 10px;
-        transition: all 0.3s ease;
-        letter-spacing: 0.03em;
-        width: 100%;
+    /* ===== LUXURY BILLIONAIRE BACK BUTTON ===== */
+    .back-button-container {
+        margin: 1.5rem 0 2rem 0;
+        display: flex;
+        justify-content: flex-start;
     }
-    .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0, 114, 255, 0.4);
-        background: linear-gradient(135deg, #00b4f0, #0066e6);
-        color: white !important;
+    
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 28px;
+        background: linear-gradient(135deg, #FFD700, #F4A460, #FFD700);
+        background-size: 200% 200%;
+        animation: goldShine 3s ease-in-out infinite;
+        color: #0A0A0F !important;
+        font-weight: 700;
+        font-size: 1rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        box-shadow: 0 4px 25px rgba(255, 215, 0, 0.3);
+        letter-spacing: 0.5px;
+    }
+    
+    .back-button:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 40px rgba(255, 215, 0, 0.5);
+        background: linear-gradient(135deg, #FFE44D, #F4A460, #FFE44D);
+        background-size: 200% 200%;
+        animation: goldShine 2s ease-in-out infinite;
+    }
+    
+    .back-button:active {
+        transform: scale(0.95);
+    }
+    
+    @keyframes goldShine {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Luxury gold icon */
+    .back-icon {
+        font-size: 1.3rem;
+        filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
     }
 
-    /* ===== FIXED INPUT BOX STYLES - Professional Dark Theme ===== */
-    
-    /* Number Input - FIXED */
+    /* ===== FIXED INPUT BOX STYLES ===== */
     .stNumberInput > div > div > input {
         background: rgba(20, 25, 40, 0.9) !important;
         border: 1px solid rgba(100, 150, 255, 0.2) !important;
@@ -188,36 +218,28 @@ def load_css():
     }
     
     .stNumberInput > div > div > input:hover {
-        border-color: rgba(0, 242, 254, 0.4) !important;
+        border-color: rgba(255, 215, 0, 0.4) !important;
         background: rgba(25, 30, 50, 0.95) !important;
     }
     
     .stNumberInput > div > div > input:focus {
-        border-color: #00F2FE !important;
-        box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15), inset 0 2px 4px rgba(0,0,0,0.3) !important;
+        border-color: #FFD700 !important;
+        box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15), inset 0 2px 4px rgba(0,0,0,0.3) !important;
         background: rgba(25, 30, 50, 0.95) !important;
-    }
-    
-    /* Number input stepper buttons (the + and -) */
-    .stNumberInput > div > div > div {
-        background: rgba(20, 25, 40, 0.9) !important;
-        border: 1px solid rgba(100, 150, 255, 0.2) !important;
-        color: #FFFFFF !important;
     }
     
     .stNumberInput > div > div > div button {
         background: rgba(30, 40, 60, 0.8) !important;
-        color: #00F2FE !important;
+        color: #FFD700 !important;
         border: none !important;
         transition: all 0.2s ease !important;
     }
     
     .stNumberInput > div > div > div button:hover {
-        background: rgba(0, 242, 254, 0.2) !important;
+        background: rgba(255, 215, 0, 0.2) !important;
         color: #FFFFFF !important;
     }
     
-    /* Text Input - FIXED */
     .stTextInput > div > div > input {
         background: rgba(20, 25, 40, 0.9) !important;
         border: 1px solid rgba(100, 150, 255, 0.2) !important;
@@ -230,23 +252,21 @@ def load_css():
     }
     
     .stTextInput > div > div > input:hover {
-        border-color: rgba(0, 242, 254, 0.4) !important;
+        border-color: rgba(255, 215, 0, 0.4) !important;
         background: rgba(25, 30, 50, 0.95) !important;
     }
     
     .stTextInput > div > div > input:focus {
-        border-color: #00F2FE !important;
-        box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15), inset 0 2px 4px rgba(0,0,0,0.3) !important;
+        border-color: #FFD700 !important;
+        box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15), inset 0 2px 4px rgba(0,0,0,0.3) !important;
         background: rgba(25, 30, 50, 0.95) !important;
     }
     
-    /* Placeholder text */
     .stTextInput > div > div > input::placeholder {
         color: rgba(255, 255, 255, 0.4) !important;
         opacity: 1 !important;
     }
     
-    /* Select Box - FIXED */
     .stSelectbox > div > div {
         background: rgba(20, 25, 40, 0.9) !important;
         border: 1px solid rgba(100, 150, 255, 0.2) !important;
@@ -257,7 +277,7 @@ def load_css():
     }
     
     .stSelectbox > div > div:hover {
-        border-color: rgba(0, 242, 254, 0.4) !important;
+        border-color: rgba(255, 215, 0, 0.4) !important;
         background: rgba(25, 30, 50, 0.95) !important;
     }
     
@@ -265,7 +285,6 @@ def load_css():
         color: #FFFFFF !important;
     }
     
-    /* Selectbox dropdown options */
     .stSelectbox > div > div ul {
         background: #1A1A2E !important;
         border: 1px solid rgba(100, 150, 255, 0.2) !important;
@@ -277,10 +296,9 @@ def load_css():
     }
     
     .stSelectbox > div > div ul li:hover {
-        background: rgba(0, 242, 254, 0.15) !important;
+        background: rgba(255, 215, 0, 0.15) !important;
     }
-    
-    /* Input Labels */
+
     .stNumberInput label, .stTextInput label, .stSelectbox label {
         color: rgba(255, 255, 255, 0.8) !important;
         font-weight: 500 !important;
@@ -304,19 +322,19 @@ def load_css():
         color: #FFFFFF !important;
         font-weight: 600 !important;
         background: rgba(20, 25, 40, 0.8) !important;
-        border-bottom: 2px solid rgba(0, 242, 254, 0.3) !important;
+        border-bottom: 2px solid rgba(255, 215, 0, 0.3) !important;
     }
     .stDataFrame td {
         background: rgba(15, 20, 35, 0.6) !important;
         border-bottom: 1px solid rgba(255,255,255,0.05) !important;
     }
     .stDataFrame tr:hover td {
-        background: rgba(0, 242, 254, 0.08) !important;
+        background: rgba(255, 215, 0, 0.08) !important;
     }
 
     /* Metrics */
     [data-testid="stMetricValue"] {
-        color: #00F2FE !important;
+        color: #FFD700 !important;
         font-weight: 700 !important;
     }
     [data-testid="stMetricLabel"] {
@@ -337,14 +355,14 @@ def load_css():
 
     /* Pulse animation for status dot */
     @keyframes pulse {
-        0% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7); }
-        70% { box-shadow: 0 0 0 10px rgba(0, 230, 118, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); }
+        0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+        70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
     }
     .status-dot {
         height: 14px;
         width: 14px;
-        background-color: #00E676;
+        background-color: #FFD700;
         border-radius: 50%;
         display: inline-block;
         animation: pulse 2s infinite;
@@ -378,7 +396,29 @@ def load_css():
     .stDownloadButton > button {
         color: #FFFFFF !important;
         width: 100% !important;
-        background: linear-gradient(135deg, #00c6ff, #0072ff) !important;
+        background: linear-gradient(135deg, #FFD700, #F4A460) !important;
+        color: #0A0A0F !important;
+        font-weight: 700 !important;
+    }
+
+    /* Main action buttons */
+    .stButton > button {
+        background: linear-gradient(135deg, #FFD700, #F4A460) !important;
+        border: none;
+        color: #0A0A0F !important;
+        font-weight: 700;
+        padding: 0.6rem 2rem;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        letter-spacing: 0.03em;
+        width: 100%;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+    }
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4);
+        background: linear-gradient(135deg, #FFE44D, #F4A460) !important;
+        color: #0A0A0F !important;
     }
 
     /* Mobile responsiveness */
@@ -407,6 +447,11 @@ def load_css():
         .stColumns > div {
             flex: 1 1 100% !important;
             margin-bottom: 1rem !important;
+        }
+        
+        .back-button {
+            padding: 10px 20px !important;
+            font-size: 0.9rem !important;
         }
     }
 
@@ -445,8 +490,8 @@ def load_css():
     .feature-item:hover {
         transform: translateY(-8px);
         background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(0, 242, 254, 0.3);
-        box-shadow: 0 8px 30px rgba(0, 242, 254, 0.1);
+        border-color: rgba(255, 215, 0, 0.3);
+        box-shadow: 0 8px 30px rgba(255, 215, 0, 0.1);
     }
     
     .feature-icon {
@@ -467,18 +512,16 @@ def load_css():
         line-height: 1.6;
     }
 
-    /* Success message */
     .stSuccess {
-        background: rgba(0, 230, 118, 0.1) !important;
-        border: 1px solid rgba(0, 230, 118, 0.3) !important;
+        background: rgba(255, 215, 0, 0.1) !important;
+        border: 1px solid rgba(255, 215, 0, 0.3) !important;
         border-radius: 10px !important;
         color: #FFFFFF !important;
     }
 
-    /* Info message */
     .stInfo {
-        background: rgba(0, 242, 254, 0.1) !important;
-        border: 1px solid rgba(0, 242, 254, 0.3) !important;
+        background: rgba(255, 215, 0, 0.1) !important;
+        border: 1px solid rgba(255, 215, 0, 0.3) !important;
         border-radius: 10px !important;
         color: #FFFFFF !important;
     }
@@ -600,7 +643,7 @@ species_means = compute_species_means()
 st.sidebar.markdown("""
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0;">
     <div style="text-align: center; flex: 1;">
-        <h2 style="background: linear-gradient(135deg, #00F2FE, #4FACFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent !important; margin: 0;">
+        <h2 style="background: linear-gradient(135deg, #FFD700, #F4A460); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent !important; margin: 0;">
             🌸 IrisAI
         </h2>
         <p style="color: #BBBBBB !important; font-size: 0.8rem; margin: -0.3rem 0 0 0;">Premium ML Platform</p>
@@ -654,12 +697,31 @@ def navigate_to(page_name):
     st.rerun()
 
 # -------------------------------
+# LUXURY BACK BUTTON COMPONENT
+# -------------------------------
+def luxury_back_button():
+    """Display a premium gold back button"""
+    st.markdown("""
+    <div class="back-button-container">
+        <button class="back-button" onclick="window.location.reload()">
+            <span class="back-icon">⬅️</span>
+            <span>Back to Home</span>
+            <span style="font-size: 1.2rem;">✦</span>
+        </button>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Actual Streamlit button (hidden but functional)
+    if st.button("⬅️ Back to Home", key="back_to_home_btn", use_container_width=False):
+        navigate_to("🏠 Home")
+
+# -------------------------------
 # 1. HOME PAGE
 # -------------------------------
 if st.session_state.page == "🏠 Home":
     st.markdown("""
     <div class="hero-section">
-        <h1 style="font-size: 3rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, #00F2FE, #4FACFE, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        <h1 style="font-size: 3rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, #FFD700, #F4A460, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
             🌸 Welcome to IrisAI
         </h1>
         <p style="font-size: 1.2rem; color: #BBBBBB !important; margin-bottom: 2rem;">
@@ -768,6 +830,9 @@ if st.session_state.page == "🏠 Home":
 # 2. AI PREDICTION
 # -------------------------------
 elif st.session_state.page == "🤖 AI Prediction":
+    # Luxury Back Button
+    luxury_back_button()
+    
     st.markdown("<h1 style='color: #FFFFFF !important;'>🤖 Predict Iris Species</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #BBBBBB !important;'>Enter measurements and let the AI classify the flower</p>", unsafe_allow_html=True)
 
@@ -814,7 +879,7 @@ elif st.session_state.page == "🤖 AI Prediction":
             glass_card(f"""
             <div style="text-align: center;">
                 <h2 style="margin-bottom: 0.2rem; color: #FFFFFF !important;">🌸 {pred_species}</h2>
-                <p style="font-size: 1.1rem; color: #4FACFE !important;">Confidence: {confidence*100:.1f}%</p>
+                <p style="font-size: 1.1rem; color: #FFD700 !important;">Confidence: {confidence*100:.1f}%</p>
             </div>
             """)
 
@@ -823,57 +888,4 @@ elif st.session_state.page == "🤖 AI Prediction":
                 "Probability": probabilities
             }).sort_values("Probability", ascending=True)
             fig = px.bar(prob_df, x="Probability", y="Species", orientation="h",
-                         color="Species", color_discrete_sequence=px.colors.sequential.Blues_r,
-                         title="Prediction Probabilities")
-            fig.update_layout(showlegend=False, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                              font_color="white")
-            st.plotly_chart(fig, use_container_width=True)
-
-        except Exception as e:
-            st.error(f"Prediction failed: {e}")
-
-    if st.session_state.last_prediction is not None:
-        st.markdown("### 📋 Last Prediction")
-        last = st.session_state.last_prediction
-        st.markdown(f"**{last['species']}** (Confidence: {last['confidence']:.2%}) at {last['timestamp']}")
-
-    if st.session_state.history:
-        with st.expander("📜 Prediction History (this session)"):
-            hist_df = pd.DataFrame(st.session_state.history)
-            st.dataframe(hist_df, use_container_width=True)
-            csv = hist_df.to_csv(index=False).encode()
-            st.download_button("📥 Download History as CSV", csv, "prediction_history.csv", "text/csv")
-
-# -------------------------------
-# 3. DATASET EXPLORER
-# -------------------------------
-elif st.session_state.page == "📊 Dataset Explorer":
-    st.markdown("<h1 style='color: #FFFFFF !important;'>📊 Dataset Explorer</h1>", unsafe_allow_html=True)
-
-    col_info1, col_info2, col_info3 = st.columns(3)
-    col_info1.metric("Rows", df.shape[0])
-    col_info2.metric("Columns", df.shape[1])
-    col_info3.metric("Missing Values", df.isnull().sum().sum())
-
-    search = st.text_input("🔍 Filter by species name (e.g., setosa)")
-    if search:
-        filtered = df[df["species_name"].str.contains(search, case=False)]
-    else:
-        filtered = df
-
-    st.dataframe(filtered, use_container_width=True)
-
-    st.markdown("### 📈 Descriptive Statistics")
-    st.dataframe(df.describe(), use_container_width=True)
-
-    st.markdown("### 🌸 Class Distribution")
-    class_counts = df["species_name"].value_counts().reset_index()
-    class_counts.columns = ["Species", "Count"]
-    fig = px.bar(class_counts, x="Species", y="Count", color="Species",
-                 title="Number of samples per species")
-    fig.update_layout(showlegend=False, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                      font_color="white")
-    st.plotly_chart(fig, use_container_width=True)
-
-    csv_full = df.to_csv(index=False).encode()
-    st
+                         color="Species", color_discrete_sequence=px.col
