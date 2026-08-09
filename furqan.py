@@ -645,10 +645,8 @@ def luxury_back_button():
         navigate_to("🏠 Home")
 
 # -------------------------------
-# PAGE ROUTING - FIXED
+# PAGE 1: HOME
 # -------------------------------
-
-# 1. HOME PAGE
 if st.session_state.page == "🏠 Home":
     st.markdown("""
     <div class="hero-section">
@@ -663,73 +661,27 @@ if st.session_state.page == "🏠 Home":
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.markdown("""
-        <div class="metric-card">
-            <h3>150</h3>
-            <p>Total Samples</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("""<div class="metric-card"><h3>150</h3><p>Total Samples</p></div>""", unsafe_allow_html=True)
     with col2:
-        st.markdown("""
-        <div class="metric-card">
-            <h3>98.5%</h3>
-            <p>Model Accuracy</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("""<div class="metric-card"><h3>98.5%</h3><p>Model Accuracy</p></div>""", unsafe_allow_html=True)
     with col3:
-        st.markdown("""
-        <div class="metric-card">
-            <h3>5</h3>
-            <p>ML Algorithms</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("""<div class="metric-card"><h3>5</h3><p>ML Algorithms</p></div>""", unsafe_allow_html=True)
     with col4:
-        st.markdown(f"""
-        <div class="metric-card">
-            <h3>{st.session_state.prediction_count}</h3>
-            <p>Predictions Made</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div class="metric-card"><h3>{st.session_state.prediction_count}</h3><p>Predictions Made</p></div>""", unsafe_allow_html=True)
 
     st.markdown("""
     <h2 style="margin-top: 2rem;">🚀 Why IrisAI?</h2>
     <div class="feature-grid">
-        <div class="feature-item">
-            <div class="feature-icon">🧠</div>
-            <div class="feature-title">5 Powerful Models</div>
-            <div class="feature-desc">Logistic Regression, Decision Tree, Random Forest, KNN, and SVM</div>
-        </div>
-        <div class="feature-item">
-            <div class="feature-icon">🎯</div>
-            <div class="feature-title">98.5% Accuracy</div>
-            <div class="feature-desc">State-of-the-art performance with automatic best model selection</div>
-        </div>
-        <div class="feature-item">
-            <div class="feature-icon">🔬</div>
-            <div class="feature-title">Explainable AI</div>
-            <div class="feature-desc">Understand why the model made its prediction</div>
-        </div>
-        <div class="feature-item">
-            <div class="feature-icon">📊</div>
-            <div class="feature-title">Interactive Visuals</div>
-            <div class="feature-desc">Beautiful, interactive charts to explore your data</div>
-        </div>
-        <div class="feature-item">
-            <div class="feature-icon">⚡</div>
-            <div class="feature-title">Real-Time Predictions</div>
-            <div class="feature-desc">Instant classification with confidence scores</div>
-        </div>
-        <div class="feature-item">
-            <div class="feature-icon">📱</div>
-            <div class="feature-title">Fully Responsive</div>
-            <div class="feature-desc">Works perfectly on desktop, tablet, and mobile</div>
-        </div>
+        <div class="feature-item"><div class="feature-icon">🧠</div><div class="feature-title">5 Powerful Models</div><div class="feature-desc">Logistic Regression, Decision Tree, Random Forest, KNN, and SVM</div></div>
+        <div class="feature-item"><div class="feature-icon">🎯</div><div class="feature-title">98.5% Accuracy</div><div class="feature-desc">State-of-the-art performance with automatic best model selection</div></div>
+        <div class="feature-item"><div class="feature-icon">🔬</div><div class="feature-title">Explainable AI</div><div class="feature-desc">Understand why the model made its prediction</div></div>
+        <div class="feature-item"><div class="feature-icon">📊</div><div class="feature-title">Interactive Visuals</div><div class="feature-desc">Beautiful, interactive charts to explore your data</div></div>
+        <div class="feature-item"><div class="feature-icon">⚡</div><div class="feature-title">Real-Time Predictions</div><div class="feature-desc">Instant classification with confidence scores</div></div>
+        <div class="feature-item"><div class="feature-icon">📱</div><div class="feature-title">Fully Responsive</div><div class="feature-desc">Works perfectly on desktop, tablet, and mobile</div></div>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-    <h2 style="margin-top: 2rem;">🎯 Quick Access</h2>
-    """, unsafe_allow_html=True)
+    st.markdown("""<h2 style="margin-top: 2rem;">🎯 Quick Access</h2>""", unsafe_allow_html=True)
     
     col_nav1, col_nav2, col_nav3 = st.columns(3)
     with col_nav1:
@@ -756,17 +708,14 @@ if st.session_state.page == "🏠 Home":
 
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        st.markdown("""
-        <div style="text-align: center; padding: 2rem 0;">
-            <h3 style="color: #FFFFFF !important;">Ready to classify your first flower?</h3>
-            <p style="color: #BBBBBB !important; margin-bottom: 1rem;">Click below to start making predictions with our AI</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("""<div style="text-align: center; padding: 2rem 0;"><h3 style="color: #FFFFFF !important;">Ready to classify your first flower?</h3><p style="color: #BBBBBB !important; margin-bottom: 1rem;">Click below to start making predictions with our AI</p></div>""", unsafe_allow_html=True)
         if st.button("🚀 Start Predicting Now", use_container_width=True):
             st.session_state.page = "🤖 AI Prediction"
             st.rerun()
 
-# 2. AI PREDICTION
+# -------------------------------
+# PAGE 2: AI PREDICTION
+# -------------------------------
 elif st.session_state.page == "🤖 AI Prediction":
     luxury_back_button()
     
@@ -820,12 +769,7 @@ elif st.session_state.page == "🤖 AI Prediction":
             fig = px.bar(prob_df, x="Probability", y="Species", orientation="h",
                          color="Species", color_discrete_sequence=px.colors.sequential.Blues_r,
                          title="Prediction Probabilities")
-            fig.update_layout(
-                showlegend=False, 
-                paper_bgcolor="rgba(0,0,0,0)", 
-                plot_bgcolor="rgba(0,0,0,0)",
-                font_color="white"
-            )
+            fig.update_layout(showlegend=False, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font_color="white")
             st.plotly_chart(fig, use_container_width=True)
 
         except Exception as e:
@@ -843,7 +787,9 @@ elif st.session_state.page == "🤖 AI Prediction":
             csv = hist_df.to_csv(index=False).encode()
             st.download_button("📥 Download History as CSV", csv, "prediction_history.csv", "text/csv")
 
-# 3. DATASET EXPLORER
+# -------------------------------
+# PAGE 3: DATASET EXPLORER
+# -------------------------------
 elif st.session_state.page == "📊 Dataset Explorer":
     luxury_back_button()
     st.markdown("<h1 style='color: #FFFFFF !important;'>📊 Dataset Explorer</h1>", unsafe_allow_html=True)
@@ -864,4 +810,8 @@ elif st.session_state.page == "📊 Dataset Explorer":
     st.markdown("### 📈 Descriptive Statistics")
     st.dataframe(df.describe(), use_container_width=True)
 
-    st.markdown("###
+    st.markdown("### 🌸 Class Distribution")
+    class_counts = df["species_name"].value_counts().reset_index()
+    class_counts.columns = ["Species", "Count"]
+    fig = px.bar(class_counts, x="Species", y="Count", color="Species", title="Number of samples per species")
+    fig.update_layout(showlegend=False, paper_bgcolor="rgba(0,0,0,0
