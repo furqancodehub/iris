@@ -389,6 +389,8 @@ if "history" not in st.session_state:
     st.session_state.history = []
 if "mobile_menu_open" not in st.session_state:
     st.session_state.mobile_menu_open = False
+if "page" not in st.session_state:
+    st.session_state.page = "🏠 Home"
 
 # -------------------------------
 # Data loading & caching
@@ -513,10 +515,16 @@ nav_options = [
 ]
 
 # Radio buttons with custom styling
-page = st.sidebar.radio(
+selected_page = st.sidebar.radio(
     "📌 NAVIGATION",
     nav_options,
+    index=nav_options.index(st.session_state.page) if st.session_state.page in nav_options else 0
 )
+
+# Update session state when sidebar selection changes
+if selected_page != st.session_state.page:
+    st.session_state.page = selected_page
+    st.rerun()
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("""
@@ -529,7 +537,7 @@ st.sidebar.markdown("""
 """, unsafe_allow_html=True)
 
 # Extract page name without emoji for logic
-page_name = page.split(" ", 1)[-1] if " " in page else page
+page_name = st.session_state.page.split(" ", 1)[-1] if " " in st.session_state.page else st.session_state.page
 
 # -------------------------------
 # Helper: render a glass card
@@ -537,10 +545,15 @@ page_name = page.split(" ", 1)[-1] if " " in page else page
 def glass_card(content, key=None):
     st.markdown(f'<div class="card">{content}</div>', unsafe_allow_html=True)
 
+# Navigation function for buttons
+def navigate_to(page_name):
+    st.session_state.page = page_name
+    st.rerun()
+
 # -------------------------------
 # 1. HOME PAGE (New Powerful Homepage)
 # -------------------------------
-if page_name == "Home":
+if st.session_state.page == "🏠 Home":
     st.markdown("""
     <div class="hero-section">
         <h1 style="font-size: 3rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, #00F2FE, #4FACFE, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
@@ -630,8 +643,7 @@ if page_name == "Home":
         </div>
         """, unsafe_allow_html=True)
         if st.button("🚀 Start Predicting Now", use_container_width=True):
-            st.session_state.page = "🤖 AI Prediction"
-            st.rerun()
+            navigate_to("🤖 AI Prediction")
 
     # About the dataset section
     st.markdown("---")
@@ -664,45 +676,21 @@ if page_name == "Home":
     
     nav_col1, nav_col2, nav_col3 = st.columns(3)
     with nav_col1:
-        st.markdown("""
-        <div class="feature-item" style="cursor: pointer;" onclick="window.location.href='#predict'">
-            <div class="feature-icon">🤖</div>
-            <div class="feature-title">AI Prediction</div>
-            <div class="feature-desc">Classify iris species with our advanced ML models</div>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("Go to Predictions", key="nav_predict"):
-            st.session_state.page = "🤖 AI Prediction"
-            st.rerun()
+        if st.button("🤖 Go to Predictions", key="nav_predict", use_container_width=True):
+            navigate_to("🤖 AI Prediction")
     
     with nav_col2:
-        st.markdown("""
-        <div class="feature-item">
-            <div class="feature-icon">📊</div>
-            <div class="feature-title">Explore Data</div>
-            <div class="feature-desc">Visualize and analyze the Iris dataset interactively</div>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("Explore Data", key="nav_explore"):
-            st.session_state.page = "📊 Dataset Explorer"
-            st.rerun()
+        if st.button("📊 Explore Data", key="nav_explore", use_container_width=True):
+            navigate_to("📊 Dataset Explorer")
     
     with nav_col3:
-        st.markdown("""
-        <div class="feature-item">
-            <div class="feature-icon">🧠</div>
-            <div class="feature-title">Model Performance</div>
-            <div class="feature-desc">Compare all models and their metrics</div>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("View Models", key="nav_models"):
-            st.session_state.page = "🧠 Model Performance"
-            st.rerun()
+        if st.button("🧠 View Models", key="nav_models", use_container_width=True):
+            navigate_to("🧠 Model Performance")
 
 # -------------------------------
 # 2. AI PREDICTION
 # -------------------------------
-elif page_name == "AI Prediction":
+elif st.session_state.page == "🤖 AI Prediction":
     st.markdown("<h1 style='color: #FFFFFF !important;'>🤖 Predict Iris Species</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #BBBBBB !important;'>Enter measurements and let the AI classify the flower</p>", unsafe_allow_html=True)
 
@@ -782,7 +770,7 @@ elif page_name == "AI Prediction":
 # -------------------------------
 # 3. DATASET EXPLORER
 # -------------------------------
-elif page_name == "Dataset Explorer":
+elif st.session_state.page == "📊 Dataset Explorer":
     st.markdown("<h1 style='color: #FFFFFF !important;'>📊 Dataset Explorer</h1>", unsafe_allow_html=True)
 
     col_info1, col_info2, col_info3 = st.columns(3)
@@ -816,7 +804,7 @@ elif page_name == "Dataset Explorer":
 # -------------------------------
 # 4. DATA VISUALIZATION
 # -------------------------------
-elif page_name == "Data Visualization":
+elif st.session_state.page == "📈 Data Visualization":
     st.markdown("<h1 style='color: #FFFFFF !important;'>📈 Interactive Visualizations</h1>", unsafe_allow_html=True)
     viz_type = st.selectbox("Choose visualization", [
         "Feature Distributions",
@@ -865,3 +853,13 @@ elif page_name == "Data Visualization":
         fig.update_layout(title="Feature Correlation Heatmap",
                           paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
                           font_color="white")
+        st.plotly_chart(fig, use_container_width=True)
+
+    elif viz_type == "Pairwise Feature Analysis":
+        fig = px.scatter_matrix(df, dimensions=feature_names, color="species_name",
+                                opacity=0.7)
+        fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+                          font_color="white")
+        st.plotly_chart(fig, use_container_width=True)
+
+# -------------------------------
