@@ -3,7 +3,35 @@ IrisAI – Premium ML Classification Platform
 A luxury, billionaire-tech style machine learning web application
 built with Streamlit and the classic Iris dataset.
 """
+import streamlit as st
 
+# PASSWORD WALA HISSA - Yahan se shuru
+def check_password():
+    def password_entered():
+        if st.session_state["password"] == st.secrets["password"]:
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]
+        else:
+            st.session_state["password_correct"] = False
+
+    if "password_correct" not in st.session_state:
+        st.title("🔒 IrisAI - Login Required")
+        st.text_input("Password daalein", type="password", on_change=password_entered, key="password")
+        return False
+    elif not st.session_state["password_correct"]:
+        st.title("🔒 IrisAI - Login Required")
+        st.text_input("Password daalein", type="password", on_change=password_entered, key="password")
+        st.error("😕 Password galat hai")
+        return False
+    else:
+        return True
+
+if not check_password():
+    st.stop() # Password sahi nahi to app aage nahi chalegi
+# PASSWORD WALA HISSA - Yahan khatam
+
+# Tumhara purana code yahan se shuru hoga...
+st.title("IrisAI - Premium ML Classification Platform")
 import streamlit as st
 import pandas as pd
 import numpy as np
