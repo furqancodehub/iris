@@ -4,6 +4,28 @@ A luxury, billionaire-tech style machine learning web application
 built with Streamlit and the classic Iris dataset.
 """
 import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
+import time
+from datetime import datetime
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    confusion_matrix,
+)
 
 # PASSWORD WALA HISSA - Yahan se shuru
 def check_password():
@@ -466,7 +488,6 @@ species_means = compute_species_means()
 # -------------------------------
 # Sidebar Navigation with Hamburger Menu
 # -------------------------------
-# Mobile hamburger menu toggle
 st.sidebar.markdown("""
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0;">
     <div style="text-align: center; flex: 1;">
@@ -844,16 +865,3 @@ elif page_name == "Data Visualization":
         fig.update_layout(title="Feature Correlation Heatmap",
                           paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
                           font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-
-    elif viz_type == "Pairwise Feature Analysis":
-        fig = px.scatter_matrix(df, dimensions=feature_names, color="species_name",
-                                opacity=0.7)
-        fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                          font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
-
-# -------------------------------
-# 5. MODEL PERFORMANCE
-# -------------------------------
-elif page_name == "Model Performance":
