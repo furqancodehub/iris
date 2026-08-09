@@ -163,7 +163,7 @@ def load_css():
         flex-wrap: wrap;
     }
     
-    .back-button, .nav-button {
+    .back-button {
         display: inline-flex;
         align-items: center;
         gap: 10px;
@@ -183,7 +183,7 @@ def load_css():
         letter-spacing: 0.5px;
     }
     
-    .back-button:hover, .nav-button:hover {
+    .back-button:hover {
         transform: translateY(-3px) scale(1.02);
         box-shadow: 0 8px 40px rgba(255, 215, 0, 0.5);
         background: linear-gradient(135deg, #FFE44D, #F4A460, #FFE44D);
@@ -191,7 +191,7 @@ def load_css():
         animation: goldShine 2s ease-in-out infinite;
     }
     
-    .back-button:active, .nav-button:active {
+    .back-button:active {
         transform: scale(0.95);
     }
     
@@ -201,7 +201,7 @@ def load_css():
         100% { background-position: 0% 50%; }
     }
     
-    .back-icon, .nav-icon {
+    .back-icon {
         font-size: 1.3rem;
         filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
     }
@@ -457,7 +457,7 @@ def load_css():
             margin-bottom: 1rem !important;
         }
         
-        .back-button, .nav-button {
+        .back-button {
             padding: 10px 20px !important;
             font-size: 0.9rem !important;
         }
@@ -733,57 +733,13 @@ def navigate_to(page_name):
     st.session_state.page = page_name
     st.rerun()
 
-# -------------------------------
-# POWERFUL NAVIGATION BUTTONS
-# -------------------------------
-def render_navigation_bar():
-    """Render a powerful navigation bar with quick access buttons"""
-    st.markdown("""
-    <div style="
-        background: rgba(255,255,255,0.03);
-        border-radius: 16px;
-        padding: 1rem;
-        border: 1px solid rgba(255,215,0,0.1);
-        margin: 1rem 0 2rem 0;
-    ">
-        <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;">
-            <button class="nav-button" style="flex: 1; min-width: 120px;" onclick="window.location.href='#'">
-                <span class="nav-icon">🏠</span> Home
-            </button>
-            <button class="nav-button" style="flex: 1; min-width: 120px;" onclick="window.location.href='#'">
-                <span class="nav-icon">🤖</span> Predict
-            </button>
-            <button class="nav-button" style="flex: 1; min-width: 120px;" onclick="window.location.href='#'">
-                <span class="nav-icon">📊</span> Explore
-            </button>
-            <button class="nav-button" style="flex: 1; min-width: 120px;" onclick="window.location.href='#'">
-                <span class="nav-icon">📈</span> Visualize
-            </button>
-            <button class="nav-button" style="flex: 1; min-width: 120px;" onclick="window.location.href='#'">
-                <span class="nav-icon">🧠</span> Models
-            </button>
-            <button class="nav-button" style="flex: 1; min-width: 120px;" onclick="window.location.href='#'">
-                <span class="nav-icon">🔬</span> XAI
-            </button>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
 def luxury_back_button():
-    """Display a premium gold back button with quick navigation"""
-    st.markdown("""
-    <div class="back-button-container">
-        <button class="back-button" onclick="window.location.reload()">
-            <span class="back-icon">⬅️</span>
-            <span>Back to Home</span>
-            <span style="font-size: 1.2rem;">✦</span>
-        </button>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Actual Streamlit button
-    if st.button("⬅️ Back to Home", key="back_to_home_btn", use_container_width=False):
-        navigate_to("🏠 Home")
+    """Display a premium gold back button"""
+    # Create two columns for the back button and title
+    col_back, col_spacer = st.columns([1, 5])
+    with col_back:
+        if st.button("⬅️ Back", key="back_to_home_btn", use_container_width=True):
+            navigate_to("🏠 Home")
 
 # -------------------------------
 # 1. HOME PAGE
@@ -892,4 +848,46 @@ if st.session_state.page == "🏠 Home":
 
     # Call to action
     col1, col2, col3 = st.columns([1, 2, 1])
-    with col
+    with col2:
+        st.markdown("""
+        <div style="text-align: center; padding: 2rem 0;">
+            <h3 style="color: #FFFFFF !important;">Ready to classify your first flower?</h3>
+            <p style="color: #BBBBBB !important; margin-bottom: 1rem;">Click below to start making predictions with our AI</p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("🚀 Start Predicting Now", use_container_width=True):
+            navigate_to("🤖 AI Prediction")
+
+# -------------------------------
+# 2. AI PREDICTION
+# -------------------------------
+elif st.session_state.page == "🤖 AI Prediction":
+    luxury_back_button()
+    
+    st.markdown("<h1 style='color: #FFFFFF !important;'>🤖 Predict Iris Species</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #BBBBBB !important;'>Enter measurements and let the AI classify the flower</p>", unsafe_allow_html=True)
+
+    with st.form("prediction_form"):
+        cols = st.columns(4)
+        with cols[0]:
+            sepal_len = st.number_input("📏 Sepal Length (cm)", min_value=0.0, max_value=10.0, value=5.1, step=0.1)
+        with cols[1]:
+            sepal_wid = st.number_input("📐 Sepal Width (cm)", min_value=0.0, max_value=10.0, value=3.5, step=0.1)
+        with cols[2]:
+            petal_len = st.number_input("📏 Petal Length (cm)", min_value=0.0, max_value=10.0, value=1.4, step=0.1)
+        with cols[3]:
+            petal_wid = st.number_input("📐 Petal Width (cm)", min_value=0.0, max_value=10.0, value=0.2, step=0.1)
+
+        col_btn1, col_btn2, _ = st.columns([1, 1, 2])
+        with col_btn1:
+            predict_btn = st.form_submit_button("🔮 Predict Species")
+        with col_btn2:
+            reset_btn = st.form_submit_button("🔄 Reset Inputs")
+
+    if reset_btn:
+        st.session_state.prediction_inputs = None
+        st.rerun()
+
+    if predict_btn:
+        try:
+            input_data = np.array([[sepal_len
